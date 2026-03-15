@@ -1,85 +1,204 @@
-<div align="center">
+<h1 align="center">🦞 LobsterGuard</h1>
 
-# 🦞 LobsterGuard
+<p align="center">
+  <b>OpenClaw 专用安全评估工具</b><br>
+  <sub>31 条攻击链 | 23 Nuclei 模板 | 交互式 Shell | Shodan/FOFA 资产发现 | 全链路自动化</sub>
+</p>
 
-**OpenClaw Security Assessment Tool**
+<p align="center">
+  <a href="README.md"><b>简体中文</b></a> ·
+  <a href="README_EN.md">English</a> ·
+  <a href="README_JA.md">日本語</a> ·
+  <a href="README_RU.md">Русский</a> ·
+  <a href="README_DE.md">Deutsch</a> ·
+  <a href="README_FR.md">Français</a>
+</p>
 
-[![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat-square&logo=go)](https://go.dev)
-[![License](https://img.shields.io/badge/License-GPL--3.0-blue?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey?style=flat-square)]()
+<p align="center">
+  <a href="https://github.com/Coff0xc/lobster-guard/stargazers"><img src="https://img.shields.io/github/stars/Coff0xc/lobster-guard?style=flat-square&logo=github&color=gold" alt="Stars"></a>
+  <a href="https://github.com/Coff0xc/lobster-guard/network/members"><img src="https://img.shields.io/github/forks/Coff0xc/lobster-guard?style=flat-square&logo=github&color=silver" alt="Forks"></a>
+  <a href="https://github.com/Coff0xc/lobster-guard/issues"><img src="https://img.shields.io/github/issues/Coff0xc/lobster-guard?style=flat-square&logo=github&color=red" alt="Issues"></a>
+  <a href="https://github.com/Coff0xc/lobster-guard/commits/master"><img src="https://img.shields.io/github/last-commit/Coff0xc/lobster-guard?style=flat-square&logo=github" alt="Last Commit"></a>
+</p>
 
-31-chain automated attack suite for [OpenClaw](https://github.com/anthropics/open-claw) instances.
-
-Fingerprint → Auth Bypass → Recon → Audit → Exploit → Report
-
-</div>
+<p align="center">
+  <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
+  <img src="https://img.shields.io/badge/Chains-31-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/Nuclei-23_Templates-4CAF50?style=flat-square" alt="Nuclei">
+  <img src="https://img.shields.io/badge/Exploits-30_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/License-GPL--3.0-green?style=flat-square" alt="License">
+</p>
 
 ---
 
-## What is this?
+## 项目亮点
 
-LobsterGuard is a purpose-built penetration testing tool targeting **OpenClaw** (the open-source AI coding agent platform). It automates the full attack lifecycle — from asset discovery to RCE verification — through 31 chained exploit modules covering the OpenClaw Gateway WebSocket API, HTTP endpoints, and integration surfaces.
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│                        LobsterGuard v1.0.0                              │
+├──────────────────────────────────────────────────────────────────────────┤
+│  ● 31 条攻击链         ● 30 个 Exploit 模块   ● 23 Nuclei 模板         │
+│  ● 交互式 Shell        ● Shodan/FOFA 发现     ● JSON + HTML 报告       │
+│  ● WebSocket 全覆盖    ● 零认证指纹识别       ● 多目标并发扫描         │
+├──────────────────────────────────────────────────────────────────────────┤
+│  攻击面: Gateway WS API | HTTP REST | OAuth | Webhook | Node Pairing   │
+│  覆盖: SSRF | RCE | 密钥窃取 | 会话劫持 | 提权 | 持久化 | 数据泄露   │
+└──────────────────────────────────────────────────────────────────────────┘
+```
 
-Built for security researchers, red teamers, and OpenClaw operators who need to validate their deployment security.
+---
 
-## Features
+## 目录
 
-- **Asset Discovery** — Shodan / FOFA integration for internet-wide OpenClaw hunting
-- **Fingerprinting** — Zero-auth OpenClaw detection and version identification
-- **Auth Testing** — No-auth probe + token brute force with built-in wordlist
-- **Recon** — HTTP endpoint enumeration + WebSocket method discovery
-- **Config Audit** — 15+ misconfiguration checks via authenticated API
-- **31 Exploit Chains** — Full attack suite from SSRF to RCE (see below)
-- **Interactive Shell** — msfconsole-style REPL with per-chain execution
-- **23 Nuclei Templates** — Drop into CI/CD pipelines
-- **Reporting** — JSON + HTML output with severity classification
+- [项目简介](#项目简介)
+- [核心特性](#核心特性)
+- [快速开始](#快速开始)
+- [使用方式](#使用方式)
+- [交互式 Shell](#交互式-shell)
+- [31 条攻击链](#31-条攻击链)
+- [Nuclei 模板](#nuclei-模板)
+- [资产发现](#资产发现)
+- [项目结构](#项目结构)
+- [免责声明](#免责声明)
+- [作者](#作者)
+- [许可证](#许可证)
 
-## Quick Start
+---
+
+## 项目简介
+
+**LobsterGuard** 是一款专门针对 [OpenClaw](https://github.com/anthropics/open-claw)（开源 AI 编程代理平台）的自动化渗透测试工具。它覆盖从资产发现到 RCE 验证的完整攻击生命周期，通过 31 条链式 Exploit 模块全面测试 OpenClaw Gateway WebSocket API、HTTP 端点和集成接口的安全性。
+
+### 为什么需要 LobsterGuard？
+
+| 场景 | 手动测试 | LobsterGuard |
+|------|----------|-------------|
+| **发现目标** | 手动搜索 Shodan/FOFA | `discover` 一键聚合 |
+| **识别实例** | 逐个 HTTP 探测 | 零认证自动指纹识别 |
+| **认证测试** | 手写脚本爆破 | 内置字典 + 智能延迟 |
+| **漏洞验证** | 逐个手工构造 PoC | 31 条链自动化验证 |
+| **攻击面覆盖** | 依赖经验 | WS + HTTP + OAuth + Webhook + Node 全覆盖 |
+| **报告输出** | 手动整理 | JSON + HTML 一键生成 |
+| **CI/CD 集成** | 无 | 23 Nuclei 模板即插即用 |
+
+---
+
+## 核心特性
+
+<table>
+<tr>
+<td width="50%">
+
+### 侦察与发现
+
+- **Shodan / FOFA 资产发现** — 互联网范围 OpenClaw 实例搜索
+- **零认证指纹识别** — 自动检测 OpenClaw 并提取版本信息
+- **HTTP 端点枚举** — 全面扫描 REST API 路由
+- **WebSocket 方法发现** — 枚举 Gateway WS 可用方法
+- **认证模式检测** — 识别 no-auth / token / OAuth 模式
+
+</td>
+<td width="50%">
+
+### 攻击与利用
+
+- **31 条攻击链** — 从 SSRF 到完整 RCE 链
+- **自动化利用编排** — Chain Orchestrator 按序执行
+- **自审批 RCE** — exec.approval.request → 自审批 → node.invoke
+- **密钥窃取** — secrets.resolve / talk.config / API key 提取
+- **持久化后门** — Agent 注入 + 文件写入 + Cron 绕过
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 安全审计
+
+- **15+ 配置审计项** — 认证、权限、加密、日志等
+- **Token 爆破** — 内置高频弱口令字典 + 自定义字典
+- **CORS 检测** — Origin 反射 + 凭据泄露验证
+- **OAuth 安全** — 重定向劫持 + State 固定攻击
+
+</td>
+<td width="50%">
+
+### 工具与报告
+
+- **交互式 Shell** — msfconsole 风格 REPL，逐链执行
+- **23 Nuclei 模板** — 直接集成 CI/CD 流水线
+- **JSON + HTML 报告** — 严重等级分类 + 修复建议
+- **多目标并发** — `-c` 参数控制并发数
+
+</td>
+</tr>
+</table>
+
+---
+
+## 快速开始
+
+### 系统要求
+
+- Go 1.22+
+- 网络可达 OpenClaw 实例
+
+### 编译安装
 
 ```bash
-# Build
+git clone https://github.com/Coff0xc/lobster-guard.git
+cd lobster-guard
 go build -o lobster-guard ./cmd/lobster-guard/
+```
 
-# Full scan against a target
+### 基本使用
+
+```bash
+# 全量扫描
 ./lobster-guard scan -t 10.0.0.1:18789
 
-# With known token
+# 带 Token 扫描
 ./lobster-guard scan -t 10.0.0.1:18789 --token "your-gateway-token"
 
-# Exploit-only mode
+# 仅 Exploit
 ./lobster-guard exploit -t 10.0.0.1:18789 --token "tok"
 
-# Interactive shell
+# 交互式 Shell
 ./lobster-guard shell
 ```
 
-## Usage
+---
+
+## 使用方式
 
 ```
 Usage:
   lobster-guard [command]
 
 Commands:
-  scan          Full pipeline: fingerprint + auth + brute + recon + audit + exploit
-  fingerprint   Detect OpenClaw instances
-  auth          Auth test: no-auth + brute force
-  recon         Endpoint + WS method enumeration + version detect
-  audit         Config audit (needs token)
-  exploit       31-chain OpenClaw attack suite
-  discover      Asset discovery via Shodan/FOFA
-  shell         Interactive shell (msfconsole-style)
+  scan          全量流水线: 指纹 + 认证 + 爆破 + 侦察 + 审计 + 利用
+  fingerprint   检测 OpenClaw 实例
+  auth          认证测试: 无认证检测 + Token 爆破
+  recon         端点枚举 + WS 方法发现 + 版本检测
+  audit         配置审计 (需要 Token)
+  exploit       31 条攻击链全量执行
+  discover      Shodan/FOFA 资产发现
+  shell         交互式 Shell (msfconsole 风格)
 
 Flags:
-  -t, --target string     Target host:port
-  -T, --targets string    File with targets, one per line
-  -c, --concurrency int   Concurrent target scans (default 1)
-  -o, --output string     Output JSON report path
-      --token string      Gateway token
-      --tls               Use HTTPS/WSS
-      --timeout int       HTTP timeout in seconds (default 10)
+  -t, --target string     目标 host:port
+  -T, --targets string    目标列表文件 (每行一个)
+  -c, --concurrency int   并发扫描数 (默认 1)
+  -o, --output string     JSON 报告输出路径
+      --token string      Gateway Token
+      --tls               使用 HTTPS/WSS
+      --timeout int       HTTP 超时秒数 (默认 10)
 ```
 
-### Interactive Shell
+---
+
+## 交互式 Shell
 
 ```
 $ ./lobster-guard shell
@@ -98,9 +217,70 @@ Chain  0: Platform fingerprint (zero-auth)
 Chain  1: SSRF + cloud metadata
 ...
 Chain 30: Full RCE chain (self-approve + node.invoke)
+lobster🦞> results
+lobster🦞> export report.json
 ```
 
-### Asset Discovery
+---
+
+## 31 条攻击链
+
+| # | 攻击链 | 严重等级 | 描述 |
+|---|--------|----------|------|
+| 0 | 平台指纹 | Info | 零认证 OpenClaw 检测 |
+| 1 | SSRF | Critical | browser.request/navigate → 云元数据 (AWS/GCP/Azure/DO) |
+| 2 | eval() 注入 | Critical | 工具参数中的 eval/exec 代码执行 |
+| 3 | API Key 窃取 | Critical | 通过 config/env 端点提取 Provider API 密钥 |
+| 4 | 配对码爆破 | High | DM 配对码 6 位爆破 |
+| 5 | Cron 绕过 | High | Cron 黑名单绕过 + 持久化 |
+| 6 | Prompt 注入 | High | 系统提示词提取 + 指令覆盖 |
+| 7 | RCE 可达性 | Critical | system.run 命令执行探测 |
+| 8 | Hook 注入 | Critical | Webhook 端点注入执行命令 |
+| 9 | 密钥提取 | Critical | secrets.list + secrets.get 明文窃取 |
+| 10 | 配置篡改 | High | config.set 写入安全配置 |
+| 11 | 工具直调 | Critical | tools.invoke 绕过 Chat 层安全 |
+| 12 | 会话劫持 | High | sessions.preview IDOR + 跨会话注入 |
+| 13 | CORS 绕过 | Medium | Origin 反射 → 跨域 WS/API 访问 |
+| 14 | 频道注入 | High | Mattermost/Slack/Discord 未签名命令注入 |
+| 15 | 日志泄露 | Medium | logs.query 凭据/敏感数据泄露 |
+| 16 | Patch 逃逸 | Critical | apply_patch 路径穿越 → 任意文件写入 |
+| 17 | WS 劫持 | High | 跨域 WebSocket 升级 + Token 重放 |
+| 18 | Agent 注入 | Critical | agents.create/update 后门 + 系统提示词泄露 |
+| 19 | OAuth 滥用 | High | Slack OAuth 重定向劫持 + State 固定 |
+| 20 | Responses API | Critical | /v1/responses 认证绕过 + 工具注入 |
+| 21 | WS Fuzz | Medium | 畸形 JSON-RPC + 方法注入 |
+| 22 | Agent 文件注入 | Critical | agents.files.set 持久化 Prompt 后门 |
+| 23 | 会话文件写入 | Critical | sessions.patch + compact 任意文件写入 |
+| 24 | 审批劫持 | Critical | 前缀 ID 匹配 + 执行策略篡改 |
+| 25 | Talk 密钥 | Critical | talk.config(includeSecrets) API 密钥外泄 |
+| 26 | 浏览器 SSRF | High | browser.request 内部调度 |
+| 27 | Secrets Resolve | Critical | secrets.resolve 明文提取 (内部注入 API) |
+| 28 | 会话记录窃取 | High | 未脱敏会话历史 + 工具输出窃取 |
+| 29 | 流氓节点 | Critical | 自审批节点配对 → 命令拦截 |
+| 30 | 完整 RCE | Critical | nodes.list → 自审批 → node.invoke system.run |
+
+---
+
+## Nuclei 模板
+
+23 个即用模板，可直接集成 CI/CD:
+
+```bash
+# 扫描单个目标
+nuclei -t nuclei-templates/ -u http://10.0.0.1:18789
+
+# 扫描目标列表
+nuclei -t nuclei-templates/ -l targets.txt
+
+# 仅 Critical
+nuclei -t nuclei-templates/ -u http://target:18789 -severity critical
+```
+
+覆盖: 实例检测、无认证、默认 Token、弱 Token、CORS、会话暴露、执行审批、Webhook、OAuth 重定向、WebSocket、Slack/Mattermost/Discord 注入、Responses API、Agent 文件、流氓节点、密钥解析、会话窃取、完整 RCE 等。
+
+---
+
+## 资产发现
 
 ```bash
 # Shodan
@@ -109,91 +289,42 @@ Chain 30: Full RCE chain (self-approve + node.invoke)
 # FOFA
 ./lobster-guard discover --fofa-email "you@x.com" --fofa-key "KEY" -o targets.txt
 
-# Then scan all discovered targets
+# 扫描所有发现的目标
 ./lobster-guard scan -T targets.txt -c 10
 ```
 
-## Attack Chains
+---
 
-| # | Chain | Severity | Description |
-|---|-------|----------|-------------|
-| 0 | Platform Fingerprint | Info | Zero-auth OpenClaw detection |
-| 1 | SSRF | Critical | browser.request/navigate → cloud metadata (AWS/GCP/Azure/DO) |
-| 2 | eval() Injection | Critical | Code execution via eval/exec in tool parameters |
-| 3 | API Key Theft | Critical | Extract provider API keys via config/env endpoints |
-| 4 | Pairing Brute Force | High | DM pairing code brute force (6-digit) |
-| 5 | Cron Bypass | High | Cron deny list bypass + persistence |
-| 6 | Prompt Injection | High | System prompt extraction + instruction override |
-| 7 | RCE Reachability | Critical | system.run command execution probe |
-| 8 | Hook Injection | Critical | Webhook endpoint injection for command execution |
-| 9 | Secret Extraction | Critical | secrets.list + secrets.get plaintext theft |
-| 10 | Config Tampering | High | config.set write access to security settings |
-| 11 | Tool Invocation | Critical | tools.invoke bypasses chat-layer security |
-| 12 | Session Hijack | High | sessions.preview IDOR + cross-session injection |
-| 13 | CORS Bypass | Medium | Origin reflection → cross-origin WS/API access |
-| 14 | Channel Injection | High | Mattermost/Slack/Discord unsigned command injection |
-| 15 | Log Disclosure | Medium | logs.query credential/sensitive data leak |
-| 16 | Patch Escape | Critical | apply_patch path traversal → arbitrary file write |
-| 17 | WS Hijack | High | Cross-origin WebSocket upgrade + token replay |
-| 18 | Agent Injection | Critical | agents.create/update backdoor + system prompt leak |
-| 19 | OAuth Abuse | High | Slack OAuth redirect hijack + state fixation |
-| 20 | Responses API | Critical | /v1/responses auth bypass + tool injection |
-| 21 | WS Fuzz | Medium | Malformed JSON-RPC + method injection |
-| 22 | Agent File Inject | Critical | Persistent prompt backdoor via agents.files.set |
-| 23 | Session File Write | Critical | Arbitrary file write via sessions.patch + compact |
-| 24 | Approval Hijack | Critical | Prefix ID matching + exec policy tamper |
-| 25 | Talk Secrets | Critical | API key exfil via talk.config(includeSecrets) |
-| 26 | Browser SSRF | High | Internal dispatch via browser.request |
-| 27 | Secrets Resolve | Critical | secrets.resolve plaintext extraction (internal injection API) |
-| 28 | Transcript Theft | High | Unredacted session history + tool output theft |
-| 29 | Rogue Node | Critical | Self-approved node pairing → command interception |
-| 30 | Full RCE | Critical | nodes.list → self-approve → node.invoke system.run |
-
-## Nuclei Templates
-
-23 ready-to-use templates for automated scanning:
-
-```bash
-# Scan single target
-nuclei -t nuclei-templates/ -u http://10.0.0.1:18789
-
-# Scan target list
-nuclei -t nuclei-templates/ -l targets.txt
-
-# Critical only
-nuclei -t nuclei-templates/ -u http://target:18789 -severity critical
-```
-
-Templates cover: detection, no-auth, default tokens, weak tokens, CORS, sessions exposure, exec approvals, hooks, OAuth redirect, WebSocket, Slack/Mattermost/Discord injection, Responses API, agent files, rogue node, secrets resolve, transcript theft, full RCE, and more.
-
-## Project Structure
+## 项目结构
 
 ```
 lobster-guard/
-├── cmd/lobster-guard/     # CLI entrypoint
+├── cmd/lobster-guard/     # CLI 入口
 ├── pkg/
-│   ├── audit/             # Config audit checks
-│   ├── auth/              # No-auth + brute force
-│   ├── chain/             # Attack chain orchestrator
-│   ├── discovery/         # Shodan/FOFA asset discovery
-│   ├── exploit/           # 30 exploit modules (4500+ lines)
-│   ├── interactive/       # msfconsole-style REPL shell
-│   ├── recon/             # Endpoint + WS method enumeration
-│   ├── report/            # JSON + HTML report generation
-│   ├── scanner/           # Fingerprinting engine
-│   └── utils/             # HTTP client, WS client, types
-├── nuclei-templates/      # 23 Nuclei YAML templates
-└── rules/                 # Default credential wordlists
+│   ├── audit/             # 配置审计
+│   ├── auth/              # 无认证检测 + Token 爆破
+│   ├── chain/             # 攻击链编排器
+│   ├── discovery/         # Shodan/FOFA 资产发现
+│   ├── exploit/           # 30 个 Exploit 模块 (4500+ 行)
+│   ├── interactive/       # msfconsole 风格交互式 Shell
+│   ├── recon/             # 端点 + WS 方法枚举
+│   ├── report/            # JSON + HTML 报告生成
+│   ├── scanner/           # 指纹识别引擎
+│   └── utils/             # HTTP 客户端, WS 客户端, 类型定义
+├── nuclei-templates/      # 23 个 Nuclei YAML 模板
+└── rules/                 # 默认凭据字典
 ```
 
-## Disclaimer
+---
 
-This tool is intended for **authorized security testing only**. Use it only against systems you own or have explicit written permission to test. Unauthorized access to computer systems is illegal. The author assumes no liability for misuse.
+## 免责声明
 
-## Author
+本工具仅用于**授权安全测试**。请仅对您拥有或获得明确书面授权的系统进行测试。未经授权访问计算机系统属于违法行为。作者不对任何滥用行为承担责任。
+
+## 作者
 
 **coff0xc**
 
-## License
+## 许可证
 
-GPL-3.0
+[GPL-3.0](LICENSE)
