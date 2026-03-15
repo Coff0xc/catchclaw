@@ -11,6 +11,14 @@ info:
     secrets, file contents, and command results.
     Note: These are independent checks — each request is self-contained.
   tags: openclaw,sessions,transcript,theft
+  remediation: Require authentication for session API endpoints. Redact sensitive tool outputs (secrets, file contents) from stored transcripts.
+  classification:
+    cwe-id: CWE-200
+  metadata:
+    max-request: 2
+    verified: false
+    product: openclaw
+    vendor: openclaw
 
 http:
   - method: POST

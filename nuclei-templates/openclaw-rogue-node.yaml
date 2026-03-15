@@ -6,6 +6,14 @@ info:
   severity: critical
   description: Tests if node.pair.request accepts rogue node registration — attacker can register fake nodes to intercept system.run commands
   tags: openclaw,node,pairing,rce
+  remediation: Require manual approval for node pairing. Disable auto-approve in node.pair config.
+  classification:
+    cwe-id: CWE-287
+  metadata:
+    max-request: 1
+    verified: false
+    product: openclaw
+    vendor: openclaw
 
 websocket:
   - address: "{{Host}}/gateway"

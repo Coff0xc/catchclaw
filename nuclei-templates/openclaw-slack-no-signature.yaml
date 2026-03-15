@@ -6,6 +6,14 @@ info:
   severity: high
   description: Tests if Slack events endpoint accepts requests without X-Slack-Signature
   tags: openclaw,slack,channel,injection
+  remediation: Enable Slack signature verification — set slack.signing_secret in OpenClaw channel config.
+  classification:
+    cwe-id: CWE-345
+  metadata:
+    max-request: 1
+    verified: false
+    product: openclaw
+    vendor: openclaw
 
 http:
   - method: POST

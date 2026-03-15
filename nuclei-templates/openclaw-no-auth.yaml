@@ -5,6 +5,14 @@ info:
   severity: critical
   description: OpenClaw Gateway has auth.mode=none — full operator access without credentials
   tags: openclaw,misconfig,auth
+  remediation: Set auth.mode=token in Gateway config and generate a strong random token with openssl rand -hex 32.
+  classification:
+    cwe-id: CWE-306
+  metadata:
+    max-request: 1
+    verified: false
+    product: openclaw
+    vendor: openclaw
   reference:
     - https://github.com/openclaw/openclaw/blob/main/SECURITY.md
 

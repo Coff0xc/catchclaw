@@ -12,6 +12,14 @@ info:
     (nodes.list → exec.approval.request → self-approve → node.invoke),
     use the LobsterGuard CLI exploit module which maintains WS session state.
   tags: openclaw,rce,exec,approval,critical
+  remediation: Enable sandbox mode (agents.defaults.sandbox.mode=all). Disable exec.approval self-approve. Restrict node.invoke to authenticated admin sessions.
+  classification:
+    cwe-id: CWE-78
+  metadata:
+    max-request: 2
+    verified: false
+    product: openclaw
+    vendor: openclaw
 
 websocket:
   - address: "{{Host}}/gateway"
