@@ -36,6 +36,7 @@ var (
 	flagHookPath  string
 	flagNoExploit    bool
 	flagConcurrency  int
+	flagTLSVerify    bool
 	flagShodanKey string
 	flagFofaEmail string
 	flagFofaKey   string
@@ -120,6 +121,7 @@ func addCommonFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVarP(&flagOutput, "output", "o", "", "Output JSON report path")
 	cmd.Flags().BoolVar(&flagTLS, "tls", false, "Use HTTPS/WSS")
 	cmd.Flags().IntVarP(&flagConcurrency, "concurrency", "c", 1, "Number of concurrent target scans")
+	cmd.Flags().BoolVar(&flagTLSVerify, "tls-verify", false, "Enable strict TLS certificate verification (default: skip)")
 }
 
 func addBruteFlags(cmd *cobra.Command) {
@@ -130,6 +132,16 @@ func addBruteFlags(cmd *cobra.Command) {
 }
 
 func resolveTargets() ([]utils.Target, error) {
+	// Apply TLS verification setting
+	if flagTLSVerify {
+		utils.SkipTLSVerify = false
+	}
+	// Resolve token from env if not provided via flag
+	if flagToken == "" {
+		if envToken := os.Getenv("LOBSTERGUARD_TOKEN"); envToken != "" {
+			flagToken = envToken
+		}
+	}
 	var targets []utils.Target
 	if flagTarget != "" {
 		t, err := utils.ParseTarget(flagTarget)

@@ -128,6 +128,22 @@ func RunShell() {
 				fmt.Println("[!] Usage: tls on|off")
 			}
 
+		case "verify":
+			if len(fields) < 2 {
+				fmt.Println("[!] Usage: verify on|off")
+				continue
+			}
+			switch strings.ToLower(fields[1]) {
+			case "on":
+				utils.SkipTLSVerify = false
+				fmt.Println("[*] TLS certificate verification enabled (strict)")
+			case "off":
+				utils.SkipTLSVerify = true
+				fmt.Println("[*] TLS certificate verification disabled (insecure)")
+			default:
+				fmt.Println("[!] Usage: verify on|off")
+			}
+
 		case "timeout":
 			if len(fields) < 2 {
 				fmt.Println("[!] Usage: timeout <seconds>")
@@ -162,7 +178,7 @@ func RunShell() {
 				fmt.Println("[*] No results to export.")
 				continue
 			}
-			if err := report.WriteJSON(state.LastResults, fields[1]); err != nil {
+			if err := report.WriteReport(state.LastResults, fields[1]); err != nil {
 				fmt.Printf("[!] Export failed: %v\n", err)
 			}
 
@@ -199,7 +215,8 @@ func printHelp() {
 	fmt.Println(`Commands:
   target <host:port>   Set target
   token <value>        Set gateway token
-  tls on|off           Toggle TLS
+  tls on|off           Toggle TLS (HTTPS/WSS)
+  verify on|off        Toggle TLS cert verification (default: off)
   timeout <seconds>    Set timeout
   scan                 Full scan pipeline
   fingerprint          Detect OpenClaw
@@ -211,7 +228,7 @@ func printHelp() {
   chains               List all chains
   status               Show current config
   results              Show last results
-  export <path>        Export results to JSON
+  export <path>        Export results (JSON or HTML by extension)
   help                 Show this help
   exit                 Quit`)
 }
@@ -229,8 +246,12 @@ func printStatus(state *ShellState) {
 	if state.UseTLS {
 		tls = "on"
 	}
-	fmt.Printf("  Target:  %s\n  Token:   %s\n  TLS:     %s\n  Timeout: %s\n  Results: %d\n",
-		target, token, tls, state.Timeout, len(state.LastResults))
+	verify := "off (insecure)"
+	if !utils.SkipTLSVerify {
+		verify = "on (strict)"
+	}
+	fmt.Printf("  Target:  %s\n  Token:   %s\n  TLS:     %s\n  Verify:  %s\n  Timeout: %s\n  Results: %d\n",
+		target, token, tls, verify, state.Timeout, len(state.LastResults))
 }
 
 func maskToken(t string) string {

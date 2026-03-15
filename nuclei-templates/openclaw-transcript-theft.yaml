@@ -4,7 +4,12 @@ info:
   name: OpenClaw Session Transcript Theft
   author: lobster-guard
   severity: high
-  description: Tests if sessions.get returns unredacted conversation history including tool outputs containing secrets, file contents, and command results
+  description: |
+    Tests if session endpoints expose unredacted conversation history.
+    Step 1: sessions/list reveals session IDs without auth.
+    Step 2: sessions/get returns conversation transcripts including tool outputs,
+    secrets, file contents, and command results.
+    Note: These are independent checks — each request is self-contained.
   tags: openclaw,sessions,transcript,theft
 
 http:
@@ -23,7 +28,6 @@ http:
         part: body
         words:
           - "sessionId"
-          - "key"
           - "sessionKey"
         condition: or
 
@@ -43,5 +47,4 @@ http:
         words:
           - "messages"
           - "transcript"
-          - "content"
         condition: or

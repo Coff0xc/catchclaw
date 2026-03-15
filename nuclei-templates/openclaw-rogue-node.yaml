@@ -19,7 +19,8 @@ websocket:
           - "pairingId"
           - "id"
         condition: or
-      - type: negative
+      - type: word
+        negative: true
         words:
           - "unknown method"
           - "not found"

@@ -117,7 +117,7 @@ func TokenBrute(target utils.Target, cfg BruteConfig) (*BruteResult, []utils.Fin
 		result.Attempts = i + 1
 
 		// Try as Bearer token
-		found, method := tryCredential(client, base, candidate)
+		found, method, respStatus := tryCredential(client, base, candidate)
 		if found {
 			result.Found = true
 			result.Token = candidate
@@ -133,8 +133,8 @@ func TokenBrute(target utils.Target, cfg BruteConfig) (*BruteResult, []utils.Fin
 			return result, findings
 		}
 
-		// Check for rate limiting
-		if isRateLimited(client, base, candidate) {
+		// Check for rate limiting (from the same response)
+		if respStatus == 429 {
 			rateLimitHits++
 			if cfg.RespectLimit {
 				waitTime := 65 * time.Second // default lockout window + buffer
@@ -164,7 +164,7 @@ func TokenBrute(target utils.Target, cfg BruteConfig) (*BruteResult, []utils.Fin
 	return result, findings
 }
 
-func tryCredential(client *http.Client, base, cred string) (bool, string) {
+func tryCredential(client *http.Client, base, cred string) (bool, string, int) {
 	// Try as Bearer token first
 	status, _, _, err := utils.DoRequest(client, "POST", base+"/v1/chat/completions",
 		map[string]string{
@@ -172,20 +172,13 @@ func tryCredential(client *http.Client, base, cred string) (bool, string) {
 			"Authorization": "Bearer " + cred,
 		},
 		strings.NewReader(`{"model":"probe","messages":[]}`))
-	if err == nil && (status == 200 || status == 400) {
-		return true, "token"
+	if err != nil {
+		return false, "", 0
 	}
-	return false, ""
-}
-
-func isRateLimited(client *http.Client, base, cred string) bool {
-	status, _, _, err := utils.DoRequest(client, "POST", base+"/v1/chat/completions",
-		map[string]string{
-			"Content-Type":  "application/json",
-			"Authorization": "Bearer " + cred,
-		},
-		strings.NewReader(`{"model":"probe","messages":[]}`))
-	return err == nil && status == 429
+	if status == 200 || status == 400 {
+		return true, "token", status
+	}
+	return false, "", status
 }
 
 func buildCandidateList(cfg BruteConfig) []string {

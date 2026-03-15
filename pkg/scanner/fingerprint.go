@@ -52,7 +52,6 @@ func Fingerprint(target utils.Target, timeout time.Duration) (*FingerprintResult
 		}
 		if status == 200 {
 			result.HealthOK = true
-			result.IsOpenClaw = true
 			result.Endpoints = append(result.Endpoints, path)
 
 			// extract server header

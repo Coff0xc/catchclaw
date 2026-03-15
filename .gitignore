@@ -1,4 +1,5 @@
 # Binary
+*.exe
 /lobster-guard.exe
 /lobster-guard
 

@@ -5,9 +5,12 @@ info:
   author: lobster-guard
   severity: critical
   description: |
-    Tests the complete RCE chain: nodes.list to find connected nodes,
-    exec.approval.request + self-approve via exec.approval.resolve,
-    then node.invoke system.run for arbitrary command execution.
+    Tests the OpenClaw RCE attack surface via two independent checks:
+    1. nodes.list — verifies if node enumeration is accessible (prerequisite for RCE)
+    2. exec.approval.request — tests if command approval can be requested without auth
+    Note: Each check runs independently. For the full 4-step kill chain
+    (nodes.list → exec.approval.request → self-approve → node.invoke),
+    use the LobsterGuard CLI exploit module which maintains WS session state.
   tags: openclaw,rce,exec,approval,critical
 
 websocket:
@@ -22,7 +25,8 @@ websocket:
           - "platform"
           - "commands"
         condition: or
-      - type: negative
+      - type: word
+        negative: true
         words:
           - "unknown method"
           - "unauthorized"
@@ -37,6 +41,7 @@ websocket:
           - "id"
           - "approval"
         condition: or
-      - type: negative
+      - type: word
+        negative: true
         words:
           - "unknown method"

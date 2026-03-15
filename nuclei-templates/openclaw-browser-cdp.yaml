@@ -10,8 +10,8 @@ info:
 http:
   - method: GET
     path:
-      - "{{BaseURL}}:9222/json/version"
-      - "{{BaseURL}}:9222/json/list"
+      - "http://{{Hostname}}:9222/json/version"
+      - "http://{{Hostname}}:9222/json/list"
     matchers-condition: and
     matchers:
       - type: status

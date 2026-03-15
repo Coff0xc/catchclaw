@@ -62,12 +62,17 @@ func ParseTarget(raw string) (Target, error) {
 	return Target{Host: host, Port: port}, nil
 }
 
+// SkipTLSVerify controls whether TLS certificate verification is skipped.
+// Default true — pentest tools typically target self-signed or internal certs.
+// Set to false via --tls-verify flag for strict certificate validation.
+var SkipTLSVerify = true
+
 // HTTPClient returns a configured http client
 func HTTPClient(timeout time.Duration) *http.Client {
 	return &http.Client{
 		Timeout: timeout,
 		Transport: &http.Transport{
-			TLSClientConfig:     &tls.Config{InsecureSkipVerify: true},
+			TLSClientConfig:     &tls.Config{InsecureSkipVerify: SkipTLSVerify},
 			MaxIdleConns:        50,
 			MaxIdleConnsPerHost: 10,
 			IdleConnTimeout:     30 * time.Second,
@@ -107,4 +112,12 @@ func DoRequest(client *http.Client, method, url string, headers map[string]strin
 		return resp.StatusCode, nil, resp.Header, err
 	}
 	return resp.StatusCode, respBody, resp.Header, nil
+}
+
+// Truncate trims a string to maxLen, appending "..." if truncated.
+func Truncate(s string, maxLen int) string {
+	if len(s) <= maxLen {
+		return s
+	}
+	return s[:maxLen] + "..."
 }

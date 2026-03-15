@@ -12,7 +12,7 @@ import (
 func WsDialer(timeout time.Duration) *websocket.Dialer {
 	return &websocket.Dialer{
 		HandshakeTimeout: timeout,
-		TLSClientConfig:  &tls.Config{InsecureSkipVerify: true},
+		TLSClientConfig:  &tls.Config{InsecureSkipVerify: SkipTLSVerify},
 	}
 }
 
