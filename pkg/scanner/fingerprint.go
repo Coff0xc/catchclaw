@@ -109,14 +109,37 @@ func Fingerprint(target utils.Target, timeout time.Duration) (*FingerprintResult
 		}
 	}
 
-	// 4. Canvas / A2UI probe
-	for _, path := range []string{"/__openclaw__/canvas/", "/__openclaw__/a2ui/"} {
+	// 4. Control UI config probe (primary fingerprint)
+	status, body, _, err := utils.DoRequest(client, "GET", base+"/__openclaw/control-ui-config.json", nil, nil)
+	if err == nil && status == 200 {
+		result.IsOpenClaw = true
+		result.Endpoints = append(result.Endpoints, "/__openclaw/control-ui-config.json")
+
+		// Extract version from control-ui-config
+		var configResp map[string]interface{}
+		if json.Unmarshal(body, &configResp) == nil {
+			if v, ok := configResp["serverVersion"]; ok {
+				result.Version = fmt.Sprintf("%v", v)
+				fmt.Printf("  [+] OpenClaw detected via control-ui-config.json (version: %s)\n", result.Version)
+			}
+		}
+
+		f := utils.NewFinding(tStr, "fingerprint",
+			"OpenClaw control-ui-config.json exposed",
+			utils.SevInfo,
+			fmt.Sprintf("/__openclaw/control-ui-config.json accessible (version: %s)", result.Version))
+		f.Evidence = string(body)
+		findings = append(findings, f)
+	}
+
+	// 5. Canvas / A2UI probe (both single and double underscore for compatibility)
+	for _, path := range []string{"/__openclaw/canvas/", "/__openclaw__/canvas/", "/__openclaw/a2ui/", "/__openclaw__/a2ui/"} {
 		status, _, _, err := utils.DoRequest(client, "GET", base+path, nil, nil)
 		if err != nil {
 			continue
 		}
 		result.Endpoints = append(result.Endpoints, path)
-		if path == "/__openclaw__/canvas/" {
+		if strings.Contains(path, "/canvas/") {
 			result.HasCanvas = status != 404
 		} else {
 			result.HasA2UI = status != 404
@@ -129,7 +152,7 @@ func Fingerprint(target utils.Target, timeout time.Duration) (*FingerprintResult
 				fmt.Sprintf("%s returns %d — web UI exposed", path, status))
 			findings = append(findings, f)
 			fmt.Printf("  [+] %s → %d (exposed)\n", path, status)
-		} else {
+		} else if status != 404 {
 			fmt.Printf("  [*] %s → %d\n", path, status)
 		}
 	}

@@ -15,7 +15,7 @@ info:
   classification:
     cwe-id: CWE-200
   metadata:
-    max-request: 2
+    max-request: 4
     verified: false
     product: openclaw
     vendor: openclaw
@@ -23,6 +23,7 @@ info:
 http:
   - method: POST
     path:
+      - "{{BaseURL}}/__openclaw/a2ui/api/sessions/list"
       - "{{BaseURL}}/__openclaw__/a2ui/api/sessions/list"
     headers:
       Content-Type: "application/json"
@@ -41,6 +42,7 @@ http:
 
   - method: POST
     path:
+      - "{{BaseURL}}/__openclaw/a2ui/api/sessions/get"
       - "{{BaseURL}}/__openclaw__/a2ui/api/sessions/get"
     headers:
       Content-Type: "application/json"

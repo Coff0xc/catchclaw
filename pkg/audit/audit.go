@@ -334,12 +334,17 @@ func auditViaHTTP(target utils.Target, cfg AuditConfig) []utils.Finding {
 		}
 	}
 
-	// Check security headers on control UI
+	// Check security headers on control UI (try both single and double underscore)
 	headers := map[string]string{}
 	if cfg.Token != "" {
 		headers["Authorization"] = "Bearer " + cfg.Token
 	}
-	status, _, respHeaders, err := utils.DoRequest(client, "GET", base+"/__openclaw__/a2ui/", headers, nil)
+	// Try single underscore first (newer versions)
+	status, _, respHeaders, err := utils.DoRequest(client, "GET", base+"/__openclaw/a2ui/", headers, nil)
+	if err != nil || status == 404 {
+		// Fallback to double underscore (older versions)
+		status, _, respHeaders, err = utils.DoRequest(client, "GET", base+"/__openclaw__/a2ui/", headers, nil)
+	}
 	if err == nil && status == 200 {
 		// Check CSP
 		csp := respHeaders.Get("Content-Security-Policy")

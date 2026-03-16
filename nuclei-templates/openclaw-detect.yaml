@@ -22,6 +22,26 @@ info:
 http:
   - method: GET
     path:
+      - "{{BaseURL}}/__openclaw/control-ui-config.json"
+    matchers-condition: and
+    matchers:
+      - type: status
+        status:
+          - 200
+      - type: word
+        part: body
+        words:
+          - "serverVersion"
+          - "assistantName"
+        condition: and
+    extractors:
+      - type: json
+        json:
+          - ".serverVersion"
+        part: body
+
+  - method: GET
+    path:
       - "{{BaseURL}}/healthz"
     matchers-condition: and
     matchers:
@@ -43,6 +63,7 @@ http:
 
   - method: GET
     path:
+      - "{{BaseURL}}/__openclaw/canvas/"
       - "{{BaseURL}}/__openclaw__/canvas/"
     matchers-condition: and
     matchers:
@@ -51,8 +72,10 @@ http:
           - 200
           - 301
           - 302
+          - 401
       - type: word
         words:
           - "openclaw"
           - "canvas"
+          - "Unauthorized"
         condition: or

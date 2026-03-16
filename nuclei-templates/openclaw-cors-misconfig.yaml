@@ -12,7 +12,7 @@ info:
   classification:
     cwe-id: CWE-942
   metadata:
-    max-request: 2
+    max-request: 3
     verified: false
     product: openclaw
     vendor: openclaw
@@ -21,6 +21,7 @@ http:
   - method: GET
     path:
       - "{{BaseURL}}/v1/chat/completions"
+      - "{{BaseURL}}/__openclaw/a2ui/api/sessions/list"
       - "{{BaseURL}}/__openclaw__/a2ui/api/sessions/list"
     headers:
       Origin: "https://evil-attacker.com"

@@ -60,8 +60,8 @@ func NoAuthCheck(target utils.Target, timeout time.Duration) []utils.Finding {
 		findings = append(findings, *wsResult)
 	}
 
-	// Test 3: Canvas path without auth (may bypass on loopback-detected)
-	for _, path := range []string{"/__openclaw__/canvas/", "/__openclaw__/a2ui/"} {
+	// Test 3: Canvas path without auth (both single and double underscore)
+	for _, path := range []string{"/__openclaw/canvas/", "/__openclaw__/canvas/", "/__openclaw/a2ui/", "/__openclaw__/a2ui/"} {
 		status, _, _, err := utils.DoRequest(client, "GET", base+path, nil, nil)
 		if err != nil {
 			continue
