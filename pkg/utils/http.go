@@ -81,7 +81,9 @@ func ParseTarget(raw string) (Target, error) {
 // Set to false via --tls-verify flag for strict certificate validation.
 var SkipTLSVerify = true
 
-// HTTPClient returns a configured http client
+// HTTPClient returns a configured http client.
+// Does NOT follow redirects — returns the original status code so callers
+// can distinguish 301/302 (auth redirect) from real 200 (no auth).
 func HTTPClient(timeout time.Duration) *http.Client {
 	return &http.Client{
 		Timeout: timeout,
@@ -96,10 +98,9 @@ func HTTPClient(timeout time.Duration) *http.Client {
 			}).DialContext,
 		},
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			if len(via) >= 3 {
-				return fmt.Errorf("too many redirects")
-			}
-			return nil
+			// Stop following redirects — return the redirect response directly.
+			// This prevents OAuth/Cognito 302→200 false positives.
+			return http.ErrUseLastResponse
 		},
 	}
 }
