@@ -1,0 +1,1840 @@
+[
+  {
+    "target": {
+      "Host": "43.167.159.77",
+      "Port": 80,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8176825+08:00",
+    "end_at": "2026-03-16T20:13:27.5480222+08:00"
+  },
+  {
+    "target": {
+      "Host": "13.231.143.180",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8176825+08:00",
+    "end_at": "2026-03-16T20:13:27.5480222+08:00"
+  },
+  {
+    "target": {
+      "Host": "45.32.55.78",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "45.32.55.78:443",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: )",
+        "evidence": "\u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n    \u003ctitle\u003eOpenClaw Control\u003c/title\u003e\n    \u003cmeta name=\"color-scheme\" content=\"dark light\" /\u003e\n    \u003clink rel=\"icon\" type=\"image/svg+xml\" href=\"./favicon.svg\" /\u003e\n    \u003clink rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"./favicon-32.png\" /\u003e\n    \u003clink rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"./apple-touch-icon.png\" /\u003e\n    \u003cscript type=\"module\" crossorigin src=\"./assets/index-BtuoDTGq.js\"\u003e\u003c/script\u003e\n    \u003clink rel=\"stylesheet\" crossorigin href=\"./assets/index-B3tl1vnL.css\"\u003e\n  \u003cscript\u003ewindow.__OPENCLAW_CONTROL_UI_BASE_PATH__=\"\";window.__OPENCLAW_ASSISTANT_NAME__=\"Assistant\";window.__OPENCLAW_ASSISTANT_AVATAR__=\"A\";\u003c/script\u003e\u003c/head\u003e\n  \u003cbody\u003e\n    \u003copenclaw-app\u003e\u003c/openclaw-app\u003e\n  \u003c/body\u003e\n\u003c/html\u003e\n",
+        "timestamp": "2026-03-16T12:04:09Z"
+      },
+      {
+        "target": "45.32.55.78:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:10Z"
+      },
+      {
+        "target": "45.32.55.78:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw__/canvas/",
+        "severity": 3,
+        "description": "/__openclaw__/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:10Z"
+      },
+      {
+        "target": "45.32.55.78:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:11Z"
+      },
+      {
+        "target": "45.32.55.78:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw__/a2ui/",
+        "severity": 3,
+        "description": "/__openclaw__/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:11Z"
+      },
+      {
+        "target": "45.32.55.78:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/canvas/",
+        "severity": 0,
+        "description": "GET /__openclaw/canvas/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:04:19Z"
+      },
+      {
+        "target": "45.32.55.78:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw__/canvas/",
+        "severity": 3,
+        "description": "GET /__openclaw__/canvas/ returns 200 without Bearer token — authenticated API path accessible without auth",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003cmeta charset=\"utf-8\" /\u003e\n\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /\u003e\n\u003ctitle\u003eOpenClaw Canvas\u003c/title\u003e\n\u003cstyle\u003e...",
+        "timestamp": "2026-03-16T12:04:20Z"
+      },
+      {
+        "target": "45.32.55.78:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/a2ui/",
+        "severity": 0,
+        "description": "GET /__openclaw/a2ui/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:04:20Z"
+      },
+      {
+        "target": "45.32.55.78:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw__/a2ui/",
+        "severity": 3,
+        "description": "GET /__openclaw__/a2ui/ returns 200 without Bearer token — authenticated API path accessible without auth",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"utf-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /\u003e\n    \u003ctitle\u003eOpe...",
+        "timestamp": "2026-03-16T12:04:21Z"
+      },
+      {
+        "target": "45.32.55.78:443",
+        "module": "recon",
+        "title": "WS challenge gate active — methods not enumerable without auth",
+        "severity": 0,
+        "description": "WebSocket connection requires challenge-response authentication. Method enumeration skipped to avoid false positives.",
+        "evidence": "Challenge nonce: 7e8010f6-7c46-4188-9c48-28becfb8a22c",
+        "timestamp": "2026-03-16T12:04:39Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:04:06.8155088+08:00",
+    "end_at": "2026-03-16T20:13:27.5480222+08:00"
+  },
+  {
+    "target": {
+      "Host": "52.194.186.185",
+      "Port": 80,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8176825+08:00",
+    "end_at": "2026-03-16T20:13:27.5485464+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.203.167",
+      "Port": 80,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "43.133.203.167:80",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: )",
+        "evidence": "\u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n    \u003ctitle\u003eOpenClaw Control\u003c/title\u003e\n    \u003cmeta name=\"color-scheme\" content=\"dark light\" /\u003e\n    \u003clink rel=\"icon\" type=\"image/svg+xml\" href=\"./favicon.svg\" /\u003e\n    \u003clink rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"./favicon-32.png\" /\u003e\n    \u003clink rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"./apple-touch-icon.png\" /\u003e\n    \u003cscript type=\"module\" crossorigin src=\"./assets/index-DFDgq9AK.js\"\u003e\u003c/script\u003e\n    \u003clink rel=\"stylesheet\" crossorigin href=\"./assets/index-BKPyesll.css\"\u003e\n  \u003cscript\u003ewindow.__OPENCLAW_CONTROL_UI_BASE_PATH__=\"\";window.__OPENCLAW_ASSISTANT_NAME__=\"Assistant\";window.__OPENCLAW_ASSISTANT_AVATAR__=\"A\";\u003c/script\u003e\u003c/head\u003e\n  \u003cbody\u003e\n    \u003copenclaw-app\u003e\u003c/openclaw-app\u003e\n  \u003c/body\u003e\n\u003c/html\u003e\n",
+        "timestamp": "2026-03-16T12:04:11Z"
+      },
+      {
+        "target": "43.133.203.167:80",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:12Z"
+      },
+      {
+        "target": "43.133.203.167:80",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw__/canvas/",
+        "severity": 3,
+        "description": "/__openclaw__/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:13Z"
+      },
+      {
+        "target": "43.133.203.167:80",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:14Z"
+      },
+      {
+        "target": "43.133.203.167:80",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw__/a2ui/",
+        "severity": 3,
+        "description": "/__openclaw__/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:15Z"
+      },
+      {
+        "target": "43.133.203.167:80",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/canvas/",
+        "severity": 0,
+        "description": "GET /__openclaw/canvas/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:04:23Z"
+      },
+      {
+        "target": "43.133.203.167:80",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw__/canvas/",
+        "severity": 3,
+        "description": "GET /__openclaw__/canvas/ returns 200 without Bearer token — authenticated API path accessible without auth",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003cmeta charset=\"utf-8\" /\u003e\n\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /\u003e\n\u003ctitle\u003eOpenClaw Canvas\u003c/title\u003e\n\u003cstyle\u003e...",
+        "timestamp": "2026-03-16T12:04:25Z"
+      },
+      {
+        "target": "43.133.203.167:80",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/a2ui/",
+        "severity": 0,
+        "description": "GET /__openclaw/a2ui/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:04:26Z"
+      },
+      {
+        "target": "43.133.203.167:80",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw__/a2ui/",
+        "severity": 3,
+        "description": "GET /__openclaw__/a2ui/ returns 200 without Bearer token — authenticated API path accessible without auth",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"utf-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\" /\u003e\n    \u003ctitle\u003eOpe...",
+        "timestamp": "2026-03-16T12:04:28Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:04:06.8155088+08:00",
+    "end_at": "2026-03-16T20:13:27.5485464+08:00"
+  },
+  {
+    "target": {
+      "Host": "34.85.0.184",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "34.85.0.184:443",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: 2026.3.12)",
+        "evidence": "{\"basePath\":\"\",\"assistantName\":\"诸葛亮 (Kongming - Efficiency Mode)\",\"assistantAvatar\":\"📊\",\"assistantAgentId\":\"main\",\"serverVersion\":\"2026.3.12\"}",
+        "timestamp": "2026-03-16T12:04:30Z"
+      },
+      {
+        "target": "34.85.0.184:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:31Z"
+      },
+      {
+        "target": "34.85.0.184:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:04:31Z"
+      },
+      {
+        "target": "34.85.0.184:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/canvas/",
+        "severity": 0,
+        "description": "GET /__openclaw/canvas/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:04:42Z"
+      },
+      {
+        "target": "34.85.0.184:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/a2ui/",
+        "severity": 0,
+        "description": "GET /__openclaw/a2ui/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:04:42Z"
+      },
+      {
+        "target": "34.85.0.184:443",
+        "module": "auth",
+        "title": "Health endpoint exposes instance info",
+        "severity": 1,
+        "description": "GET /healthz returns instance metadata without auth",
+        "evidence": "{\"ok\":true,\"status\":\"live\"}",
+        "timestamp": "2026-03-16T12:04:43Z"
+      },
+      {
+        "target": "34.85.0.184:443",
+        "module": "recon",
+        "title": "WS challenge gate active — methods not enumerable without auth",
+        "severity": 0,
+        "description": "WebSocket connection requires challenge-response authentication. Method enumeration skipped to avoid false positives.",
+        "evidence": "Challenge nonce: 88bc712a-7a89-4fc7-b56e-a4fc37b34371",
+        "timestamp": "2026-03-16T12:04:59Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:04:27.9415051+08:00",
+    "end_at": "2026-03-16T20:13:27.5485464+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.128.227.80",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8160563+08:00",
+    "end_at": "2026-03-16T20:13:27.5485464+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.128.227.150",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8155088+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.163.228.142",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8176825+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.128.227.172",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8160563+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.170.214",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8160563+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.163.228.225",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8176825+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.128.227.85",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8176825+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.170.240",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8160563+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.163.228.126",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8171551+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.128.227.65",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8160563+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.169.81",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8171551+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "139.180.202.220",
+      "Port": 18789,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8155088+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.169.223",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8155088+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.170.13",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8160563+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.170.247",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:06.8160563+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.224.26",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.8319144+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.209.75",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.837411+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.224.41",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.83249+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.197.12",
+      "Port": 80,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.8319144+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.224.196",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.8319144+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.224.206",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.83249+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.224.253",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.837411+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "52.194.226.105",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "52.194.226.105:443",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: )",
+        "evidence": "{\"basePath\":\"\",\"assistantName\":\"Assistant\",\"assistantAvatar\":\"A\",\"assistantAgentId\":\"main\"}",
+        "timestamp": "2026-03-16T12:06:19Z"
+      },
+      {
+        "target": "52.194.226.105:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:06:20Z"
+      },
+      {
+        "target": "52.194.226.105:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:06:20Z"
+      },
+      {
+        "target": "52.194.226.105:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/canvas/",
+        "severity": 0,
+        "description": "GET /__openclaw/canvas/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:06:26Z"
+      },
+      {
+        "target": "52.194.226.105:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/a2ui/",
+        "severity": 0,
+        "description": "GET /__openclaw/a2ui/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:06:27Z"
+      },
+      {
+        "target": "52.194.226.105:443",
+        "module": "recon",
+        "title": "WS challenge gate active — methods not enumerable without auth",
+        "severity": 0,
+        "description": "WebSocket connection requires challenge-response authentication. Method enumeration skipped to avoid false positives.",
+        "evidence": "Challenge nonce: 2801831d-0d76-4f29-981f-e93f844cf9dc",
+        "timestamp": "2026-03-16T12:06:42Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:06:16.837411+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "172.233.72.78",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:37.7989536+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "134.122.137.58",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:39.7959402+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.207.131.18",
+      "Port": 80,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:59.0429993+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "134.122.137.42",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:49.700812+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "134.122.137.50",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:04:58.1367418+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "46.51.228.211",
+      "Port": 80,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:33.3294283+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "54.65.173.232",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "54.65.173.232:443",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: 2026.3.11)",
+        "evidence": "{\"basePath\":\"\",\"assistantName\":\"小虾\",\"assistantAvatar\":\"A\",\"assistantAgentId\":\"main\",\"serverVersion\":\"2026.3.11\"}",
+        "timestamp": "2026-03-16T12:07:12Z"
+      },
+      {
+        "target": "54.65.173.232:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:07:12Z"
+      },
+      {
+        "target": "54.65.173.232:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:07:13Z"
+      },
+      {
+        "target": "54.65.173.232:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/canvas/",
+        "severity": 0,
+        "description": "GET /__openclaw/canvas/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:07:19Z"
+      },
+      {
+        "target": "54.65.173.232:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/a2ui/",
+        "severity": 0,
+        "description": "GET /__openclaw/a2ui/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:07:20Z"
+      },
+      {
+        "target": "54.65.173.232:443",
+        "module": "auth",
+        "title": "Health endpoint exposes instance info",
+        "severity": 1,
+        "description": "GET /healthz returns instance metadata without auth",
+        "evidence": "{\"ok\":true,\"status\":\"live\"}",
+        "timestamp": "2026-03-16T12:07:21Z"
+      },
+      {
+        "target": "54.65.173.232:443",
+        "module": "recon",
+        "title": "WS challenge gate active — methods not enumerable without auth",
+        "severity": 0,
+        "description": "WebSocket connection requires challenge-response authentication. Method enumeration skipped to avoid false positives.",
+        "evidence": "Challenge nonce: b971308c-23b3-4911-971d-c2552adee1ac",
+        "timestamp": "2026-03-16T12:07:41Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:07:09.7076268+08:00",
+    "end_at": "2026-03-16T20:13:27.5490747+08:00"
+  },
+  {
+    "target": {
+      "Host": "tramacoc.help",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:32.877496+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.166.3",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:07:41.8083766+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.166.39",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:07:42.4520378+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "52.197.196.111",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "52.197.196.111:443",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: )",
+        "evidence": "\u003c!DOCTYPE html\u003e\u003chtml lang=\"en\"\u003e\u003chead\u003e\u003ctitle\u003eSign-in\u003c/title\u003e\u003cmeta name=\"description\" content=\"Sign-in\"/\u003e\u003cmeta name=\"charset\" content=\"utf-8\"/\u003e\u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/\u003e\u003clink rel=\"icon\" type=\"image/x-icon\" href=\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-favicon-ico-light.ico\"/\u003e\u003clink rel=\"icon\" type=\"image/svg+xml\" href=\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-favicon-svg-light.svg\"/\u003e\u003clink rel=\"stylesheet\" href=\"https://d2sfzp6yh6nxed.cloudfront.net/1f7as31uth2vng5b9sbpoh1odv/theme-1761084167000-314e17f2-da86-4084-a80a-ea80523a20c8.css\"/\u003e\u003clink rel=\"stylesheet\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/chunk-TQDDQEIP-C0xy4Utc.css\"/\u003e\u003clink rel=\"stylesheet\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/index-DveA1qCj.css\"/\u003e\u003clink rel=\"stylesheet\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/root-BlModAeJ.css\"/\u003e\u003clink rel=\"stylesheet\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/chunk-NSYVNWS4-CG4JNlMV.css\"/\u003e\u003c/head\u003e\u003cbody class=\"awsui-comfortable-mode\"\u003e\u003cscript nonce=\"6c2a6c9c597cbc1760ec8b3963f86e5d7f908cd509fab7e30e41ded1e578bb2e\"\u003e((colorModeSetting) =\u003e {\n  const userPreferredColorMode = window.matchMedia(\"(prefers-color-scheme: dark)\").matches ? \"dark\" : \"light\";\n  const colorMode = colorModeSetting === \"dynamic\" || ![\"light\", \"dark\"].includes(colorModeSetting) ? userPreferredColorMode : colorModeSetting;\n  if (colorMode === \"dark\") {\n    document.documentElement.classList.add(\"awsui-dark-mode\");\n    document.body.classList.add(\"awsui-dark-mode\");\n  }\n})('light')\u003c/script\u003e\u003cmain class=\"main-layout content-vertical-position-center content-horizontal-position-center\"\u003e\u003cdiv class=\"cognito-form-area\"\u003e\u003cdiv class=\"awsui_root_18582_1jqoe_145 awsui_vertical_18582_1jqoe_192 awsui_vertical-l_18582_1jqoe_210\"\u003e\u003cdiv class=\"awsui_child_18582_1jqoe_149\"\u003e\u003cdiv class=\"cognito-form-container\"\u003e\u003cdiv class=\"awsui_root_18582_1jqoe_145 awsui_vertical_18582_1jqoe_192 awsui_vertical-l_18582_1jqoe_210\"\u003e\u003cdiv class=\"awsui_child_18582_1jqoe_149\"\u003e\u003cdiv data-analytics-funnel-step=\"1\" class=\"awsui_root_1i0s3_t4z6f_145\"\u003e\u003cdiv class=\"awsui_content_1i0s3_t4z6f_181\"\u003e\u003cdiv class=\"awsui_root_18582_1jqoe_145 awsui_vertical_18582_1jqoe_192 awsui_vertical-l_18582_1jqoe_210\"\u003e\u003cdiv class=\"awsui_child_18582_1jqoe_149\"\u003e\u003cdiv class=\"awsui_root_18582_1jqoe_145 awsui_vertical_18582_1jqoe_192 awsui_vertical-xxs_18582_1jqoe_198\"\u003e\u003cdiv class=\"awsui_child_18582_1jqoe_149\"\u003e\u003ch2 class=\"cognito-form-header\"\u003eSomething went wrong\u003c/h2\u003e\u003c/div\u003e\u003cdiv class=\"awsui_child_18582_1jqoe_149\"\u003e\u003cp class=\"cognito-form-description\"\u003e\u003c/p\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003cdiv class=\"awsui_child_18582_1jqoe_149\"\u003e\u003cdiv class=\"awsui_root_18582_1jqoe_145 awsui_vertical_18582_1jqoe_192 awsui_vertical-l_18582_1jqoe_210\"\u003e\u003cdiv class=\"awsui_child_18582_1jqoe_149\"\u003e\u003cdiv data-analytics-alert=\"error\" aria-hidden=\"false\" class=\"awsui_root_mx3cw_18mgu_215\"\u003e\u003cdiv class=\"awsui-context-alert\"\u003e\u003cdiv class=\"awsui_alert_mx3cw_18mgu_193 awsui_type-error_mx3cw_18mgu_404 awsui_icon-size-normal_mx3cw_18mgu_386\"\u003e\u003cdiv class=\"awsui_alert-wrapper_mx3cw_18mgu_298\"\u003e\u003cdiv class=\"awsui_alert-focus-wrapper_mx3cw_18mgu_329\" tabindex=\"-1\"\u003e\u003cdiv class=\"awsui_icon_mx3cw_18mgu_367 awsui_text_mx3cw_18mgu_360\"\u003e\u003cspan class=\"awsui_icon_h11ix_j12ko_189 awsui_size-normal-mapped-height_h11ix_j12ko_248 awsui_size-normal_h11ix_j12ko_244 awsui_variant-normal_h11ix_j12ko_320\"\u003e\u003csvg viewBox=\"0 0 16 16\" xmlns=\"http://www.w3.org/2000/svg\" focusable=\"false\" aria-hidden=\"true\"\u003e\u003ccircle cx=\"8\" cy=\"8\" r=\"7\"\u003e\u003c/circle\u003e\u003cpath d=\"m5.5 5.5 5 5M10.5 5.5l-5 5\"\u003e\u003c/path\u003e\u003c/svg\u003e\u003c/span\u003e\u003c/div\u003e\u003cdiv class=\"awsui_message_mx3cw_18mgu_370 awsui_text_mx3cw_18mgu_360\" id=\"alert-:R39f55:\"\u003e\u003cdiv class=\"awsui_header_17427_1ns0c_5\"\u003e\u003c/div\u003e\u003cdiv class=\"awsui_header-replacement_mx3cw_18mgu_316 awsui_hidden_mx3cw_18mgu_250\"\u003e\u003c/div\u003e\u003cdiv class=\"awsui_content_mx3cw_18mgu_390\"\u003eAn error was encountered with the requested page.\u003c/div\u003e\u003cdiv class=\"awsui_content-replacement_mx3cw_18mgu_391 awsui_hidden_mx3cw_18mgu_250\"\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003cdiv class=\"awsui_child_18582_1jqoe_149\"\u003e\u003cdiv class=\"awsui_root_18582_1jqoe_145 awsui_vertical_18582_1jqoe_192 awsui_vertical-xs_18582_1jqoe_201\"\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/div\u003e\u003c/main\u003e\u003cscript nonce=\"6c2a6c9c597cbc1760ec8b3963f86e5d7f908cd509fab7e30e41ded1e578bb2e\"\u003e((STORAGE_KEY, restoreKey) =\u003e {\n    if (!window.history.state || !window.history.state.key) {\n      let key = Math.random().toString(32).slice(2);\n      window.history.replaceState({\n        key\n      }, \"\");\n    }\n    try {\n      let positions = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || \"{}\");\n      let storedY = positions[restoreKey || window.history.state.key];\n      if (typeof storedY === \"number\") {\n        window.scrollTo(0, storedY);\n      }\n    } catch (error) {\n      console.error(error);\n      sessionStorage.removeItem(STORAGE_KEY);\n    }\n  })(\"positions\", null)\u003c/script\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/manifest-e96dfc24.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/entry.client-CzLRNMce.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/index-DK8HSD9y.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/components-UsGAV-ki.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/chunk-TQDDQEIP-Cf6Ow046.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/chunk-PFXFZHAN-CWAzkkxG.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/chunk-46RRH5HC-k6fHJMMi.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/request-BXgdso-p.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/page-data.types-BgstS5q_.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/utils-COwEXiH-.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/models_0-CrRNeVjK.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/root-zzGWfuL2.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/chunk-EJ5WSAYQ-DIlDF7ud.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/chunk-NSYVNWS4-O8Mv6QPF.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/chunk-36YO3RLR-Cjlpk2Zp.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/login_.passkey_.fallbackLogin-CVxFEjwh.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/index-DCm2lgUv.js\"/\u003e\u003clink rel=\"modulepreload\" href=\"https://d1zdvpjg2so4m0.cloudfront.net/assets/error-BZ0RwdSO.js\"/\u003e\u003cscript nonce=\"6c2a6c9c597cbc1760ec8b3963f86e5d7f908cd509fab7e30e41ded1e578bb2e\"\u003ewindow.__remixContext = {\"basename\":\"/\",\"future\":{\"v3_fetcherPersist\":false,\"v3_relativeSplatPath\":false,\"v3_throwAbortReason\":false,\"v3_routeConfig\":false,\"v3_singleFetch\":false,\"v3_lazyRouteDiscovery\":false,\"unstable_optimizeDeps\":false},\"isSpaMode\":false,\"state\":{\"loaderData\":{\"root\":{\"csrf\":\"JDqjDSV+J3QcB3PaokccxAqr09Tx0L67yTRmA/KNtiV/1Q1d20YSzzAWEaOrigVjYErPgCpTMUrT7UFnt8MeQkx2t3qt38aKOdnvtCQeWq7B6vEyixOxn6SYAVD0t62T+SO+MnisnJIdyV+WoAFDMzgMuomGiysieKiILLL9YwM=\",\"nonce\":\"6c2a6c9c597cbc1760ec8b3963f86e5d7f908cd509fab7e30e41ded1e578bb2e\",\"uxConfig\":{\"styles\":\"\",\"layout\":{\"colorSchemeMode\":\"light\",\"density\":\"comfortable\",\"header\":false,\"footer\":false,\"formLocation\":{\"vertical\":\"Center\",\"horizontal\":\"Center\"}},\"foundation\":{\"signIn\":{\"signInMethodOrder\":[[1,0]],\"idpButtonOrder\":[],\"federationUiStyle\":0},\"signUp\":{\"acceptanceElements\":[]},\"form\":{\"displayGraphics\":true,\"timer\":0,\"graphics\":{\"email\":{\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-email-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-email-dark.svg\"}},\"sms\":{\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-sms-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-sms-dark.svg\"}},\"authApp\":{\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-auth-app-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-auth-app-dark.svg\"}},\"password\":{\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-password-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-password-dark.svg\"}},\"passkey\":{\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-passkey-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-graphic-passkey-dark.svg\"}}}}},\"component\":{\"favicon\":{\"enabledTypes\":[\"ICO\",\"SVG\"],\"ico\":{\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-favicon-ico-light.ico\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-favicon-ico-dark.ico\"}},\"svg\":{\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-favicon-svg-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-favicon-svg-dark.svg\"}}},\"pageHeader\":{\"logo\":{\"enabled\":false,\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-logo-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-logo-dark.svg\"},\"location\":\"Start\"},\"links\":{\"location\":\"Start\",\"elements\":[]}},\"pageFooter\":{\"logo\":{\"enabled\":false,\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-logo-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-logo-dark.svg\"},\"location\":\"Start\"},\"links\":{\"location\":\"Start\",\"elements\":[]}},\"form\":{\"logo\":{\"enabled\":false,\"imageUrl\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-logo-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/image/cognito-image-logo-dark.svg\"},\"location\":0,\"inclusion\":0,\"alignment\":\"Center\"},\"languageSelector\":false,\"instructions\":false},\"formField\":{\"autofill\":false},\"languageSelector\":1,\"phoneNumberSelector\":1,\"idpButtonIconConfigs\":{\"iconsEnabled\":true,\"defaults\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-default-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-default-dark.svg\"},\"overrides\":{\"LoginWithAmazon\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-amazon-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-amazon-dark.svg\"},\"SignInWithApple\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-apple-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-apple-dark.svg\"},\"Facebook\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-facebook-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-facebook-dark.svg\"},\"Google\":{\"light\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-google-light.svg\",\"dark\":\"https://d361rvv67ij0l3.cloudfront.net/default-assets/icon/cognito-icon-idp-google-dark.svg\"}}},\"idpButtonCssOverrides\":{}}},\"themeCssUrl\":\"https://d2sfzp6yh6nxed.cloudfront.net/1f7as31uth2vng5b9sbpoh1odv/theme-1761084167000-314e17f2-da86-4084-a80a-ea80523a20c8.css\",\"i18nStrings\":{\"errors\":{\"serviceErrors\":{\"invalidUserNameOrPassword\":\"Incorrect username or password.\"},\"generalErrors\":{\"serviceTemporarilyUnavailablePrefix\":{\"description\":\"Service temporarily unavailable\"},\"applicationErrorPrefix\":{\"description\":\"Application error\"},\"userErrorPrefix\":{\"description\":\"Please check your input and try again\"},\"internalError\":{\"description\":\"An error occurred. Please contact an administrator.\"},\"sessionExpiredError\":{\"description\":\"Session expired. Login again.\"},\"invalidRequestError\":{\"description\":\"Operation failed. Please try again.\"},\"tooManyRequestsError\":{\"description\":\"You have exceeded the request limit. Please try again later.\"},\"wafError\":{\"title\":\"Access denied.\",\"description\":\"You do not have permission to access this resource.\",\"captcha\":{\"post\":\"Please contact your administrator.\",\"get\":\"Please refresh the page and try again.\"}}},\"webAuthn\":{\"registration\":{\"relyingPartyMismatchError\":{\"description\":\"Domain '{{domain}}' does not match with the RPID '{{rpId}}'. Please contact an administrator.\"},\"internalError\":{\"description\":\"Unable to register passkey. Please contact an administrator.\"},\"missingPublicKeyCredentialError\":{\"description\":\"Invalid public credential. Please contact an administrator.\"},\"throttlingError\":{\"description\":\"You have exceeded the request limit. Please try again later.\"},\"limitError\":{\"description\":\"You have exceeded the maximum number of passkeys for the account.\"},\"sessionError\":{\"description\":\"Session expired. Login again.\"},\"notSupportedError\":{\"description\":\"Passkey is not supported. Please try using a different device/browser.\"},\"existsError\":{\"description\":\"Passkey is already registered.\"},\"abortError\":{\"description\":\"Passkey registration aborted\"},\"networkError\":{\"description\":\"Passkey registration failed. Please try again.\"},\"unknownError\":{\"description\":\"Unable to register passkey. Please contact an administrator.\"}}},\"boundary\":{\"invalidInput\":{\"title\":\"Invalid input\",\"description\":\"Please check your input and try again.\"},\"internalServerError\":{\"title\":\"Something went wrong\",\"description\":\"An error was encountered with the requested page.\"},\"invalidRequestError\":{\"title\":\"Invalid request\",\"description\":\"Please check your input and try again.\"},\"passwordResetRequired\":{\"description\":\"Password reset required.\"},\"missingRequiredParameterError\":{\"title\":\"Missing required parameters\",\"description\":\"Missing required parameter {{parameter}} in request URL.\"},\"missingCognitoAuthCookieError\":{\"title\":\"Missing authentication cookie\",\"description\":\"Please return to login page to restart your authentication process.\"},\"operationUnavailableError\":{\"title\":\"Action temporarily unavailable\",\"description\":\"This action is temporarily unavailable. Please try again later.\"},\"missingAccessTokenError\":{\"title\":\"Missing access token\",\"description\":\"Please sign in again.\"},\"tooManyRequestsError\":{\"title\":\"Too many requests\",\"description\":\"You have exceeded the request limit. Please try again later.\"},\"unresolvedDomainError\":{\"title\":\"Could not resolve domain\",\"description\":\"Please contact an administrator.\"},\"invalidConfigError\":{\"title\":\"Invalid configuration\",\"description\":\"Please contact an administrator.\"},\"uxConfigError\":{\"title\":\"Login pages unavailable\",\"description\":\"Please contact an administrator.\"},\"generic\":{\"title\":\"Something went wrong\",\"description\":\"An error was encountered with the requested page.\"},\"missingRedirectUrl\":{\"description\":\"Missing redirect uri parameter\"},\"missingClientId\":{\"description\":\"Missing client id parameter\"},\"missingDomain\":{\"description\":\"Missing domain parameter\"},\"invalidRedirectUri\":{\"description\":\"Invalid redirect uri parameter\"},\"postAuthPageIsNotAccessible\":{\"title\":\"Access denied\",\"description\":\"You do not have access to this page. Please contact an administrator.\"}},\"csrf\":\"Invalid CSRF token.\",\"validation\":{\"password\":{\"leadingTrailingSpace\":\"Password must not contain a leading or trailing space.\",\"minLength\":\"Password must be at least {{length}} character(s).\",\"maxLength\":\"Password must be no more than 256 characters.\",\"uppercase\":\"Password must contain an uppercase letter.\",\"lowercase\":\"Password must contain a lowercase letter.\",\"number\":\"Password must contain a number.\",\"specialCharacter\":\"Password must contain a special character.\",\"mismatch\":\"Password does not match.\"},\"invalidDate\":\"Invalid date, must be in the format YYYY-MM-DD.\",\"generic\":{\"format\":\"Invalid {{attr}}.\",\"required\":\"Missing {{attr}}.\",\"maxLength\":\"{{attr}} must be at most {{length}} characters.\"},\"terms\":{\"required\":\"Agreement to the above terms is required before continuing.\"}},\"unconfirmedAccount\":{\"emailLink\":\"Your account must be confirmed before you can continue. Please check your email and follow the instructions.\"}},\"layout\":{\"header\":{\"logoAlt\":\"Header logo\"},\"footer\":{\"logoAlt\":\"Footer logo\"}},\"components\":{\"orSeparator\":\"Or\",\"multiRegionReplication\":{\"actionUnavailableAlert\":{\"header\":\"Action temporarily unavailable\",\"description\":\"This action is temporarily unavailable. Please try again later.\"}},\"form\":{\"logoAlt\":\"Form logo\"},\"backButton\":{\"label\":\"Back\"},\"fallbackFactorButton\":{\"fallbackMultipleFactorButton\":\"Try another way\",\"fallbackSingleFactorButtonPassword\":\"Use password instead\",\"fallbackSingleFactorButtonPasskey\":\"Use passkey instead\",\"fallbackSingleFactorButtonEmailOTP\":\"Email one-time password\",\"fallbackSingleFactorButtonSmsOTP\":\"SMS one-time password\"},\"mfaDescription\":{\"email\":{\"iconAlt\":\"Email icon\",\"medium\":\"Email\"},\"sms\":{\"iconAlt\":\"SMS icon\",\"medium\":\"SMS\"},\"totp\":{\"iconAlt\":\"Authenticator app icon\",\"medium\":\"Authenticator app\"},\"password\":{\"medium\":\"Password\",\"iconAlt\":\"Password icon\"},\"passkey\":{\"medium\":\"Passkey\",\"iconAlt\":\"Passkey icon\"}},\"fields\":{\"password\":{\"label\":\"Password\",\"showPasswords\":{\"label\":\"Show password\"},\"validation\":{\"minimumLength\":\"Password must be at least {{length}} characters\",\"requireNumbers\":\"Use a number\",\"requireLowercase\":\"Use a lowercase letter\",\"requireUppercase\":\"Use an uppercase letter\",\"requireSpecialCharacter\":\"Use a special character\"}},\"username\":{\"label\":\"Username\",\"placeholder\":\"Enter username\"},\"email\":{\"label\":\"Email address\",\"placeholder\":\"name@host.com\"},\"phone_number\":{\"label\":\"Phone number\",\"placeholder\":\"Country code | Phone number\",\"errors\":{\"required\":\"Missing phone number.\",\"maxLength\":\"Email must be at most 2048 characters.\"}},\"code\":{\"label\":\"Code\",\"verification_code_label\":\"Verification code\",\"placeholder\":\"Enter code\",\"passwordless_placeholder\":\"Enter code\",\"resendCode\":\"Resend code\"},\"website\":{\"label\":\"Website\",\"placeholder\":\"Enter URL of your webpage\"},\"name\":{\"label\":\"Name\",\"placeholder\":\"Enter your full name\"},\"given_name\":{\"label\":\"Given name\",\"placeholder\":\"Enter your given name or first name\"},\"family_name\":{\"label\":\"Family name\",\"placeholder\":\"Enter your family name or last name\"},\"middle_name\":{\"label\":\"Middle name\",\"placeholder\":\"Enter your middle name\"},\"nickname\":{\"label\":\"Nickname\",\"placeholder\":\"Enter your nickname\"},\"preferred_username\":{\"label\":\"Preferred username\",\"placeholder\":\"Enter your preferred username\"},\"profile\":{\"label\":\"Profile\",\"placeholder\":\"Enter URL to your profile page\"},\"picture\":{\"label\":\"Picture\",\"placeholder\":\"Enter URL to your profile picture\"},\"gender\":{\"label\":\"Gender\",\"placeholder\":\"Enter your gender\"},\"birthdate\":{\"label\":\"Birthdate\",\"placeholder\":\"YYYY-MM-DD\"},\"zoneinfo\":{\"label\":\"Zone info\",\"placeholder\":\"Enter your zone information i.e. Europe/Paris\"},\"locale\":{\"label\":\"Locale\",\"placeholder\":\"Enter your locale i.e. en-US\"},\"address\":{\"label\":\"Address\",\"placeholder\":\"Enter your address\"},\"updated_at\":{\"label\":\"Updated at\",\"placeholder\":\"Time your information was last updated\"}},\"idpButtons\":{\"social\":{\"google\":\"Sign in with Google\",\"facebook\":\"Continue with Facebook\",\"apple\":\"Continue with Apple\",\"amazon\":\"Login with Amazon\"},\"custom\":{\"saml\":\"Continue with {{providerName}}\",\"oidc\":\"Continue with {{providerName}}\"},\"icon\":{\"alt\":\"{{idpName}} icon\"}},\"idpDropdown\":{\"dropdown\":{\"label\":\"Accounts\",\"placeholder\":\"Choose a method\"},\"signIn\":{\"label\":\"Sign in\"}},\"idpFormField\":{\"label\":\"Corporate email\",\"placeholder\":\"username@corporateID.com\"}},\"pages\":{\"login\":{\"title\":\"Sign-in\",\"form\":{\"header\":\"Sign in\",\"description\":\"Sign in to your account.\",\"sections\":{\"native\":{\"header\":\"With existing account\",\"forgotPasswordLink\":\"Forgot your password?\",\"signUpPrompt\":\"New user? [Create an account]({ml-nav:sign-up})\",\"password\":{\"label\":\"Password\",\"placeholder\":\"Enter password\",\"showPassword\":\"Show password\"},\"submitButton\":\"Sign in\",\"continueButton\":\"Next\"},\"social\":{\"header\":\"With social account\"},\"custom\":{\"header\":\"With corporate account\"},\"federated\":{\"header\":\"With other accounts\"}}}},\"signup\":{\"title\":\"Sign up\",\"form\":{\"header\":\"Sign up\",\"description\":\"Create a new account.\",\"submitButton\":\"Sign up\",\"signInPrompt\":\"Have an account already? [Sign in]({ml-nav:sign-in})\",\"password\":{\"label\":\"Password\",\"placeholder\":\"Enter password\"},\"confirmPassword\":{\"label\":\"Confirm password\",\"placeholder\":\"Reenter password\"},\"terms\":{\"terms-1\":{\"label\":\"By signing up, you agree to our [Terms of Use]({terms-of-use}) and [Privacy Policy]({privacy-policy})\"}}}},\"registerPasskey\":{\"title\":\"Set up sign-in with a passkey\",\"form\":{\"header\":\"Set up sign-in with a passkey\",\"signUpSuccessMessage\":\"Your registration has been confirmed!\",\"description\":\"Sign in with an authenticator on your device or a security key.\",\"submitButton\":\"Add passkey\",\"noThanksButton\":\"Not now\"}},\"forgotPassword\":{\"title\":\"Forgot your password?\",\"form\":{\"header\":\"Forgot your password?\",\"description\":\"Enter your {{signInAttribute}}. We will send a message with a code to reset your password.\",\"submitButton\":\"Reset my password\"}},\"resetPassword\":{\"title\":\"Reset password\",\"form\":{\"header\":\"Reset password\",\"description\":\"We have sent a password reset code in an {{deliveryMedium}} message to {{destination}}. Enter your code and your new password.\",\"submitButton\":\"Change password\",\"password\":{\"label\":\"New password\",\"placeholder\":\"Enter new password\"},\"confirmPassword\":{\"label\":\"Confirm new password\",\"placeholder\":\"Reenter new password\"}}},\"forceChangePassword\":{\"title\":\"Change password\",\"form\":{\"header\":\"Change password\",\"description\":\"Please choose a unique password to secure your account.\",\"submitButton\":\"Change password\",\"password\":{\"label\":\"New password\",\"placeholder\":\"Enter new password\"},\"confirmPassword\":{\"label\":\"Confirm new password\",\"placeholder\":\"Re-enter new password\"}}},\"confirmUser\":{\"title\":\"Confirm your account\",\"form\":{\"header\":\"Confirm your account\",\"description\":\"We have sent a code in an {{deliveryMedium}} message to {{destination}}. To confirm your account, enter your code.\",\"submitButton\":\"Confirm account\"}},\"confirmUserWithLink\":{\"title\":\"Verify your account with email link\",\"form\":{\"header\":\"Confirm account\",\"description\":\"We have sent an email to {{destination}}. Please check your email, follow the instructions to verify your email address, and then click the button below to continue.\",\"continueButton\":\"Continue\",\"sendNewLinkPrompt\":\"Didn't receive a link? [Send a new link]({ml-nav:send-confirm-link})\",\"sendNewLinkPrefix\":\"Didn't receive a link?\",\"sendNewLinkButton\":\"Send a new link\"}},\"confirmUserWithLinkResult\":{\"title\":\"Confirm account result\",\"form\":{\"successHeader\":\"Confirmation success\",\"failureHeader\":\"Confirmation failure\",\"successMessage\":\"Your registration has been confirmed!\"}},\"continueAs\":{\"title\":\"Sign-in\",\"form\":{\"header\":\"Sign in\",\"description\":\"You're still signed in. Sign in again?\",\"submitButton\":\"Sign in as {{username}}\",\"submitButtonProvider\":\"Sign in with {{providerName}}\",\"logout\":\"Sign in as a different user?\"}},\"verifyPassword\":{\"title\":\"Enter your password\",\"form\":{\"header\":\"Enter your password\",\"submitButton\":\"Continue\"}},\"verifyPasskey\":{\"title\":\"Sign in with a passkey\",\"form\":{\"header\":\"Sign in with a passkey\",\"description\":\"Sign in with an authenticator on your device or a security key.\",\"submitButton\":\"Continue\"},\"invalidPasskeyError\":\"Invalid passkey selected, please select a different one and try again.\"},\"verifyCode\":{\"title\":\"Enter code\",\"description\":\"Enter code\"},\"verifySMSCode\":{\"title\":\"Check your phone\",\"form\":{\"header\":\"Check your phone\",\"description\":\"Enter the code that we sent to the phone number ending in {{destination}}. The code expires in 15 minutes.\",\"submitButton\":\"Continue\"}},\"verifyEmailCode\":{\"title\":\"Check your email\",\"form\":{\"header\":\"Check your email\",\"description\":\"Enter the code that we sent to the email address {{destination}}. The code expires in 15 minutes.\",\"submitButton\":\"Continue\"}},\"mfaVerifyCode\":{\"title\":\"MFA Verify Code\",\"form\":{\"header\":\"{{deliveryMedium}} MFA\",\"description\":\"Enter the code that we sent in an {{deliveryMedium}} to {{destination}}.\",\"totpDescription\":\"To complete sign-in, enter the code from your authenticator app.\",\"submitButton\":\"Sign in\"}},\"mfaRegisterTotp\":{\"title\":\"Setup MFA\",\"form\":{\"header\":\"Set up authenticator app MFA\",\"description\":\"Complete the process with the code in your authenticator app to set up the MFA and sign-in.\",\"installationTitle\":\"1. Install\",\"installationDescription\":\"Install an authenticator app on your mobile device.\",\"qrCode\":{\"title\":\"2. Scan QR code\",\"description\":\"Scan this QR code with your authenticator app. Alternatively, you can manually enter a secret key in your authenticator app on your mobile device.\",\"secretKey\":\"Show secret key\",\"secretKeyPrefix\":\"Secret key: {{secretKey}}\",\"alt\":\"QR code for Authenticator app\"},\"enterCodeTitle\":\"3. Enter code\",\"submitButton\":\"Sign in\"}},\"mfaOptions\":{\"title\":\"MFA setup\",\"form\":{\"header\":\"Set up MFA\",\"description\":\"Your account requires multi-factor authentication (MFA). To proceed, select a method to authenticate with.\",\"submitButton\":\"Continue\",\"mfaChallengeOptions\":{\"authenticator\":{\"title\":\"Authenticator app\",\"description\":\"Authenticate using a code generated by an app installed on your mobile device or computer\",\"iconAlt\":\"Authenticator app icon\"},\"sms\":{\"title\":\"SMS\",\"description\":\"Authenticate using a code sent via text message to your phone\",\"iconAlt\":\"SMS icon\"},\"email\":{\"title\":\"Email\",\"description\":\"Authenticate using a code sent via email\",\"iconAlt\":\"Email icon\"}}}},\"mfaRegister\":{\"title\":\"{{deliveryMedium}} MFA\",\"form\":{\"header\":\"{{deliveryMedium}} MFA\",\"description\":{\"email\":\"Enter your email address to receive a message with an authentication code. \",\"phone\":\"Enter your phone number to receive a message with an authentication code.\"},\"submitButton\":\"Send code\"}},\"availableChallenges\":{\"title\":\"Sign-in\",\"form\":{\"header\":\"Choose a sign-in method\",\"description\":\"Choose how you want to verify your identity.\",\"submitButton\":\"Continue\",\"challengeOptions\":{\"authenticator\":{\"title\":\"Authenticator app\",\"iconAlt\":\"Authenticator app icon\"},\"password\":{\"title\":\"Password\",\"iconAlt\":\"Password icon\"},\"passkey\":{\"title\":\"Your phone or security key\",\"iconAlt\":\"Passkey icon\"},\"email\":{\"title\":\"Email one-time password\",\"iconAlt\":\"Email icon\"},\"sms\":{\"title\":\"SMS one-time password\",\"iconAlt\":\"SMS icon\"}}}},\"eventFeedbackResults\":{\"title\":\"Event feedback\",\"failureHeader\":\"Something went wrong.\",\"successHeader\":\"Thank you for your feedback.\",\"successMessage\":\"Thank you, we have received and recorded your feedback.\",\"invalidLinkError\":\"Invalid link provided.\",\"genericError\":\"Something went wrong, please try again later.\"}}},\"locale\":\"en\",\"clientId\":\"1f7as31uth2vng5b9sbpoh1odv\",\"isReplicaUserPool\":false},\"routes/error\":{}},\"actionData\":null,\"errors\":null}};\u003c/script\u003e\u003cscript nonce=\"6c2a6c9c597cbc1760ec8b3963f86e5d7f908cd509fab7e30e41ded1e578bb2e\" type=\"module\" async=\"\"\u003eimport \"https://d1zdvpjg2so4m0.cloudfront.net/assets/manifest-e96dfc24.js\";\nimport * as route0 from \"https://d1zdvpjg2so4m0.cloudfront.net/assets/root-zzGWfuL2.js\";\nimport * as route1 from \"https://d1zdvpjg2so4m0.cloudfront.net/assets/error-BZ0RwdSO.js\";\n\nwindow.__remixRouteModules = {\"root\":route0,\"routes/error\":route1};\n\nimport(\"https://d1zdvpjg2so4m0.cloudfront.net/assets/entry.client-CzLRNMce.js\");\u003c/script\u003e\u003c/body\u003e\u003c/html\u003e",
+        "timestamp": "2026-03-16T12:07:16Z"
+      },
+      {
+        "target": "52.197.196.111:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:07:17Z"
+      },
+      {
+        "target": "52.197.196.111:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw__/canvas/",
+        "severity": 3,
+        "description": "/__openclaw__/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:07:19Z"
+      },
+      {
+        "target": "52.197.196.111:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:07:20Z"
+      },
+      {
+        "target": "52.197.196.111:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw__/a2ui/",
+        "severity": 3,
+        "description": "/__openclaw__/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:07:22Z"
+      },
+      {
+        "target": "52.197.196.111:443",
+        "module": "recon",
+        "title": "Sensitive endpoint accessible without auth: POST /v1/chat/completions",
+        "severity": 3,
+        "description": "POST /v1/chat/completions returns 200 without authentication",
+        "evidence": "HTTP 200 (no Bearer token)",
+        "timestamp": "2026-03-16T12:07:55Z"
+      },
+      {
+        "target": "52.197.196.111:443",
+        "module": "recon",
+        "title": "Sensitive endpoint accessible without auth: POST /v1/responses",
+        "severity": 3,
+        "description": "POST /v1/responses returns 200 without authentication",
+        "evidence": "HTTP 200 (no Bearer token)",
+        "timestamp": "2026-03-16T12:07:57Z"
+      },
+      {
+        "target": "52.197.196.111:443",
+        "module": "recon",
+        "title": "Sensitive endpoint accessible without auth: POST /hooks",
+        "severity": 3,
+        "description": "POST /hooks returns 200 without authentication",
+        "evidence": "HTTP 200 (no Bearer token)",
+        "timestamp": "2026-03-16T12:08:05Z"
+      },
+      {
+        "target": "52.197.196.111:443",
+        "module": "recon",
+        "title": "Sensitive endpoint accessible without auth: POST /hooks/agent",
+        "severity": 3,
+        "description": "POST /hooks/agent returns 200 without authentication",
+        "evidence": "HTTP 200 (no Bearer token)",
+        "timestamp": "2026-03-16T12:08:07Z"
+      },
+      {
+        "target": "52.197.196.111:443",
+        "module": "recon",
+        "title": "Sensitive endpoint accessible without auth: POST /hooks/wake",
+        "severity": 3,
+        "description": "POST /hooks/wake returns 200 without authentication",
+        "evidence": "HTTP 200 (no Bearer token)",
+        "timestamp": "2026-03-16T12:08:08Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:07:09.0533393+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "185.184.223.148",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.829627+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "115.31.45.47",
+      "Port": 18789,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.8319144+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.169.167",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.83249+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "18.181.177.250",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.83249+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.169.112",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.8319144+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.169.223",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.83249+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "217.142.247.84",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:16.83249+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "152.32.144.247",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:32.9299475+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.228.139",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:32.97411+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.228.62",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:33.0363584+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "52.68.149.43",
+      "Port": 80,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:33.0946691+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.228.151",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:33.3003876+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.166.73",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:10.9010776+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.166.101",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:21.8407448+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "82.40.45.46",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:42.5267203+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "163.44.123.164",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "163.44.123.164:443",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: )",
+        "evidence": "{\"basePath\":\"\",\"assistantName\":\"Dazai\",\"assistantAvatar\":\"📖\",\"assistantAgentId\":\"main\"}",
+        "timestamp": "2026-03-16T12:08:25Z"
+      },
+      {
+        "target": "163.44.123.164:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:08:25Z"
+      },
+      {
+        "target": "163.44.123.164:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:08:26Z"
+      },
+      {
+        "target": "163.44.123.164:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/canvas/",
+        "severity": 0,
+        "description": "GET /__openclaw/canvas/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:08:35Z"
+      },
+      {
+        "target": "163.44.123.164:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/a2ui/",
+        "severity": 0,
+        "description": "GET /__openclaw/a2ui/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:08:36Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:08:21.843539+08:00",
+    "end_at": "2026-03-16T20:13:27.5496001+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.166.144",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:43.1032589+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.166.29",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:43.3098118+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.214.211",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:57.8041534+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.214.240",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:06:59.8035083+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.166.116",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:51.322711+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.63",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:07:18.1408999+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.207.117.200",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "43.207.117.200:443",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: 2026.3.12)",
+        "evidence": "{\"basePath\":\"\",\"assistantName\":\"Assistant\",\"assistantAvatar\":\"A\",\"assistantAgentId\":\"main\",\"serverVersion\":\"2026.3.12\"}",
+        "timestamp": "2026-03-16T12:09:19Z"
+      },
+      {
+        "target": "43.207.117.200:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:09:19Z"
+      },
+      {
+        "target": "43.207.117.200:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:09:20Z"
+      },
+      {
+        "target": "43.207.117.200:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/canvas/",
+        "severity": 0,
+        "description": "GET /__openclaw/canvas/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:09:26Z"
+      },
+      {
+        "target": "43.207.117.200:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/a2ui/",
+        "severity": 0,
+        "description": "GET /__openclaw/a2ui/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:09:27Z"
+      },
+      {
+        "target": "43.207.117.200:443",
+        "module": "auth",
+        "title": "Health endpoint exposes instance info",
+        "severity": 1,
+        "description": "GET /healthz returns instance metadata without auth",
+        "evidence": "{\"ok\":true,\"status\":\"live\"}",
+        "timestamp": "2026-03-16T12:09:28Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:09:11.1437735+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.112",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:07:40.001401+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.157",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:09.8023297+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.155",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:21.8440736+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.138",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:21.8440736+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "20.89.100.7",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:21.8456928+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.239",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:21.8456928+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.219",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:21.843539+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.60",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:17.4990376+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.128",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:42.9395306+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.153.155.76",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:42.9846018+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.3.249",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:43.0467266+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.3.177",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:54.3964036+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.3.148",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:59.2903664+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.3.218",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:08:57.5342999+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.3.250",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:09:11.0700963+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.239.213",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:09:12.8114686+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.3.242",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:09:19.8097726+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.239.122",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:09:20.1203623+08:00",
+    "end_at": "2026-03-16T20:13:27.5501297+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.239.26",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:09:33.147823+08:00",
+    "end_at": "2026-03-16T20:13:27.5506464+08:00"
+  },
+  {
+    "target": {
+      "Host": "8.216.33.182",
+      "Port": 443,
+      "UseTLS": true,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "8.216.33.182:443",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: 2026.3.8)",
+        "evidence": "{\"basePath\":\"\",\"assistantName\":\"Assistant\",\"assistantAvatar\":\"A\",\"assistantAgentId\":\"main\",\"serverVersion\":\"2026.3.8\"}",
+        "timestamp": "2026-03-16T12:11:11Z"
+      },
+      {
+        "target": "8.216.33.182:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:11:12Z"
+      },
+      {
+        "target": "8.216.33.182:443",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:11:13Z"
+      },
+      {
+        "target": "8.216.33.182:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/canvas/",
+        "severity": 0,
+        "description": "GET /__openclaw/canvas/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:11:22Z"
+      },
+      {
+        "target": "8.216.33.182:443",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/a2ui/",
+        "severity": 0,
+        "description": "GET /__openclaw/a2ui/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:11:22Z"
+      },
+      {
+        "target": "8.216.33.182:443",
+        "module": "auth",
+        "title": "Health endpoint exposes instance info",
+        "severity": 1,
+        "description": "GET /healthz returns instance metadata without auth",
+        "evidence": "{\"ok\":true,\"status\":\"live\"}",
+        "timestamp": "2026-03-16T12:11:23Z"
+      },
+      {
+        "target": "8.216.33.182:443",
+        "module": "recon",
+        "title": "WS challenge gate active — methods not enumerable without auth",
+        "severity": 0,
+        "description": "WebSocket connection requires challenge-response authentication. Method enumeration skipped to avoid false positives.",
+        "evidence": "Challenge nonce: 1f420455-3cd6-4f44-8c46-445a88265441",
+        "timestamp": "2026-03-16T12:11:43Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:11:09.2989124+08:00",
+    "end_at": "2026-03-16T20:13:27.5527605+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.239.83",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:09:47.9353051+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.167.197.12",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:11:26.0768392+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "54.65.173.232",
+      "Port": 80,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [
+      {
+        "target": "54.65.173.232:80",
+        "module": "fingerprint",
+        "title": "OpenClaw control-ui-config.json exposed",
+        "severity": 0,
+        "description": "/__openclaw/control-ui-config.json accessible (version: 2026.3.11)",
+        "evidence": "{\"basePath\":\"\",\"assistantName\":\"小虾\",\"assistantAvatar\":\"A\",\"assistantAgentId\":\"main\",\"serverVersion\":\"2026.3.11\"}",
+        "timestamp": "2026-03-16T12:11:35Z"
+      },
+      {
+        "target": "54.65.173.232:80",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/canvas/",
+        "severity": 2,
+        "description": "/__openclaw/canvas/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:11:35Z"
+      },
+      {
+        "target": "54.65.173.232:80",
+        "module": "fingerprint",
+        "title": "Canvas/A2UI path accessible: /__openclaw/a2ui/",
+        "severity": 2,
+        "description": "/__openclaw/a2ui/ returns 200 — web UI exposed",
+        "timestamp": "2026-03-16T12:11:36Z"
+      },
+      {
+        "target": "54.65.173.232:80",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/canvas/",
+        "severity": 0,
+        "description": "GET /__openclaw/canvas/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:11:41Z"
+      },
+      {
+        "target": "54.65.173.232:80",
+        "module": "auth",
+        "title": "Canvas/A2UI accessible without auth: /__openclaw/a2ui/",
+        "severity": 0,
+        "description": "GET /__openclaw/a2ui/ returns frontend SPA shell without auth — static assets only, no API data",
+        "evidence": "HTTP 200, body: \u003c!doctype html\u003e\n\u003chtml lang=\"en\"\u003e\n  \u003chead\u003e\n    \u003cmeta charset=\"UTF-8\" /\u003e\n    \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\n  ...",
+        "timestamp": "2026-03-16T12:11:42Z"
+      },
+      {
+        "target": "54.65.173.232:80",
+        "module": "auth",
+        "title": "Health endpoint exposes instance info",
+        "severity": 1,
+        "description": "GET /healthz returns instance metadata without auth",
+        "evidence": "{\"ok\":true,\"status\":\"live\"}",
+        "timestamp": "2026-03-16T12:11:43Z"
+      },
+      {
+        "target": "54.65.173.232:80",
+        "module": "recon",
+        "title": "WS challenge gate active — methods not enumerable without auth",
+        "severity": 0,
+        "description": "WebSocket connection requires challenge-response authentication. Method enumeration skipped to avoid false positives.",
+        "evidence": "Challenge nonce: 594f5cf0-8692-40ca-9dce-3ee3b8e4ccb3",
+        "timestamp": "2026-03-16T12:11:55Z"
+      }
+    ],
+    "start_at": "2026-03-16T20:11:27.8178192+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.239.107",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:00.0083815+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.3.21",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:24.810016+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.239.92",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:36.8511635+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.166.138",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:36.8511635+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.239.180",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:36.8511635+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.166.145",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:36.8511635+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.166.28",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:36.8506514+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.239.218",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:37.5046811+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "124.156.239.32",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:52.9477288+08:00",
+    "end_at": "2026-03-16T20:13:27.5533573+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.166.215",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:52.9924733+08:00",
+    "end_at": "2026-03-16T20:13:27.5538837+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.166.73",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:10:53.0555742+08:00",
+    "end_at": "2026-03-16T20:13:27.5538837+08:00"
+  },
+  {
+    "target": {
+      "Host": "43.133.166.127",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:11:04.4038791+08:00",
+    "end_at": "2026-03-16T20:13:27.5538837+08:00"
+  },
+  {
+    "target": {
+      "Host": "150.109.196.18",
+      "Port": 18789,
+      "UseTLS": false,
+      "Token": "",
+      "Password": ""
+    },
+    "findings": [],
+    "start_at": "2026-03-16T20:11:17.5406593+08:00",
+    "end_at": "2026-03-16T20:13:27.5538837+08:00"
+  }
+]

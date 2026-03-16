@@ -12,6 +12,7 @@ import (
 
 // isSPAFallback detects nginx SPA fallback responses — all unmatched routes
 // return 200 + text/html with the SPA shell. These are NOT real API endpoints.
+// Also detects OAuth/Cognito redirect landing pages.
 func isSPAFallback(body []byte, contentType string) bool {
 	if !strings.Contains(contentType, "text/html") {
 		return false
@@ -20,7 +21,11 @@ func isSPAFallback(body []byte, contentType string) bool {
 	return strings.Contains(s, "openclaw-app") ||
 		strings.Contains(s, "OPENCLAW_CONTROL_UI_BASE_PATH") ||
 		strings.Contains(s, "OpenClaw Control") ||
-		strings.Contains(s, "OpenClaw Canvas")
+		strings.Contains(s, "OpenClaw Canvas") ||
+		strings.Contains(s, "<title>Sign-in</title>") ||
+		strings.Contains(s, "cognito") ||
+		strings.Contains(s, "oauth2/authorize") ||
+		strings.Contains(s, "idpresponse")
 }
 
 // EndpointResult holds endpoint enumeration results
@@ -97,17 +102,27 @@ func EnumEndpoints(target utils.Target, token string, timeout time.Duration) ([]
 		}
 
 		// Detect SPA fallback — nginx returns 200 + HTML for all unmatched routes
+		// Also catches OAuth/Cognito redirect landing pages
 		ct := ""
 		if respHeaders != nil {
 			ct = respHeaders.Get("Content-Type")
 		}
 		if status == 200 && isSPAFallback(body, ct) {
 			// Check if this is a known SPA path (canvas/a2ui) — those are expected
-			isSPAPath := strings.Contains(p.path, "/canvas") || strings.Contains(p.path, "/a2ui")
+			isSPAPath := strings.Contains(p.path, "/canvas") || strings.Contains(p.path, "/a2ui") ||
+				strings.Contains(p.path, "/plugins")
 			if !isSPAPath {
-				// Not a real endpoint — SPA fallback, skip
+				// Not a real endpoint — SPA/OAuth fallback, skip
 				continue
 			}
+		}
+
+		// For API endpoints (not static paths), reject HTML responses as non-API
+		isStaticPath := strings.Contains(p.path, "/canvas") || strings.Contains(p.path, "/a2ui") ||
+			strings.Contains(p.path, "/plugins") || strings.Contains(p.path, "config.json")
+		if status == 200 && !isStaticPath && strings.Contains(ct, "text/html") {
+			// HTML response on an API endpoint = redirect/fallback, not real access
+			continue
 		}
 
 		authStatus := "unknown"
