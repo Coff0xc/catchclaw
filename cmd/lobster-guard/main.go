@@ -8,11 +8,13 @@ import (
 	"sync"
 	"time"
 
+	"github.com/coff0xc/lobster-guard/pkg/ai"
 	"github.com/coff0xc/lobster-guard/pkg/audit"
 	"github.com/coff0xc/lobster-guard/pkg/auth"
 	"github.com/coff0xc/lobster-guard/pkg/chain"
 	"github.com/coff0xc/lobster-guard/pkg/discovery"
 	"github.com/coff0xc/lobster-guard/pkg/interactive"
+	"github.com/coff0xc/lobster-guard/pkg/mcp"
 	"github.com/coff0xc/lobster-guard/pkg/recon"
 	"github.com/coff0xc/lobster-guard/pkg/report"
 	"github.com/coff0xc/lobster-guard/pkg/scanner"
@@ -42,7 +44,11 @@ var (
 	flagFofaKey   string
 	flagDiscQuery string
 	flagDiscMax   int
-	flagDiscOut   string
+	flagDiscOut    string
+	flagAggressive bool
+	flagDAG        bool
+	flagChainID    int
+	flagAIAnalyze  bool
 )
 
 func main() {
@@ -62,6 +68,8 @@ func main() {
 	scanCmd.Flags().StringVar(&flagToken, "token", "", "Known Gateway token for authenticated checks")
 	scanCmd.Flags().StringVar(&flagCallback, "callback", "", "OOB callback URL for SSRF detection")
 	scanCmd.Flags().BoolVar(&flagNoExploit, "no-exploit", false, "Skip exploit/vuln verification phase")
+	scanCmd.Flags().BoolVar(&flagAggressive, "aggressive", false, "Aggressive mode: DAG chains, max concurrency, no delays")
+	scanCmd.Flags().BoolVar(&flagAIAnalyze, "ai-analyze", false, "Use AI to analyze results")
 
 	fpCmd := &cobra.Command{Use: "fingerprint", Short: "Detect OpenClaw instances", RunE: runFingerprint}
 	addCommonFlags(fpCmd)
@@ -79,14 +87,32 @@ func main() {
 	addCommonFlags(reconCmd)
 	reconCmd.Flags().StringVar(&flagToken, "token", "", "Gateway token for authenticated enum")
 
-	exploitCmd := &cobra.Command{Use: "exploit", Short: "31-chain OpenClaw attack suite (use 'chains' in shell for details)", RunE: runExploit}
+	exploitCmd := &cobra.Command{Use: "exploit", Short: "49-chain OpenClaw attack suite (DAG-based v3)", RunE: runExploit}
 	addCommonFlags(exploitCmd)
 	exploitCmd.Flags().StringVar(&flagToken, "token", "", "Gateway token (required for most tests)")
 	exploitCmd.Flags().StringVar(&flagCallback, "callback", "", "OOB callback URL for SSRF detection")
 	exploitCmd.Flags().StringVar(&flagHookToken, "hook-token", "", "Hook-specific token")
 	exploitCmd.Flags().StringVar(&flagHookPath, "hook-path", "/hooks", "Hook base path")
+	exploitCmd.Flags().BoolVar(&flagAggressive, "aggressive", false, "Aggressive mode: max concurrency, no delays")
+	exploitCmd.Flags().BoolVar(&flagDAG, "dag", true, "Use DAG-based chain execution (v2)")
+	exploitCmd.Flags().IntVar(&flagChainID, "chain-id", -1, "Run single chain by ID (-1 = all)")
+	exploitCmd.Flags().BoolVar(&flagAIAnalyze, "ai-analyze", false, "Use AI to analyze results (requires ANTHROPIC_API_KEY or OPENAI_API_KEY)")
 
 	rootCmd.AddCommand(scanCmd, fpCmd, authCmd, auditCmd, reconCmd, exploitCmd)
+
+	// MCP Server command
+	mcpCmd := &cobra.Command{
+		Use:   "mcp",
+		Short: "Start MCP Server (stdio JSON-RPC) for AI agent integration",
+		Run: func(cmd *cobra.Command, args []string) {
+			srv := mcp.NewServer()
+			if err := srv.Run(); err != nil {
+				fmt.Fprintf(os.Stderr, "[MCP] Error: %v\n", err)
+				os.Exit(1)
+			}
+		},
+	}
+	rootCmd.AddCommand(mcpCmd)
 
 	discoverCmd := &cobra.Command{Use: "discover", Short: "Asset discovery via Shodan/FOFA", RunE: runDiscover}
 	discoverCmd.Flags().StringVar(&flagShodanKey, "shodan-key", "", "Shodan API key")
@@ -291,8 +317,23 @@ func runScan(cmd *cobra.Command, args []string) error {
 				CallbackURL: flagCallback,
 				Timeout:     timeout,
 			}
-			for _, f := range chain.RunFullChain(target, chainCfg) {
+			var exploitFindings []utils.Finding
+			if flagAggressive {
+				exploitFindings = chain.RunDAGChain(target, chainCfg, 20, true)
+			} else {
+				exploitFindings = chain.RunFullChain(target, chainCfg)
+			}
+			for _, f := range exploitFindings {
 				result.Add(f)
+			}
+
+			// AI analysis
+			if flagAIAnalyze && len(exploitFindings) > 0 {
+				analyzer := ai.NewAnalyzer()
+				analysis, _ := analyzer.AnalyzeFindings(exploitFindings, "triage")
+				if analysis != nil {
+					fmt.Printf("\n[AI] Risk: %d/100 | %s\n", analysis.RiskScore, analysis.Summary)
+				}
 			}
 		}
 
@@ -402,7 +443,7 @@ func reconAll(target utils.Target, token string, timeout time.Duration) []utils.
 	return all
 }
 
-// --- exploit only (full OpenClaw attack chain) ---
+// --- exploit only (full OpenClaw attack chain — v2 DAG-based) ---
 func runExploit(cmd *cobra.Command, args []string) error {
 	utils.Banner()
 	targets, err := resolveTargets()
@@ -420,10 +461,50 @@ func runExploit(cmd *cobra.Command, args []string) error {
 			CallbackURL: flagCallback,
 			Timeout:     timeout,
 		}
-		for _, f := range chain.RunFullChain(target, chainCfg) {
+
+		var findings []utils.Finding
+		if flagDAG {
+			// v2: DAG-based execution
+			concurrency := flagConcurrency
+			if concurrency < 1 {
+				concurrency = 5
+			}
+			if flagChainID >= 0 {
+				// Single chain execution
+				dag := chain.BuildFullDAG(concurrency, flagAggressive)
+				findings = dag.ExecuteSingle(target, chainCfg, flagChainID)
+			} else {
+				findings = chain.RunDAGChain(target, chainCfg, concurrency, flagAggressive)
+			}
+		} else {
+			// v1: linear execution (legacy)
+			findings = chain.RunFullChain(target, chainCfg)
+		}
+
+		for _, f := range findings {
 			result.Add(f)
 		}
 		result.Done()
+
+		// AI analysis if requested
+		if flagAIAnalyze && len(findings) > 0 {
+			analyzer := ai.NewAnalyzer()
+			if analyzer.Available() {
+				fmt.Printf("\n[AI] Analyzing %d findings...\n", len(findings))
+			}
+			analysis, err := analyzer.AnalyzeFindings(findings, "attack-path")
+			if err == nil && analysis != nil {
+				fmt.Printf("\n[AI] Risk Score: %d/100\n", analysis.RiskScore)
+				fmt.Printf("[AI] Summary: %s\n", analysis.Summary)
+				for i, path := range analysis.CriticalPaths {
+					fmt.Printf("[AI] Critical Path %d: %s\n", i+1, path)
+				}
+				for i, rec := range analysis.Recommendations {
+					fmt.Printf("[AI] Recommendation %d: %s\n", i+1, rec)
+				}
+			}
+		}
+
 		return result
 	})
 	return outputResults(results)

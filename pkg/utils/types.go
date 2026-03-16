@@ -134,6 +134,6 @@ func Banner() {
   / /   / / / / __  |\__ \  / /  / __/  / /_/ /  / / __/ // // /| | / /_/ / / / /
  / /___/ /_/ / /_/ /___/ / / /  / /___ / _, _/  / /_/ /__  _/ ___ |/ _, _/ /_/ /
 /_____/\____/_____//____/ /_/  /_____//_/ |_|   \____/  /_//_/  |_/_/ |_/_____/  `)
-	cyan.Println("                    OpenClaw Security Assessment Tool v0.1.0")
+	cyan.Println("                    OpenClaw Security Assessment Tool v3.0.0")
 	fmt.Println(strings.Repeat("─", 76))
 }
