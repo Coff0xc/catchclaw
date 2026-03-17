@@ -4,10 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
 
+	"github.com/coff0xc/lobster-guard/internal/assets"
 	"github.com/coff0xc/lobster-guard/pkg/ai"
 	"github.com/coff0xc/lobster-guard/pkg/audit"
 	"github.com/coff0xc/lobster-guard/pkg/auth"
@@ -21,6 +23,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/recon"
 	"github.com/coff0xc/lobster-guard/pkg/report"
 	"github.com/coff0xc/lobster-guard/pkg/scanner"
+	"github.com/coff0xc/lobster-guard/pkg/tui"
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 	"github.com/spf13/cobra"
 )
@@ -61,70 +64,96 @@ var (
 func main() {
 	rootCmd := &cobra.Command{
 		Use:   "lobster-guard",
-		Short: "OpenClaw Security Assessment Tool v4.0.0",
-		Long:  "LobsterGuard v4.0.0 — 55-chain DAG, AI-powered fuzzing, CVE database, high-concurrency engine",
+		Short: "OpenClaw 安全评估工具 v4.0.0",
+		Long: `LobsterGuard v4.0.0 — OpenClaw/Open-WebUI AI编程平台安全评估工具
+
+功能特性:
+  55条 DAG 攻击链 | AI 智能模糊测试 | CVE 漏洞库 | 高并发引擎 | MCP 集成
+
+快速开始:
+  lobster-guard scan -t 目标IP:端口                    # 全量扫描
+  lobster-guard scan -t 目标IP:端口 -o report.html     # 扫描并生成 HTML 报告
+  lobster-guard exploit -t 目标IP:端口 --token xxx     # 仅运行漏洞利用链
+  lobster-guard tui                                     # 启动交互式 TUI 面板
+  lobster-guard shell                                   # 启动命令行交互 Shell
+
+报告输出 (-o):
+  -o result.json    自动输出 JSON 格式
+  -o result.html    自动输出 HTML 格式 (根据扩展名自动识别)`,
 	}
 
 	scanCmd := &cobra.Command{
 		Use:   "scan",
-		Short: "Full scan: fingerprint + auth + brute + recon + audit + exploit",
+		Short: "全量扫描: 指纹识别 + 认证检测 + 爆破 + 信息收集 + 配置审计 + 漏洞利用",
+		Example: `  lobster-guard scan -t 10.0.0.5:18789
+  lobster-guard scan -t 10.0.0.5:18789 --token abc123
+  lobster-guard scan -t 10.0.0.5:18789 -o report.html
+  lobster-guard scan -T targets.txt -c 5 --aggressive`,
 		RunE:  runScan,
 	}
 	addCommonFlags(scanCmd)
 	addBruteFlags(scanCmd)
-	scanCmd.Flags().StringVar(&flagToken, "token", "", "Known Gateway token for authenticated checks")
-	scanCmd.Flags().StringVar(&flagCallback, "callback", "", "OOB callback URL for SSRF detection")
-	scanCmd.Flags().BoolVar(&flagNoExploit, "no-exploit", false, "Skip exploit/vuln verification phase")
-	scanCmd.Flags().BoolVar(&flagAggressive, "aggressive", false, "Aggressive mode: DAG chains, max concurrency, no delays")
-	scanCmd.Flags().BoolVar(&flagAIAnalyze, "ai-analyze", false, "Use AI to analyze results")
+	scanCmd.Flags().StringVar(&flagToken, "token", "", "Gateway 认证令牌 (用于已认证的检测项)")
+	scanCmd.Flags().StringVar(&flagCallback, "callback", "", "OOB 回调地址 (用于 SSRF 检测)")
+	scanCmd.Flags().BoolVar(&flagNoExploit, "no-exploit", false, "跳过漏洞利用验证阶段")
+	scanCmd.Flags().BoolVar(&flagAggressive, "aggressive", false, "激进模式: DAG链并发, 最大并发, 无延迟")
+	scanCmd.Flags().BoolVar(&flagAIAnalyze, "ai-analyze", false, "使用 AI 分析扫描结果")
 
-	fpCmd := &cobra.Command{Use: "fingerprint", Short: "Detect OpenClaw instances", RunE: runFingerprint}
+	fpCmd := &cobra.Command{Use: "fingerprint", Short: "平台指纹识别: 检测 OpenClaw 实例", RunE: runFingerprint}
 	addCommonFlags(fpCmd)
 
-	authCmd := &cobra.Command{Use: "auth", Short: "Auth test: no-auth + brute force", RunE: runAuth}
+	authCmd := &cobra.Command{Use: "auth", Short: "认证检测: 未授权访问 + 令牌爆破", RunE: runAuth}
 	addCommonFlags(authCmd)
 	addBruteFlags(authCmd)
-	authCmd.Flags().StringVar(&flagToken, "token", "", "Known Gateway token")
+	authCmd.Flags().StringVar(&flagToken, "token", "", "已知的 Gateway 认证令牌")
 
-	auditCmd := &cobra.Command{Use: "audit", Short: "Config audit (needs token)", RunE: runAudit}
+	auditCmd := &cobra.Command{Use: "audit", Short: "配置审计: 安全配置检查 (需要令牌)", RunE: runAudit}
 	addCommonFlags(auditCmd)
-	auditCmd.Flags().StringVar(&flagToken, "token", "", "Gateway token (required)")
+	auditCmd.Flags().StringVar(&flagToken, "token", "", "Gateway 认证令牌 (必须)")
 
-	reconCmd := &cobra.Command{Use: "recon", Short: "Endpoint + WS method enum + version detect", RunE: runRecon}
+	reconCmd := &cobra.Command{Use: "recon", Short: "信息收集: 端点枚举 + WS方法枚举 + 版本探测", RunE: runRecon}
 	addCommonFlags(reconCmd)
-	reconCmd.Flags().StringVar(&flagToken, "token", "", "Gateway token for authenticated enum")
+	reconCmd.Flags().StringVar(&flagToken, "token", "", "Gateway 认证令牌 (用于已认证的枚举)")
 
-	exploitCmd := &cobra.Command{Use: "exploit", Short: "55-chain OpenClaw attack suite (DAG-based v4)", RunE: runExploit}
+	exploitCmd := &cobra.Command{
+		Use:   "exploit",
+		Short: "漏洞利用: 55条 DAG 攻击链 (v4)",
+		Example: `  lobster-guard exploit -t 10.0.0.5:18789 --token abc123
+  lobster-guard exploit -t 10.0.0.5:18789 --chain-id 7     # 运行单条攻击链
+  lobster-guard exploit -t 10.0.0.5:18789 --aggressive      # 激进模式
+  lobster-guard exploit -t 10.0.0.5:18789 --ultra-aggressive # 极限模式(200并发)`,
+		RunE: runExploit,
+	}
 	addCommonFlags(exploitCmd)
-	exploitCmd.Flags().StringVar(&flagToken, "token", "", "Gateway token (required for most tests)")
-	exploitCmd.Flags().StringVar(&flagCallback, "callback", "", "OOB callback URL for SSRF detection")
-	exploitCmd.Flags().StringVar(&flagHookToken, "hook-token", "", "Hook-specific token")
-	exploitCmd.Flags().StringVar(&flagHookPath, "hook-path", "/hooks", "Hook base path")
-	exploitCmd.Flags().BoolVar(&flagAggressive, "aggressive", false, "Aggressive mode: max concurrency, no delays")
-	exploitCmd.Flags().BoolVar(&flagUltraAggressive, "ultra-aggressive", false, "Ultra-aggressive: 200 workers, no rate limit, all chains")
-	exploitCmd.Flags().IntVar(&flagWorkers, "workers", 0, "Worker pool size for concurrent engine (0 = auto)")
-	exploitCmd.Flags().Float64Var(&flagRateLimit, "rate-limit", 0, "Max requests per second (0 = unlimited)")
-	exploitCmd.Flags().BoolVar(&flagDAG, "dag", true, "Use DAG-based chain execution (v2)")
-	exploitCmd.Flags().IntVar(&flagChainID, "chain-id", -1, "Run single chain by ID (-1 = all)")
-	exploitCmd.Flags().BoolVar(&flagAIAnalyze, "ai-analyze", false, "Use AI to analyze results (requires ANTHROPIC_API_KEY or OPENAI_API_KEY)")
+	exploitCmd.Flags().StringVar(&flagToken, "token", "", "Gateway 认证令牌 (多数检测项需要)")
+	exploitCmd.Flags().StringVar(&flagCallback, "callback", "", "OOB 回调地址 (用于 SSRF 检测)")
+	exploitCmd.Flags().StringVar(&flagHookToken, "hook-token", "", "Hook 专用令牌")
+	exploitCmd.Flags().StringVar(&flagHookPath, "hook-path", "/hooks", "Hook 基础路径")
+	exploitCmd.Flags().BoolVar(&flagAggressive, "aggressive", false, "激进模式: 最大并发, 无延迟")
+	exploitCmd.Flags().BoolVar(&flagUltraAggressive, "ultra-aggressive", false, "极限模式: 200并发, 无速率限制, 全链执行")
+	exploitCmd.Flags().IntVar(&flagWorkers, "workers", 0, "并发引擎 Worker 数量 (0=自动)")
+	exploitCmd.Flags().Float64Var(&flagRateLimit, "rate-limit", 0, "每秒最大请求数 (0=不限制)")
+	exploitCmd.Flags().BoolVar(&flagDAG, "dag", true, "使用 DAG 依赖图执行攻击链")
+	exploitCmd.Flags().IntVar(&flagChainID, "chain-id", -1, "运行单条攻击链 (-1=全部)")
+	exploitCmd.Flags().BoolVar(&flagAIAnalyze, "ai-analyze", false, "使用 AI 分析结果 (需要 ANTHROPIC_API_KEY 或 OPENAI_API_KEY)")
 
 	rootCmd.AddCommand(scanCmd, fpCmd, authCmd, auditCmd, reconCmd, exploitCmd)
 
 	// v4: Fuzz command
-	fuzzCmd := &cobra.Command{Use: "fuzz", Short: "AI-powered fuzzing (XSS/SQLi/SSRF/CMDi/Prompt Injection)", RunE: runFuzz}
+	fuzzCmd := &cobra.Command{Use: "fuzz", Short: "AI 模糊测试 (XSS/SQL注入/SSRF/命令注入/提示词注入)", RunE: runFuzz}
 	addCommonFlags(fuzzCmd)
-	fuzzCmd.Flags().StringVar(&flagToken, "token", "", "Gateway token")
-	fuzzCmd.Flags().StringVar(&flagFuzzCategories, "categories", "", "Comma-separated: xss,sqli,ssrf,cmdi,prompt_inject")
+	fuzzCmd.Flags().StringVar(&flagToken, "token", "", "Gateway 认证令牌")
+	fuzzCmd.Flags().StringVar(&flagFuzzCategories, "categories", "", "测试类别 (逗号分隔): xss,sqli,ssrf,cmdi,prompt_inject")
 	rootCmd.AddCommand(fuzzCmd)
 
 	// v4: CVE lookup command
-	cveCmd := &cobra.Command{Use: "cve", Short: "Search CVE database for OpenClaw/open-webui vulnerabilities", RunE: runCVE}
+	cveCmd := &cobra.Command{Use: "cve", Short: "CVE 漏洞库查询 (OpenClaw/Open-WebUI 相关漏洞)", RunE: runCVE}
 	rootCmd.AddCommand(cveCmd)
 
 	// MCP Server command
 	mcpCmd := &cobra.Command{
 		Use:   "mcp",
-		Short: "Start MCP Server (stdio JSON-RPC) for AI agent integration",
+		Short: "启动 MCP Server (stdio JSON-RPC, 用于 AI Agent 集成)",
 		Run: func(cmd *cobra.Command, args []string) {
 			srv := mcp.NewServer()
 			if err := srv.Run(); err != nil {
@@ -135,20 +164,20 @@ func main() {
 	}
 	rootCmd.AddCommand(mcpCmd)
 
-	discoverCmd := &cobra.Command{Use: "discover", Short: "Asset discovery via Shodan/FOFA", RunE: runDiscover}
-	discoverCmd.Flags().StringVar(&flagShodanKey, "shodan-key", "", "Shodan API key")
-	discoverCmd.Flags().StringVar(&flagFofaEmail, "fofa-email", "", "FOFA email")
-	discoverCmd.Flags().StringVar(&flagFofaKey, "fofa-key", "", "FOFA API key")
-	discoverCmd.Flags().StringVar(&flagDiscQuery, "query", "", "Custom search query")
-	discoverCmd.Flags().IntVar(&flagDiscMax, "max-results", 100, "Max results per source")
-	discoverCmd.Flags().IntVar(&flagTimeout, "timeout", 30, "API timeout in seconds")
-	discoverCmd.Flags().StringVarP(&flagDiscOut, "output", "o", "", "Output targets file path")
+	discoverCmd := &cobra.Command{Use: "discover", Short: "资产发现: 通过 Shodan/FOFA 搜索目标", RunE: runDiscover}
+	discoverCmd.Flags().StringVar(&flagShodanKey, "shodan-key", "", "Shodan API 密钥")
+	discoverCmd.Flags().StringVar(&flagFofaEmail, "fofa-email", "", "FOFA 邮箱")
+	discoverCmd.Flags().StringVar(&flagFofaKey, "fofa-key", "", "FOFA API 密钥")
+	discoverCmd.Flags().StringVar(&flagDiscQuery, "query", "", "自定义搜索语句")
+	discoverCmd.Flags().IntVar(&flagDiscMax, "max-results", 100, "每个来源最大结果数")
+	discoverCmd.Flags().IntVar(&flagTimeout, "timeout", 30, "API 超时时间 (秒)")
+	discoverCmd.Flags().StringVarP(&flagDiscOut, "output", "o", "", "输出目标文件路径")
 
 	rootCmd.AddCommand(discoverCmd)
 
 	shellCmd := &cobra.Command{
 		Use:   "shell",
-		Short: "Interactive shell (msfconsole-style)",
+		Short: "交互式命令行 Shell (类 msfconsole 风格)",
 		Run: func(cmd *cobra.Command, args []string) {
 			utils.Banner()
 			interactive.RunShell()
@@ -156,26 +185,45 @@ func main() {
 	}
 	rootCmd.AddCommand(shellCmd)
 
+	tuiCmd := &cobra.Command{
+		Use:   "tui",
+		Short: "交互式 TUI 仪表盘 (实时进度/漏洞表格/日志滚动)",
+		Example: `  lobster-guard tui
+  lobster-guard tui -t 10.0.0.5:18789 --token abc123 --tls`,
+		RunE:  runTUI,
+	}
+	addCommonFlags(tuiCmd)
+	tuiCmd.Flags().StringVar(&flagToken, "token", "", "Gateway 认证令牌")
+	rootCmd.AddCommand(tuiCmd)
+
+	extractCmd := &cobra.Command{
+		Use:   "extract [目录]",
+		Short: "导出内置 Nuclei 模板和规则文件到指定目录",
+		Args:  cobra.MaximumNArgs(1),
+		RunE:  runExtract,
+	}
+	rootCmd.AddCommand(extractCmd)
+
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 }
 
 func addCommonFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVarP(&flagTarget, "target", "t", "", "Target host:port (e.g. 1.2.3.4:18789)")
-	cmd.Flags().StringVarP(&flagTargets, "targets", "T", "", "File with targets, one per line")
-	cmd.Flags().IntVar(&flagTimeout, "timeout", 10, "HTTP timeout in seconds")
-	cmd.Flags().StringVarP(&flagOutput, "output", "o", "", "Output JSON report path")
-	cmd.Flags().BoolVar(&flagTLS, "tls", false, "Use HTTPS/WSS")
-	cmd.Flags().IntVarP(&flagConcurrency, "concurrency", "c", 1, "Number of concurrent target scans")
-	cmd.Flags().BoolVar(&flagTLSVerify, "tls-verify", false, "Enable strict TLS certificate verification (default: skip)")
+	cmd.Flags().StringVarP(&flagTarget, "target", "t", "", "目标地址 host:port (例: 1.2.3.4:18789)")
+	cmd.Flags().StringVarP(&flagTargets, "targets", "T", "", "目标列表文件，每行一个地址")
+	cmd.Flags().IntVar(&flagTimeout, "timeout", 10, "HTTP 超时时间 (秒)")
+	cmd.Flags().StringVarP(&flagOutput, "output", "o", "", "输出报告路径 (按扩展名自动选择格式: .html→HTML报告, .json→JSON报告)")
+	cmd.Flags().BoolVar(&flagTLS, "tls", false, "使用 HTTPS/WSS 加密连接")
+	cmd.Flags().IntVarP(&flagConcurrency, "concurrency", "c", 1, "并发扫描目标数")
+	cmd.Flags().BoolVar(&flagTLSVerify, "tls-verify", false, "启用严格 TLS 证书验证 (默认跳过)")
 }
 
 func addBruteFlags(cmd *cobra.Command) {
-	cmd.Flags().StringVarP(&flagWordlist, "wordlist", "w", "", "Custom wordlist for brute force")
-	cmd.Flags().IntVar(&flagDelay, "delay", 500, "Delay between brute attempts (ms)")
-	cmd.Flags().IntVar(&flagMaxRetry, "max-attempts", 0, "Max brute force attempts (0=unlimited)")
-	cmd.Flags().BoolVar(&flagNoBrute, "no-brute", false, "Skip brute force")
+	cmd.Flags().StringVarP(&flagWordlist, "wordlist", "w", "", "自定义爆破字典文件路径")
+	cmd.Flags().IntVar(&flagDelay, "delay", 500, "爆破请求间隔 (毫秒)")
+	cmd.Flags().IntVar(&flagMaxRetry, "max-attempts", 0, "最大爆破次数 (0=不限)")
+	cmd.Flags().BoolVar(&flagNoBrute, "no-brute", false, "跳过爆破测试")
 }
 
 func resolveTargets() ([]utils.Target, error) {
@@ -674,5 +722,65 @@ func runCVE(cmd *cobra.Command, args []string) error {
 
 	summary := db.Summary()
 	fmt.Printf("[*] Summary: %v total, %v exploitable\n", summary["total"], summary["exploitable"])
+	return nil
+}
+
+// --- tui: interactive TUI dashboard ---
+func runTUI(cmd *cobra.Command, args []string) error {
+	var target utils.Target
+	if flagTarget != "" {
+		t, err := utils.ParseTarget(flagTarget)
+		if err != nil {
+			return fmt.Errorf("invalid target: %w", err)
+		}
+		if flagTLS {
+			t.UseTLS = true
+		}
+		target = t
+	}
+	if flagToken == "" {
+		if envToken := os.Getenv("LOBSTERGUARD_TOKEN"); envToken != "" {
+			flagToken = envToken
+		}
+	}
+	timeout := time.Duration(flagTimeout) * time.Second
+	return tui.Run(target, flagToken, flagTLS, timeout)
+}
+
+func runExtract(cmd *cobra.Command, args []string) error {
+	outDir := "."
+	if len(args) > 0 {
+		outDir = args[0]
+	}
+
+	allFiles := assets.List()
+	extracted := 0
+	for _, fpath := range allFiles {
+		data, err := assets.ReadFile(fpath)
+		if err != nil {
+			return fmt.Errorf("read embedded %s: %w", fpath, err)
+		}
+		target := filepath.Join(outDir, fpath)
+		if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil {
+			return fmt.Errorf("mkdir %s: %w", filepath.Dir(target), err)
+		}
+		if err := os.WriteFile(target, data, 0644); err != nil {
+			return fmt.Errorf("write %s: %w", target, err)
+		}
+		extracted++
+	}
+
+	// Count by category
+	nucleiCount, rulesCount := 0, 0
+	for _, f := range allFiles {
+		if strings.HasPrefix(f, "nuclei-templates/") {
+			nucleiCount++
+		} else if strings.HasPrefix(f, "rules/") {
+			rulesCount++
+		}
+	}
+	fmt.Printf("[+] Nuclei 模板已导出: %d 个文件 → %s/nuclei-templates/\n", nucleiCount, outDir)
+	fmt.Printf("[+] 规则文件已导出: %d 个文件 → %s/rules/\n", rulesCount, outDir)
+	fmt.Printf("[*] 共导出 %d 个文件\n", extracted)
 	return nil
 }
