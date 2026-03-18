@@ -12,6 +12,7 @@ import (
 
 	"github.com/coff0xc/lobster-guard/internal/assets"
 	"github.com/coff0xc/lobster-guard/pkg/ai"
+	"github.com/coff0xc/lobster-guard/pkg/api"
 	"github.com/coff0xc/lobster-guard/pkg/auth"
 	"github.com/coff0xc/lobster-guard/pkg/cve"
 	"github.com/coff0xc/lobster-guard/pkg/discovery"
@@ -204,6 +205,16 @@ func main() {
 	addCommonFlags(guiCmd)
 	guiCmd.Flags().StringVar(&flagToken, "token", "", "Gateway 认证令牌")
 	rootCmd.AddCommand(guiCmd)
+
+	apiCmd := &cobra.Command{
+		Use:   "api",
+		Short: "启动 REST API 服务器，供第三方系统调用",
+		Example: `  lobster-guard api --addr :8899 --api-token mysecret`,
+		RunE: runAPI,
+	}
+	apiCmd.Flags().String("addr", ":8899", "API 监听地址 (host:port)")
+	apiCmd.Flags().String("api-token", "", "Bearer Token 认证密钥 (为空则不鉴权)")
+	rootCmd.AddCommand(apiCmd)
 
 	extractCmd := &cobra.Command{
 		Use:   "extract [目录]",
@@ -700,4 +711,19 @@ func runExtract(cmd *cobra.Command, args []string) error {
 	fmt.Printf("[+] 规则文件已导出: %d 个文件 → %s/rules/\n", rulesCount, outDir)
 	fmt.Printf("[*] 共导出 %d 个文件\n", extracted)
 	return nil
+}
+
+func runAPI(cmd *cobra.Command, args []string) error {
+	addr, _ := cmd.Flags().GetString("addr")
+	token, _ := cmd.Flags().GetString("api-token")
+	cfg := api.ServerConfig{
+		Addr:  addr,
+		Token: token,
+	}
+	fmt.Printf("[*] REST API 服务器启动: %s\n", addr)
+	if token == "" {
+		fmt.Println("[!] 警告: 未设置 --api-token，API 无认证保护")
+	}
+	srv := api.NewServer(cfg)
+	return srv.ListenAndServe()
 }

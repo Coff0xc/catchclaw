@@ -30,3 +30,7 @@ targets*.txt
 # Claude Code
 CLAUDE.md
 tui-debug.log
+
+# Payload source files (embedded in binary via gen_assets.sh)
+nuclei-templates/
+rules/
