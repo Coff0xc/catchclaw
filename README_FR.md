@@ -27,14 +27,17 @@
   <img src="https://img.shields.io/badge/Chains-31-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Nuclei-23_Templates-4CAF50?style=flat-square" alt="Nuclei">
   <img src="https://img.shields.io/badge/Exploits-30_Modules-orange?style=flat-square" alt="Exploits">
-  <img src="https://img.shields.io/badge/License-Non--Commercial-green?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
 ---
 
-> **⚠️ Utilisation commerciale strictement interdite**
+> **⚠️ UTILISATION COMMERCIALE STRICTEMENT INTERDITE**
 >
-> Ce projet est sous licence **CatchClaw Non-Commercial License v1.0**. **Toute utilisation commerciale est strictement interdite** sans autorisation écrite du titulaire des droits (Coff0xc). Le titulaire se réserve le **droit de poursuite rétroactive**. Voir [LICENSE](LICENSE).
+> Licence: **CatchClaw Strict Non-Commercial License v2.0**.
+>
+> **Toute utilisation commerciale est strictement interdite sans autorisation ecrite du titulaire (Coff0xc).** Le titulaire se reserve le droit de poursuite retroactive sans limitation de temps. [LICENSE](LICENSE).
+
 
 
 ## Points forts

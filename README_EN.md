@@ -27,14 +27,29 @@
   <img src="https://img.shields.io/badge/Chains-31-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Nuclei-23_Templates-4CAF50?style=flat-square" alt="Nuclei">
   <img src="https://img.shields.io/badge/Exploits-30_Modules-orange?style=flat-square" alt="Exploits">
-  <img src="https://img.shields.io/badge/License-Non--Commercial-green?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
 ---
 
-> **⚠️ Commercial Use Strictly Prohibited**
+> **⚠️ COMMERCIAL USE STRICTLY PROHIBITED**
 >
-> This project is licensed under **CatchClaw Non-Commercial License v1.0**. **All commercial use is strictly prohibited** without prior written authorization from the copyright holder (Coff0xc), including but not limited to: selling, sublicensing, providing paid services, or integrating into commercial products. The copyright holder reserves the **right of retroactive enforcement** against any unauthorized commercial use, including recovery of all profits derived therefrom. See [LICENSE](LICENSE).
+> Licensed under **CatchClaw Strict Non-Commercial License v2.0**.
+>
+> **ALL commercial use is STRICTLY PROHIBITED without prior written authorization from the copyright holder (Coff0xc).** Violators will be prosecuted.
+>
+> Prohibited activities include but are not limited to:
+> - Selling, sublicensing, or renting the Software or derivative works
+> - Using the Software for SaaS, pentesting services, consulting, or any paid service
+> - Integrating into commercial products, platforms, or tools
+> - Training commercial AI/ML models
+> - Rebranding, repackaging, or white-labeling for distribution
+> - Any activity that directly or indirectly generates revenue
+>
+> **The copyright holder reserves the right of retroactive enforcement with NO time limitation, including recovery of all profits, legal fees, and punitive damages.**
+>
+> See [LICENSE](LICENSE).
+
 
 
 ## Highlights

@@ -27,14 +27,19 @@
   <img src="https://img.shields.io/badge/Chains-31-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Nuclei-23_Templates-4CAF50?style=flat-square" alt="Nuclei">
   <img src="https://img.shields.io/badge/Exploits-30_Modules-orange?style=flat-square" alt="Exploits">
-  <img src="https://img.shields.io/badge/License-Non--Commercial-green?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
 ---
 
-> **⚠️ 商用利用は厳禁**
+> **⚠️ 商用利用厳禁 | COMMERCIAL USE STRICTLY PROHIBITED**
 >
-> 本プロジェクトは **CatchClaw Non-Commercial License v1.0** に基づきます。著作権者 (Coff0xc) の書面による事前許可なく、**いかなる商用利用も厳禁**です。著作権者は無許可の商用利用に対し**遡及的に法的措置を講じる権利**を留保します。[LICENSE](LICENSE) を参照。
+> **CatchClaw Strict Non-Commercial License v2.0** に基づきます。
+>
+> **著作権者 (Coff0xc) の書面による事前許可なく、いかなる商用利用も厳禁です。** 違反者は法的責任を追及されます。
+>
+> **著作権者は無期限の過及的執行権を留保します。** [LICENSE](LICENSE) 参照。
+
 
 
 ## 主な特徴

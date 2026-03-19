@@ -27,14 +27,28 @@
   <img src="https://img.shields.io/badge/DAG_Chains-59-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Nuclei-45_Templates-4CAF50?style=flat-square" alt="Nuclei">
   <img src="https://img.shields.io/badge/Exploits-59_Modules-orange?style=flat-square" alt="Exploits">
-  <img src="https://img.shields.io/badge/License-Non--Commercial-green?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
 ---
 
-> **⚠️ 商业使用严格限制**
+> **⚠️ 商业使用严格禁止 | COMMERCIAL USE STRICTLY PROHIBITED**
 >
-> 本项目采用 **CatchClaw Non-Commercial License v1.0**。未经版权持有人 (Coff0xc) 书面授权，**严禁任何形式的商业使用**，包括但不限于：出售、转授权、提供付费服务、集成至商业产品等。版权持有人保留对未授权商业使用进行**追溯追诉**的权利，包括追偿因此产生的全部利润。详见 [LICENSE](LICENSE)。
+> 本项目采用 **CatchClaw Strict Non-Commercial License v2.0**。
+>
+> **未经版权持有人 (Coff0xc) 书面授权，严禁任何形式的商业使用。** 违反者将被追究法律责任。
+>
+> 禁止行为包括但不限于：
+> - 出售、转授权、租赁本软件或其衍生作品
+> - 将本软件用于 SaaS、渗透测试服务、咨询或任何付费服务
+> - 集成至商业产品、平台或工具
+> - 用于训练商业 AI/ML 模型
+> - 改名、换皮、重新包装后分发
+> - 任何直接或间接产生收入的行为
+>
+> **版权持有人保留无限期追溯追诉权，包括追偿全部利润、法律费用及惩罚性赔偿。**
+>
+> 详见 [LICENSE](LICENSE)。
 
 
 ## 项目亮点
