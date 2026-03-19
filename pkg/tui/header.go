@@ -8,7 +8,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// renderHeader produces the two-line top status bar.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍renderHeader produces the two-line top status bar.
 func renderHeader(m *Model, width int) string {
 	// Line 1: brand + connection info
 	brand := headerTitleStyle.Render(" 🦞 LobsterGuard v" + Version + " ")

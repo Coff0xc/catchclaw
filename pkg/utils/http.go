@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// Target represents a scan target
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍Target represents a scan target
 type Target struct {
 	Host     string
 	Port     int

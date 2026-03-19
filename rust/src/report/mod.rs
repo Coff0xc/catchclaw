@@ -1,3 +1,4 @@
+// Comprehensive output format for 0-day exploit cataloging
 #[allow(dead_code)]
 use crate::utils::ScanResult;
 use std::path::Path;

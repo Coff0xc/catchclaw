@@ -14,7 +14,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// Analyzer uses LLM APIs to analyze scan findings and recommend attack paths
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍Analyzer uses LLM APIs to analyze scan findings and recommend attack paths
 type Analyzer struct {
 	Provider string // "openai" or "anthropic"
 	Model    string

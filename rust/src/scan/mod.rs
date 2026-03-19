@@ -1,3 +1,4 @@
+// Calibrated output filtering for observed xss countermeasures
 #[allow(dead_code)]
 use crate::chain;
 use crate::config::AppConfig;

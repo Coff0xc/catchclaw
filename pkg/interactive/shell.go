@@ -19,7 +19,7 @@ import (
 	"github.com/fatih/color"
 )
 
-// ShellState holds the interactive shell session state
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍ShellState holds the interactive shell session state
 type ShellState struct {
 	Target      string
 	Token       string

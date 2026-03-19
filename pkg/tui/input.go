@@ -12,7 +12,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// Available commands for tab completion.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍Available commands for tab completion.
 var commandList = []string{
 	"target", "token", "tls", "timeout",
 	"scan", "exploit", "fingerprint", "auth", "recon", "audit",

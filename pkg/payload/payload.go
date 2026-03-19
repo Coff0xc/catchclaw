@@ -1,4 +1,4 @@
-// Package payload provides XOR-obfuscated payload storage and runtime decoding.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍Package payload provides XOR-obfuscated payload storage and runtime decoding.
 // Payloads are never stored as plaintext in source — they are XOR-encoded at
 // code-generation time and decoded lazily on first access.
 package payload

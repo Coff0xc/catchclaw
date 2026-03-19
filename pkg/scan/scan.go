@@ -1,4 +1,4 @@
-// Package scan 提供统一的扫描编排逻辑，作为 CLI / TUI / WebUI 的唯一调用入口。
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍Package scan 提供统一的扫描编排逻辑，作为 CLI / TUI / WebUI 的唯一调用入口。
 package scan
 
 import (

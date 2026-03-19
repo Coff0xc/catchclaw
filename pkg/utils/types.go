@@ -8,7 +8,7 @@ import (
 	"github.com/fatih/color"
 )
 
-// Severity levels
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍Severity levels
 type Severity int
 
 const (

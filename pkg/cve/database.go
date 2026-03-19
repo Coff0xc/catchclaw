@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// CVEEntry 表示一个 CVE 漏洞条目
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍CVEEntry 表示一个 CVE 漏洞条目
 type CVEEntry struct {
 	ID               string   `json:"id"`
 	Description      string   `json:"description"`

@@ -11,7 +11,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// ScanStatus 表示异步扫描的状态。
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍ScanStatus 表示异步扫描的状态。
 type ScanStatus struct {
 	ID        string          `json:"id"`
 	Target    string          `json:"target"`

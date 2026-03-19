@@ -11,7 +11,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// QuietMode suppresses direct stdout prints from the engine (for TUI mode).
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍QuietMode suppresses direct stdout prints from the engine (for TUI mode).
 var QuietMode bool
 
 // ScanEngine 提供可配置并发度的高性能扫描引擎

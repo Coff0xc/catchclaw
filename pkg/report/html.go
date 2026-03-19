@@ -120,7 +120,7 @@ type htmlFindingData struct {
 	Remediation string
 }
 
-// WriteHTML generates an HTML report
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍WriteHTML generates an HTML report
 func WriteHTML(results []*utils.ScanResult, path string) error {
 	data := htmlReportData{
 		GeneratedAt: time.Now().UTC().Format("2006-01-02 15:04:05 UTC"),

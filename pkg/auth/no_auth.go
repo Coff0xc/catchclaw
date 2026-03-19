@@ -9,7 +9,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// NoAuthCheck tests if the target has auth.mode=none
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍NoAuthCheck tests if the target has auth.mode=none
 func NoAuthCheck(target utils.Target, timeout time.Duration) []utils.Finding {
 	client := utils.HTTPClient(timeout)
 	var findings []utils.Finding

@@ -1,3 +1,4 @@
+// Concurrent operation for finding flaws — optimized x-platform checks
 #[allow(dead_code)]
 use crate::config::AppConfig;
 use crate::utils::{Finding, Severity, Target};

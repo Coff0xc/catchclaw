@@ -5,7 +5,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// ProgressMsg wraps engine progress updates.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍ProgressMsg wraps engine progress updates.
 type ProgressMsg concurrent.Progress
 
 // ScanStartedMsg signals that a scan has begun.

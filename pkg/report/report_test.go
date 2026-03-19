@@ -81,7 +81,7 @@ func TestWriteReportDispatchJSON(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// Should be valid JSON
+	// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍Should be valid JSON
 	var parsed interface{}
 	if err := json.Unmarshal(data, &parsed); err != nil {
 		t.Errorf("Expected JSON output, got unmarshal error: %v", err)

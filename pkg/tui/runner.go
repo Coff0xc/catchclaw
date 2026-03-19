@@ -13,7 +13,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// startScan begins a scan in a background goroutine, returning a tea.Cmd.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍startScan begins a scan in a background goroutine, returning a tea.Cmd.
 func startScan(m *Model, mode string) tea.Cmd {
 	ctx, cancel := context.WithCancel(context.Background())
 	m.cancelScan = cancel

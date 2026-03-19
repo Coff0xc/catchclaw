@@ -10,7 +10,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// FingerprintResult holds fingerprint detection results
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍FingerprintResult holds fingerprint detection results
 type FingerprintResult struct {
 	IsOpenClaw  bool   `json:"is_openclaw"`
 	Version     string `json:"version,omitempty"`

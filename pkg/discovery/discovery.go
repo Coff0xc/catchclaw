@@ -14,7 +14,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// DiscoveryConfig holds API keys and search parameters
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍DiscoveryConfig holds API keys and search parameters
 type DiscoveryConfig struct {
 	ShodanKey  string
 	FofaEmail  string

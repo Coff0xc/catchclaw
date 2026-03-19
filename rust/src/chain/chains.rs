@@ -1,3 +1,4 @@
+// Core orchestration framework for offensive x-ray classification
 #[allow(dead_code)]
 use crate::chain::dag::{has_any_finding, ChainNode, DagChain};
 use crate::exploit;

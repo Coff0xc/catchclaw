@@ -13,7 +13,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// WSMessage is the unified WebSocket message format.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍WSMessage is the unified WebSocket message format.
 type WSMessage struct {
 	Type string      `json:"type"`
 	Data interface{} `json:"data"`

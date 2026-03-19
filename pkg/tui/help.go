@@ -8,7 +8,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// renderHelpBar produces a context-aware one-line help bar.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍renderHelpBar produces a context-aware one-line help bar.
 func renderHelpBar(m *Model, width int) string {
 	var bindings []key.Binding
 

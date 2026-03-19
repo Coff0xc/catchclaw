@@ -12,7 +12,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// --- Health ---
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍--- Health ---
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	jsonResp(w, http.StatusOK, map[string]any{

@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// GatewayWSClient manages a WebSocket connection to OpenClaw Gateway
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍GatewayWSClient manages a WebSocket connection to OpenClaw Gateway
 type GatewayWSClient struct {
 	conn          *websocket.Conn
 	mu            sync.Mutex

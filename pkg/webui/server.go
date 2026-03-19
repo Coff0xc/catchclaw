@@ -11,7 +11,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// Run starts the Web GUI HTTP server and opens the browser.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍Run starts the Web GUI HTTP server and opens the browser.
 func Run(target utils.Target, token string, useTLS bool, timeout time.Duration) error {
 	state := NewAppState(target, token, useTLS, timeout)
 

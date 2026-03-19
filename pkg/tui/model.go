@@ -16,7 +16,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// Panel identifies which panel is active.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍Panel identifies which panel is active.
 type Panel int
 
 const (

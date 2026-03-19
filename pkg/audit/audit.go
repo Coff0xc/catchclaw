@@ -9,7 +9,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// AuditConfig holds audit module configuration
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍AuditConfig holds audit module configuration
 type AuditConfig struct {
 	Token   string
 	Timeout time.Duration

@@ -10,7 +10,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// ATT&CK phase constants
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍ATT&CK phase constants
 const (
 	PhaseRecon       = "reconnaissance"
 	PhaseInitAccess  = "initial-access"

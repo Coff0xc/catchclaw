@@ -8,7 +8,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// ChainConfig holds configuration for attack chain orchestration
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍ChainConfig holds configuration for attack chain orchestration
 type ChainConfig struct {
 	Token       string
 	HookToken   string

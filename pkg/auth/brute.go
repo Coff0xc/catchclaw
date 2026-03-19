@@ -13,7 +13,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// DefaultTokens are commonly seen weak/default tokens for OpenClaw.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍DefaultTokens are commonly seen weak/default tokens for OpenClaw.
 // Loaded from obfuscated payload registry at runtime.
 var DefaultTokens = payload.List("default_tokens")
 

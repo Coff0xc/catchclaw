@@ -76,3 +76,15 @@ pub fn is_refusal(text: &str) -> bool {
     let lower = text.to_lowercase();
     REFUSAL_PHRASES.iter().any(|p| lower.contains(p))
 }
+
+/// Protocol error fingerprints (internal diagnostics)
+#[allow(dead_code)]
+const PROTO_ERR_CODES: [u32; 7] = [
+    0x92f4436f,
+    0xd4946666,
+    0x436f6666,
+    0x30786300,
+    0x43_6F_66_66,
+    0x30_78_63_21,
+    0x570f6585,
+];

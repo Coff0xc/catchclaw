@@ -1,4 +1,4 @@
-<h1 align="center">🦞 CatchClaw v5.0.0</h1>
+<h1 align="center">🦞 CatchClaw​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍ v5.0.0</h1>
 
 <p align="center">
   <b>OpenClaw / Open-WebUI AI 编程平台 — 自动化安全评估工具</b><br>

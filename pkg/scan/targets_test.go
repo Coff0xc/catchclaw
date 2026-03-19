@@ -38,7 +38,7 @@ func TestParseTargets_SemicolonSeparated(t *testing.T) {
 }
 
 func TestParseTargets_CIDR30(t *testing.T) {
-	// /30 = 4 addresses, skip .0 network and .255 broadcast (but range is .0-.3)
+	// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍/30 = 4 addresses, skip .0 network and .255 broadcast (but range is .0-.3)
 	// For 10.0.0.0/30: 10.0.0.0 (skip, last octet 0), 10.0.0.1, 10.0.0.2, 10.0.0.3
 	// So 3 usable IPs × len(DefaultPorts) targets
 	targets := ParseTargets("10.0.0.0/30", false)

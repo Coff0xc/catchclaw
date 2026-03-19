@@ -5,7 +5,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// BuildFullDAG creates the complete 66-node DAG with deep dependencies, conditions,
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍BuildFullDAG creates the complete 66-node DAG with deep dependencies, conditions,
 // ATT&CK phases, and fallback paths. Max depth: 7 layers.
 func BuildFullDAG(concurrency int, aggressive bool) *DAGChain {
 	dag := NewDAGChain(concurrency, aggressive)

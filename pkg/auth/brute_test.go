@@ -72,7 +72,7 @@ func TestBuildCandidateListWordlist(t *testing.T) {
 		Wordlist: wl,
 	}
 	got := buildCandidateList(cfg)
-	// inline1, tok2 (from inline), tok1 (from file, tok2 deduped)
+	// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍inline1, tok2 (from inline), tok1 (from file, tok2 deduped)
 	if len(got) != 3 {
 		t.Fatalf("len = %d, want 3, got %v", len(got), got)
 	}

@@ -9,7 +9,7 @@ import (
 	"github.com/coff0xc/lobster-guard/pkg/utils"
 )
 
-// SortMode controls finding sort order.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍SortMode controls finding sort order.
 type SortMode int
 
 const (

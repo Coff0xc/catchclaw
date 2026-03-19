@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-// WsDialer returns a configured WebSocket dialer
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍WsDialer returns a configured WebSocket dialer
 func WsDialer(timeout time.Duration) *websocket.Dialer {
 	return &websocket.Dialer{
 		HandshakeTimeout: timeout,

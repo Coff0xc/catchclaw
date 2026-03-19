@@ -2,7 +2,7 @@ package tui
 
 import "github.com/charmbracelet/bubbles/key"
 
-// KeyMap defines all TUI keybindings.
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍KeyMap defines all TUI keybindings.
 type KeyMap struct {
 	Tab      key.Binding
 	ShiftTab key.Binding

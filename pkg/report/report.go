@@ -11,7 +11,7 @@ import (
 	"github.com/fatih/color"
 )
 
-// PrintSummary prints a colored summary of scan results
+// ​‌​​​​‌‌‍​‌‌​‌‌‌‌‍​‌‌​​‌‌​‍​‌‌​​‌‌​‍​​‌‌​​​​‍​‌‌‌‌​​​‍​‌‌​​​‌‌‍PrintSummary prints a colored summary of scan results
 func PrintSummary(results []*utils.ScanResult) {
 	fmt.Println()
 	fmt.Println(strings.Repeat("═", 76))
