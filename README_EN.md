@@ -99,7 +99,7 @@ Built on Tokio async runtime, the DAG engine uses Kahn's topological sort for le
 | **Attack Surface Coverage** | Experience-dependent | WS + HTTP + OAuth + Webhook + Node full coverage |
 | **Dependency Chain Discovery** | Hard to track | DAG auto-discovers vulnerability dependency paths |
 | **Result Visualization** | Manual compilation | Mermaid attack graph + JSON report |
-| **CI/CD Integration** | None | 45+ Nuclei templates plug-and-play |
+| **CI/CD Integration** | None | 24 Nuclei templates plug-and-play |
 
 ---
 
@@ -366,7 +366,7 @@ Grouped by ATT&CK phase and attack category:
 
 ## Nuclei Templates
 
-`nuclei-templates/` contains 45+ standalone Nuclei-compatible YAML templates:
+`nuclei-templates/` contains 24 standalone Nuclei-compatible YAML templates:
 
 ```bash
 # Scan a single target
@@ -403,7 +403,7 @@ catchclaw/
 │           ├── types.rs           # Target / Finding / Severity / ScanResult
 │           ├── http.rs            # HTTP client + false positive filters
 │           └── ws.rs              # GatewayWsClient (WS + challenge detection)
-├── nuclei-templates/              # 45+ Nuclei YAML templates
+├── nuclei-templates/              # 24 Nuclei YAML templates
 ├── scripts/gen_dag_chains.py      # DAG chain generation helper
 ├── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
 └── README.md

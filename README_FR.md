@@ -254,7 +254,7 @@ Par phase ATT&CK et catégorie d'attaque :
 
 ## Modèles Nuclei
 
-`nuclei-templates/` contient 45+ modèles YAML compatibles Nuclei :
+`nuclei-templates/` contient 24 modèles YAML compatibles Nuclei :
 
 ```bash
 nuclei -t nuclei-templates/ -u http://CIBLE:PORT
@@ -286,7 +286,7 @@ catchclaw/
 │           ├── types.rs           # Target / Finding / Severity / ScanResult
 │           ├── http.rs            # Client HTTP + filtres de faux positifs
 │           └── ws.rs              # GatewayWsClient (WS + détection challenge)
-├── nuclei-templates/              # 45+ modèles YAML Nuclei
+├── nuclei-templates/              # 24 modèles YAML Nuclei
 ├── scripts/gen_dag_chains.py      # Aide à la génération de chaînes DAG
 └── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
 ```

@@ -254,7 +254,7 @@ Exploit Flags:
 
 ## Шаблоны Nuclei
 
-`nuclei-templates/` содержит 45+ автономных Nuclei-совместимых YAML-шаблонов:
+`nuclei-templates/` содержит 24 автономных Nuclei-совместимых YAML-шаблонов:
 
 ```bash
 nuclei -t nuclei-templates/ -u http://ЦЕЛЬ:ПОРТ
@@ -286,7 +286,7 @@ catchclaw/
 │           ├── types.rs           # Target / Finding / Severity / ScanResult
 │           ├── http.rs            # HTTP-клиент + фильтры ложных срабатываний
 │           └── ws.rs              # GatewayWsClient (WS + обнаружение challenge)
-├── nuclei-templates/              # 45+ Nuclei YAML-шаблонов
+├── nuclei-templates/              # 24 Nuclei YAML-шаблонов
 ├── scripts/gen_dag_chains.py      # Помощник генерации DAG-цепочек
 └── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
 ```

@@ -254,7 +254,7 @@ ATT&CKフェーズと攻撃カテゴリ別:
 
 ## Nucleiテンプレート
 
-`nuclei-templates/` に45以上のNuclei互換YAMLテンプレートを同梱:
+`nuclei-templates/` に24+のNuclei互換YAMLテンプレートを同梱:
 
 ```bash
 nuclei -t nuclei-templates/ -u http://ターゲット:ポート
@@ -286,7 +286,7 @@ catchclaw/
 │           ├── types.rs           # Target / Finding / Severity / ScanResult
 │           ├── http.rs            # HTTPクライアント + 誤検知フィルタ
 │           └── ws.rs              # GatewayWsClient (WS + チャレンジ検出)
-├── nuclei-templates/              # 45以上のNuclei YAMLテンプレート
+├── nuclei-templates/              # 24+のNuclei YAMLテンプレート
 ├── scripts/gen_dag_chains.py      # DAGチェーン生成ヘルパー
 └── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
 ```

@@ -99,7 +99,7 @@
 | **攻击面覆盖** | 靠经验判断 | WS + HTTP + OAuth + Webhook + Node 全覆盖 |
 | **依赖链发现** | 难以追踪 | DAG 自动发现漏洞依赖路径 |
 | **结果可视化** | 手工整理 | Mermaid 攻击图 + JSON 报告 |
-| **CI/CD 集成** | 无 | 45+ Nuclei 模板即插即用 |
+| **CI/CD 集成** | 无 | 24 Nuclei 模板即插即用 |
 
 ---
 
@@ -366,7 +366,7 @@ Exploit Flags:
 
 ## Nuclei 模板
 
-`nuclei-templates/` 包含 45+ 个独立 Nuclei 兼容 YAML 模板：
+`nuclei-templates/` 包含 24 个独立 Nuclei 兼容 YAML 模板：
 
 ```bash
 # 扫描单目标
@@ -403,7 +403,7 @@ catchclaw/
 │           ├── types.rs           # Target / Finding / Severity / ScanResult
 │           ├── http.rs            # HTTP 客户端 + 误报过滤器
 │           └── ws.rs              # GatewayWsClient (WS + challenge)
-├── nuclei-templates/              # 45+ Nuclei YAML 模板
+├── nuclei-templates/              # 24 Nuclei YAML 模板
 ├── scripts/gen_dag_chains.py      # DAG 链生成辅助脚本
 ├── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
 └── README.md

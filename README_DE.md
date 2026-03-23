@@ -254,7 +254,7 @@ Nach ATT&CK-Phase und Angriffskategorie:
 
 ## Nuclei-Vorlagen
 
-`nuclei-templates/` enthält 45+ eigenständige Nuclei-kompatible YAML-Vorlagen:
+`nuclei-templates/` enthält 24 eigenständige Nuclei-kompatible YAML-Vorlagen:
 
 ```bash
 nuclei -t nuclei-templates/ -u http://ZIEL:PORT
@@ -286,7 +286,7 @@ catchclaw/
 │           ├── types.rs           # Target / Finding / Severity / ScanResult
 │           ├── http.rs            # HTTP-Client + False-Positive-Filter
 │           └── ws.rs              # GatewayWsClient (WS + Challenge-Erkennung)
-├── nuclei-templates/              # 45+ Nuclei YAML-Vorlagen
+├── nuclei-templates/              # 24 Nuclei YAML-Vorlagen
 ├── scripts/gen_dag_chains.py      # DAG-Ketten-Generierungshilfe
 └── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
 ```
