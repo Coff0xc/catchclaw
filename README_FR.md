@@ -59,8 +59,9 @@
 │                          CatchClaw v5.0.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  ● 59 chaînes DAG       ● 59 modules d'exploit  ● Moteur Async Tokio    │
-│  ● ATT&CK 9 phases      ● Graphe Mermaid        ● Rapports JSON         │
+│  ● ATT&CK 9 phases      ● Graphe Mermaid        ● Rapports JSON/HTML/MD │
 │  ● Tri topologique Kahn  ● Semaphore concurrence ● Condition/Fallback    │
+│  ● Multi-cibles (CIDR)  ● Scan ports / Découverte● 200+ payloads ext.   │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  Surface d'attaque: Gateway WS API | HTTP REST | OAuth | Webhook | Node  │
 │  Couverture: SSRF | RCE | Vol de clés | Détournement de session | Priv.  │
@@ -116,7 +117,31 @@ Construit sur le runtime asynchrone Tokio, le moteur DAG utilise le tri topologi
 - **HTTP REST** — Redirections désactivées pour éviter les faux positifs OAuth 302
 - **Élimination des faux positifs** — Pages challenge / fallback SPA / refus LLM
 - **Support TLS** — Backend rustls, `--tls` active HTTPS/WSS
-- **Rapports JSON** — Sortie structurée, classifiée par sévérité
+- **Rapports multi-formats** — JSON + HTML (thème sombre) + Markdown
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### Améliorations du scan
+
+- **Scan multi-cibles** — CIDR (/24), plage IP, séparé par virgules, fichier cibles
+- **Scan de ports** — TCP connect scan + plages personnalisées
+- **Découverte de services** — Empreinte OpenClaw (API/WebSocket/santé)
+- **200+ Payloads** — SSRF/Injection/Prompt/Auth/XSS bibliothèque YAML externe
+- **Configuration** — Fichier TOML + profils de scan + support proxy
+
+</td>
+<td width="50%">
+
+### Expérience CLI
+
+- **`--profile`** — Profils de scan prédéfinis (quick/stealth/full)
+- **`--severity-filter`** — Filtrer par niveau de sévérité
+- **`--format`** — Format de sortie : json/html/markdown
+- **`--dry-run`** — Aperçu du plan DAG sans scanner
+- **`--targets-file`** — Fichier de cibles en batch
 
 </td>
 </tr>
@@ -155,6 +180,24 @@ catchclaw scan -t CIBLE_IP:PORT -o report.json
 # Scan avec jeton d'authentification
 catchclaw scan -t CIBLE_IP:PORT --token "your-gateway-token"
 
+# Rapport HTML
+catchclaw scan -t CIBLE_IP:PORT -o report.html --format html
+
+# Scan multi-cibles (CIDR)
+catchclaw scan --targets "192.168.1.0/24:8080"
+
+# Scan batch depuis fichier
+catchclaw scan -f targets.txt -o results.json
+
+# Utiliser un profil
+catchclaw scan -t CIBLE_IP:PORT --profile stealth
+
+# Résultats critiques/élevés uniquement
+catchclaw scan -t CIBLE_IP:PORT --severity-filter critical,high
+
+# Aperçu du plan d'exécution
+catchclaw scan -t CIBLE_IP:PORT --dry-run
+
 # Exécuter la chaîne d'attaque complète
 catchclaw exploit -t CIBLE_IP:PORT --token xxx
 
@@ -175,15 +218,23 @@ Commands:
   scan      Scan de sécurité complet (construction DAG → exécution → résumé)
   exploit   Exécuter les chaînes d'attaque (DAG complet ou nœud unique)
   list      Lister tous les modules d'exploit enregistrés
+  config    Générer ou valider le fichier de configuration
 
 Scan Flags:
   -t, --target <HOST:PORT>     Adresse cible
-      --token <TOKEN>          Jeton Gateway (ou variable CATCHCLAWGUARD_TOKEN)
+      --targets <TARGETS>      Multi-cibles (CIDR, plage, séparé par virgules)
+  -f, --targets-file <FILE>    Fichier de cibles (une par ligne)
+      --token <TOKEN>          Jeton Gateway (ou variable CATCHCLAW_TOKEN)
       --timeout <SECS>         Délai de requête en secondes (défaut 10)
-  -o, --output <FILE>          Chemin de sortie du rapport JSON
+  -o, --output <FILE>          Chemin de sortie du rapport
+      --format <FORMAT>        Format de sortie : json/html/markdown (défaut json)
+      --profile <PROFILE>      Profil de scan : quick/stealth/full
+      --severity-filter <LVL>  Filtrer par sévérité (ex. critical,high)
+      --dry-run                Aperçu du plan DAG sans exécution
       --concurrency <N>        Workers parallèles max (défaut 10)
       --tls                    Utiliser HTTPS/WSS
       --callback <URL>         URL de callback SSRF
+      --config <FILE>          Fichier de configuration TOML
 
 Exploit Flags:
   -t, --target <HOST:PORT>     Adresse cible
@@ -272,7 +323,7 @@ catchclaw/
 │   ├── Cargo.toml                 # Configuration du projet
 │   └── src/
 │       ├── main.rs                # Point d'entrée CLI (clap derive)
-│       ├── config/mod.rs          # AppConfig + constantes de protocole
+│       ├── config/mod.rs          # AppConfig + profils + constantes
 │       ├── chain/
 │       │   ├── dag.rs             # Moteur DAG (tri topo + concurrence + AttackGraph)
 │       │   └── chains.rs          # 59 définitions de nœuds de chaînes d'attaque
@@ -280,12 +331,22 @@ catchclaw/
 │       │   ├── registry.rs        # ExploitMeta + système d'enregistrement inventory
 │       │   ├── base.rs            # ExploitCtx contexte partagé
 │       │   └── *.rs               # 59 implémentations de modules d'exploit
-│       ├── scan/mod.rs            # Orchestration du scan complet
-│       ├── report/mod.rs          # Sortie de rapport JSON
+│       ├── scan/mod.rs            # Scan complet + multi-cibles
+│       ├── report/mod.rs          # Rapports JSON/HTML/Markdown
 │       └── utils/
 │           ├── types.rs           # Target / Finding / Severity / ScanResult
 │           ├── http.rs            # Client HTTP + filtres de faux positifs
-│           └── ws.rs              # GatewayWsClient (WS + détection challenge)
+│           ├── ws.rs              # GatewayWsClient (WS + détection challenge)
+│           ├── target_parser.rs   # Analyse multi-cibles
+│           ├── port_scan.rs       # Scan de ports + découverte OpenClaw
+│           ├── payload_registry.rs # PayloadRegistry (chargement YAML + fusion répertoire)
+│           └── payload_mutator.rs # Moteur de mutation de payloads
+├── payloads/                      # 200+ payloads externes (YAML)
+│   ├── ssrf/                      # SSRF: AWS/GCP/Azure/contournement IP
+│   ├── command_injection/         # Injection commande/métacaractères shell
+│   ├── prompt_injection/          # Injection Prompt/jailbreak
+│   ├── auth/                      # Token/header/traversée chemin
+│   └── xss/                       # XSS: reflété/événement/contournement filtre
 ├── nuclei-templates/              # 24 modèles YAML Nuclei
 ├── scripts/gen_dag_chains.py      # Aide à la génération de chaînes DAG
 └── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0

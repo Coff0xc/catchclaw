@@ -59,8 +59,9 @@
 │                          CatchClaw v5.0.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  ● 59 DAG-цепочек атак  ● 59 Exploit-модулей    ● Async Tokio-движок    │
-│  ● ATT&CK 9 фаз        ● Mermaid граф атак     ● JSON-отчёты           │
+│  ● ATT&CK 9 фаз        ● Mermaid граф атак     ● JSON/HTML/MD-отчёты   │
 │  ● Топосортировка Кана  ● Semaphore конкуренция ● Условия/Откат         │
+│  ● Мульти-цели (CIDR)  ● Скан портов / Обнаруж.● 200+ внешних пейлоадов│
 ├────────────────────────────────────────────────────────────────────────────┤
 │  Поверхность атаки: Gateway WS API | HTTP REST | OAuth | Webhook | Node │
 │  Покрытие: SSRF | RCE | Кража ключей | Перехват сессий | Эскалация      │
@@ -116,7 +117,31 @@
 - **HTTP REST** — отключение редиректов для предотвращения OAuth 302 ложных срабатываний
 - **Устранение ложных срабатываний** — challenge-страницы / SPA-фоллбэк / LLM-отказ
 - **TLS** — бэкенд rustls, `--tls` для HTTPS/WSS
-- **JSON-отчёты** — структурированный вывод с классификацией по серьёзности
+- **Мульти-формат отчёты** — JSON + HTML (тёмная тема) + Markdown
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### Улучшения сканирования
+
+- **Мульти-целевое сканирование** — CIDR (/24), диапазон IP, через запятую, файл целей
+- **Сканирование портов** — TCP connect + пользовательские диапазоны
+- **Обнаружение сервисов** — Фингерпринт OpenClaw (API/WebSocket/health)
+- **200+ Пейлоадов** — SSRF/Инъекция/Prompt/Auth/XSS внешняя YAML-библиотека
+- **Конфигурация** — TOML-файл + профили сканирования + поддержка прокси
+
+</td>
+<td width="50%">
+
+### CLI-интерфейс
+
+- **`--profile`** — Пресеты сканирования (quick/stealth/full)
+- **`--severity-filter`** — Фильтр по уровню серьёзности
+- **`--format`** — Формат вывода: json/html/markdown
+- **`--dry-run`** — Просмотр плана DAG без сканирования
+- **`--targets-file`** — Пакетный файл целей
 
 </td>
 </tr>
@@ -155,6 +180,24 @@ catchclaw scan -t ЦЕЛЬ_IP:ПОРТ -o report.json
 # Сканирование с токеном
 catchclaw scan -t ЦЕЛЬ_IP:ПОРТ --token "your-gateway-token"
 
+# HTML-отчёт
+catchclaw scan -t ЦЕЛЬ_IP:ПОРТ -o report.html --format html
+
+# Мульти-целевой скан (CIDR)
+catchclaw scan --targets "192.168.1.0/24:8080"
+
+# Пакетный скан из файла
+catchclaw scan -f targets.txt -o results.json
+
+# Использовать профиль
+catchclaw scan -t ЦЕЛЬ_IP:ПОРТ --profile stealth
+
+# Только критические/высокие
+catchclaw scan -t ЦЕЛЬ_IP:ПОРТ --severity-filter critical,high
+
+# Просмотр плана выполнения
+catchclaw scan -t ЦЕЛЬ_IP:ПОРТ --dry-run
+
 # Полная цепочка атак
 catchclaw exploit -t ЦЕЛЬ_IP:ПОРТ --token xxx
 
@@ -175,15 +218,23 @@ Commands:
   scan      Полное сканирование (построение DAG → выполнение → сводка)
   exploit   Выполнение цепочек атак (полный DAG или одиночный узел)
   list      Список всех зарегистрированных Exploit-модулей
+  config    Генерация или валидация файла конфигурации
 
 Scan Flags:
   -t, --target <HOST:PORT>     Адрес цели
-      --token <TOKEN>          Токен Gateway (или перем. CATCHCLAWGUARD_TOKEN)
+      --targets <TARGETS>      Мульти-цели (CIDR, диапазон, через запятую)
+  -f, --targets-file <FILE>    Файл целей (одна на строку)
+      --token <TOKEN>          Токен Gateway (или перем. CATCHCLAW_TOKEN)
       --timeout <SECS>         Таймаут запроса в секундах (по умолч. 10)
-  -o, --output <FILE>          Путь вывода JSON-отчёта
+  -o, --output <FILE>          Путь вывода отчёта
+      --format <FORMAT>        Формат вывода: json/html/markdown (по умолч. json)
+      --profile <PROFILE>      Профиль скана: quick/stealth/full
+      --severity-filter <LVL>  Фильтр по серьёзности (напр. critical,high)
+      --dry-run                Просмотр плана DAG без выполнения
       --concurrency <N>        Макс. параллельных воркеров (по умолч. 10)
       --tls                    Использовать HTTPS/WSS
       --callback <URL>         URL обратного вызова SSRF
+      --config <FILE>          TOML-файл конфигурации
 
 Exploit Flags:
   -t, --target <HOST:PORT>     Адрес цели
@@ -272,7 +323,7 @@ catchclaw/
 │   ├── Cargo.toml                 # Конфигурация проекта
 │   └── src/
 │       ├── main.rs                # Точка входа CLI (clap derive)
-│       ├── config/mod.rs          # AppConfig + константы протокола
+│       ├── config/mod.rs          # AppConfig + профили + константы
 │       ├── chain/
 │       │   ├── dag.rs             # DAG-движок (топосорт + конкуренция + AttackGraph)
 │       │   └── chains.rs          # 59 определений узлов цепочек атак
@@ -280,12 +331,22 @@ catchclaw/
 │       │   ├── registry.rs        # ExploitMeta + система регистрации inventory
 │       │   ├── base.rs            # ExploitCtx общий контекст
 │       │   └── *.rs               # 59 реализаций Exploit-модулей
-│       ├── scan/mod.rs            # Оркестрация полного сканирования
-│       ├── report/mod.rs          # Вывод JSON-отчётов
+│       ├── scan/mod.rs            # Полное сканирование + мульти-целевое
+│       ├── report/mod.rs          # JSON/HTML/Markdown-отчёты
 │       └── utils/
 │           ├── types.rs           # Target / Finding / Severity / ScanResult
 │           ├── http.rs            # HTTP-клиент + фильтры ложных срабатываний
-│           └── ws.rs              # GatewayWsClient (WS + обнаружение challenge)
+│           ├── ws.rs              # GatewayWsClient (WS + обнаружение challenge)
+│           ├── target_parser.rs   # Мульти-целевой парсинг
+│           ├── port_scan.rs       # Скан портов + обнаружение OpenClaw
+│           ├── payload_registry.rs # PayloadRegistry (загрузка YAML + слияние каталогов)
+│           └── payload_mutator.rs # Движок мутации пейлоадов
+├── payloads/                      # 200+ внешних пейлоадов (YAML)
+│   ├── ssrf/                      # SSRF: AWS/GCP/Azure/обход IP
+│   ├── command_injection/         # Инъекция команд/метасимволы
+│   ├── prompt_injection/          # Prompt-инъекция/jailbreak
+│   ├── auth/                      # Token/заголовки/обход пути
+│   └── xss/                       # XSS: отражённый/события/обход фильтра
 ├── nuclei-templates/              # 24 Nuclei YAML-шаблонов
 ├── scripts/gen_dag_chains.py      # Помощник генерации DAG-цепочек
 └── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
