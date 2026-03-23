@@ -4,6 +4,27 @@ All notable changes to CatchClaw will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+- External YAML payload file loading via `PayloadRegistry`
+- TOML profile mechanism for scan presets (quick/full/stealth)
+- HTML report generation (dark-themed, self-contained) and Markdown report output
+- Release CI workflow for automated multi-platform builds (Linux/macOS/Windows)
+- `rustfmt --check` and `cargo-audit` security scanning in CI pipeline
+- 53 new unit tests (38 → 91 total)
+
+### Fixed
+- MinGW linker failure on paths containing CJK/bracket characters
+- `log_clean()` / `log_outcome()` signature mismatch across 59 exploit modules
+- `rce.rs` doc comment syntax error (`!` → `//!`)
+- Missing `colored::Colorize` import in report module
+- DAG test helpers updated for `(Vec<Finding>, ExploitOutcome)` tuple type
+- Config serde defaults, challenge response test escaping, Unicode char count
+
+### Changed
+- Nuclei template count corrected from 45+ to 24 across all READMEs
+
 ## [5.0.0] - 2026-03-19
 
 ### Changed
@@ -30,7 +51,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Shodan/FOFA asset discovery
 - AI-powered fuzzing module
 - Built-in CVE database
-- HTML report generation (JSON only for now)
+- HTML report generation (JSON only for now) — *restored in [Unreleased]*
 - MCP stdio server
 
 ## [4.0.0] - 2026-03-17
