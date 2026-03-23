@@ -1,208 +1,371 @@
-// Core orchestration framework for offensive x-ray classification
-#[allow(dead_code)]
-use crate::chain::dag::{has_any_finding, ChainNode, DagChain};
+//! Declarative chain definition system
+//!
+//! This module provides a declarative way to define attack chains
+//! using static configuration instead of repetitive code.
+
+use crate::chain::dag::{ChainNode, DagChain};
 use crate::exploit;
 
-/// Build the full attack DAG - 59 nodes, 5 layers, ATT&CK phases.
+/// Attack chain node definition for declarative configuration
+#[derive(Debug, Clone)]
+pub struct ChainDef {
+    pub id: u32,
+    pub name: &'static str,
+    pub category: &'static str,
+    pub phase: &'static str,
+    pub depends_on: &'static [u32],
+    pub fallback_for: Option<u32>,
+    pub check_fn: &'static str, // Function identifier
+}
+
+/// Macro to define a chain node concisely
+#[macro_export]
+macro_rules! chain_node {
+    // Basic node with no dependencies
+    ($id:expr, $name:expr, $cat:expr, $phase:expr, $check:expr) => {
+        $crate::chain::ChainDef {
+            id: $id,
+            name: $name,
+            category: $cat,
+            phase: $phase,
+            depends_on: &[],
+            fallback_for: None,
+            check_fn: $check,
+        }
+    };
+    // Node with dependencies
+    ($id:expr, $name:expr, $cat:expr, $phase:expr, $deps:expr, $check:expr) => {
+        $crate::chain::ChainDef {
+            id: $id,
+            name: $name,
+            category: $cat,
+            phase: $phase,
+            depends_on: $deps,
+            fallback_for: None,
+            check_fn: $check,
+        }
+    };
+    // Node with dependencies and fallback
+    ($id:expr, $name:expr, $cat:expr, $phase:expr, $deps:expr, $fallback:expr, $check:expr) => {
+        $crate::chain::ChainDef {
+            id: $id,
+            name: $name,
+            category: $cat,
+            phase: $phase,
+            depends_on: $deps,
+            fallback_for: Some($fallback),
+            check_fn: $check,
+        }
+    };
+}
+
+/// All chain definitions as a static array
+pub static CHAIN_DEFINITIONS: &[ChainDef] = &[
+    // === Recon Phase (Level 0) ===
+    chain_node!(0, "CORS Bypass", "config", "Recon", "cors_bypass::check"),
+    chain_node!(13, "WS Hijack", "transport", "Recon", "ws_hijack::check"),
+    chain_node!(35, "Auth Mode Abuse", "auth", "Recon", "auth_mode_abuse::check"),
+    chain_node!(15, "Log Disclosure", "disclosure", "Recon", &[0], "log_disclosure::check"),
+    chain_node!(36, "Hidden Content", "disclosure", "Recon", &[0], "hidden_content::check"),
+    chain_node!(37, "Origin Wildcard", "config", "Recon", &[0], "origin_wildcard::check"),
+
+    // === Initial Access Phase (Level 1) ===
+    chain_node!(1, "SSRF", "ssrf", "InitAccess", &[0], "ssrf::check"),
+    chain_node!(2, "Eval Injection", "injection", "InitAccess", &[0], "eval_inject::check"),
+    chain_node!(4, "Pairing Brute", "auth", "InitAccess", &[0, 35], "pairing_brute::check"),
+    chain_node!(6, "Prompt Injection", "injection", "InitAccess", &[0], "prompt_inject::check"),
+    chain_node!(19, "OAuth Abuse", "auth", "InitAccess", &[0, 35], "oauth_abuse::check"),
+    chain_node!(20, "Responses API", "api", "InitAccess", &[0], "responses_exploit::check"),
+    chain_node!(31, "MCP Plugin Inject", "injection", "InitAccess", &[0], "mcp_inject::check"),
+    chain_node!(32, "ACP Bypass", "auth", "InitAccess", &[0, 35], "acp_bypass::check"),
+    chain_node!(33, "Unicode Bypass", "injection", "InitAccess", &[0], "unicode_bypass::check"),
+    chain_node!(34, "Channel Inject", "injection", "InitAccess", &[0], "channel_inject::check"),
+    chain_node!(38, "CSRF No Origin", "config", "InitAccess", &[0], "csrf_no_origin::check"),
+    chain_node!(39, "Silent Pair", "auth", "InitAccess", &[0, 35], "silent_pair_abuse::check"),
+    chain_node!(42, "Ratelimit Bypass", "auth", "InitAccess", &[0], "ratelimit_scope_bypass::check"),
+
+    // === Credential Access Phase ===
+    chain_node!(3, "API Key Steal", "credential", "CredAccess", &[0], "apikey_steal::check"),
+    chain_node!(43, "OAuth Token Theft", "credential", "CredAccess", &[19], "oauth_token_theft::check"),
+
+    // === Execution Phase ===
+    chain_node!(7, "RCE Check", "rce", "Execution", &[2], "rce::check"),
+    chain_node!(8, "Hook Injection", "injection", "Execution", &[0, 6], "hook_inject::check"),
+    chain_node!(11, "Tools Invoke", "rce", "Execution", &[0], "tools_invoke::check"),
+    chain_node!(16, "Patch Escape", "traversal", "Execution", &[0], "patch_escape::check"),
+    chain_node!(5, "Agent Inject", "injection", "Execution", &[6], "agent_inject::check"),
+    chain_node!(14, "Agent File Inject", "injection", "Execution", &[5], "agent_file_inject::check"),
+    chain_node!(45, "Marker Spoof", "injection", "Execution", &[6], "marker_spoof::check"),
+    chain_node!(49, "Keychain Cmd Inject", "rce", "Execution", &[0], "keychain_cmd_inject::check"),
+    chain_node!(51, "Browser Request", "ssrf", "Execution", &[0], "browser_request::check"),
+    chain_node!(53, "Bypass Soul", "injection", "Execution", &[6], "bypass_soul::check"),
+    chain_node!(54, "Approval Hijack", "auth", "Execution", &[0], "approval_hijack::check"),
+
+    // === Persistence Phase ===
+    chain_node!(10, "Config Tamper", "config", "Persistence", &[0], "config_tamper::check"),
+    chain_node!(57, "Skill Poison", "injection", "Persistence", &[0], "skill_poison::check"),
+    chain_node!(58, "Webhook Verify", "config", "Persistence", &[0], "webhook_verify::check"),
+    chain_node!(60, "Flood Guard Reset", "auth", "Persistence", &[42], "flood_guard_reset::check"),
+
+    // === Lateral Movement Phase ===
+    chain_node!(61, "Rogue Node", "injection", "LateralMove", &[0], "rogue_node::check"),
+
+    // === Exfiltration Phase ===
+    chain_node!(65, "C2 Exfil", "exfil", "Exfiltration", &[7], "c2_exfil::check"),
+    chain_node!(66, "Memory Data Leak", "dataleak", "Exfiltration", &[0], "memory_data_leak::check"),
+    chain_node!(67, "Talk Secrets", "dataleak", "Exfiltration", &[0], "talk_secrets::check"),
+    chain_node!(69, "Transcript Theft", "dataleak", "Exfiltration", &[0], "transcript_theft::check"),
+
+    // === Session/Credential Access ===
+    chain_node!(12, "Session Hijack", "session", "CredAccess", &[0], "session_hijack::check"),
+    chain_node!(9, "Secret Extract", "credential", "CredAccess", &[0, 3], "secret_extract::check"),
+    chain_node!(63, "Secrets Resolve", "credential", "CredAccess", &[9], "secrets_resolve::check"),
+    chain_node!(64, "Exec Socket Leak", "dataleak", "CredAccess", &[11], "exec_socket_leak::check"),
+    chain_node!(56, "Auth Disable Leak", "auth", "CredAccess", &[35], "auth_disable_leak::check"),
+];
+
+/// Build the full attack DAG from definitions
 pub fn build_full_dag(concurrency: usize) -> DagChain {
     let mut dag = DagChain::new(concurrency);
 
-    // === Recon ===
-    dag.add_node(ChainNode { id: 0, name: "CORS Bypass".into(), category: "config".into(), phase: "Recon".into(),
-        depends_on: vec![], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::cors_bypass::check(t, c))) });
-    dag.add_node(ChainNode { id: 13, name: "WS Hijack".into(), category: "transport".into(), phase: "Recon".into(),
-        depends_on: vec![], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::ws_hijack::check(t, c))) });
-    dag.add_node(ChainNode { id: 35, name: "Auth Mode Abuse".into(), category: "auth".into(), phase: "Recon".into(),
-        depends_on: vec![], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::auth_mode_abuse::check(t, c))) });
-    dag.add_node(ChainNode { id: 15, name: "Log Disclosure".into(), category: "disclosure".into(), phase: "Recon".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::log_disclosure::check(t, c))) });
-    dag.add_node(ChainNode { id: 36, name: "Hidden Content".into(), category: "disclosure".into(), phase: "Recon".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::hidden_content::check(t, c))) });
-    dag.add_node(ChainNode { id: 37, name: "Origin Wildcard".into(), category: "config".into(), phase: "Recon".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::origin_wildcard::check(t, c))) });
-    // === InitAccess ===
-    dag.add_node(ChainNode { id: 1, name: "SSRF".into(), category: "ssrf".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::ssrf::check(t, c))) });
-    dag.add_node(ChainNode { id: 2, name: "Eval Injection".into(), category: "injection".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::eval_inject::check(t, c))) });
-    // === CredAccess ===
-    dag.add_node(ChainNode { id: 3, name: "API Key Steal".into(), category: "credential".into(), phase: "CredAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::apikey_steal::check(t, c))) });
-    // === InitAccess ===
-    dag.add_node(ChainNode { id: 4, name: "Pairing Brute".into(), category: "auth".into(), phase: "InitAccess".into(),
-        depends_on: vec![0, 35], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::pairing_brute::check(t, c))) });
-    dag.add_node(ChainNode { id: 6, name: "Prompt Injection".into(), category: "injection".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::prompt_inject::check(t, c))) });
-    dag.add_node(ChainNode { id: 19, name: "OAuth Abuse".into(), category: "auth".into(), phase: "InitAccess".into(),
-        depends_on: vec![0, 35], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::oauth_abuse::check(t, c))) });
-    dag.add_node(ChainNode { id: 20, name: "Responses API".into(), category: "api".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::responses_exploit::check(t, c))) });
-    dag.add_node(ChainNode { id: 21, name: "WS Fuzz".into(), category: "fuzz".into(), phase: "InitAccess".into(),
-        depends_on: vec![13], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::ws_fuzz::check(t, c))) });
-    dag.add_node(ChainNode { id: 31, name: "MCP Plugin ​Inject".into(), category: "injection".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::mcp_inject::check(t, c))) });
-    dag.add_node(ChainNode { id: 32, name: "ACP Bypass".into(), category: "auth".into(), phase: "InitAccess".into(),
-        depends_on: vec![0, 35], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::acp_bypass::check(t, c))) });
-    dag.add_node(ChainNode { id: 33, name: "Unicode Bypass".into(), category: "injection".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::unicode_bypass::check(t, c))) });
-    dag.add_node(ChainNode { id: 34, name: "Channel Inject".into(), category: "injection".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::channel_inject::check(t, c))) });
-    dag.add_node(ChainNode { id: 38, name: "CSRF No Origin".into(), category: "config".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::csrf_no_origin::check(t, c))) });
-    dag.add_node(ChainNode { id: 39, name: "Silent Pair".into(), category: "auth".into(), phase: "InitAccess".into(),
-        depends_on: vec![0, 35], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::silent_pair_abuse::check(t, c))) });
-    dag.add_node(ChainNode { id: 40, name: "SSRF Proxy Bypass".into(), category: "ssrf".into(), phase: "InitAccess".into(),
-        depends_on: vec![1], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::ssrf_proxy_bypass::check(t, c))) });
-    dag.add_node(ChainNode { id: 41, name: "SSRF ‌Rebind".into(), category: "ssrf".into(), phase: "InitAccess".into(),
-        depends_on: vec![1], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::ssrf_rebind::check(t, c))) });
-    dag.add_node(ChainNode { id: 42, name: "Ratelimit Bypass".into(), category: "auth".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::ratelimit_scope_bypass::check(t, c))) });
-    // === CredAccess ===
-    dag.add_node(ChainNode { id: 43, name: "OAuth Token Theft".into(), category: "credential".into(), phase: "CredAccess".into(),
-        depends_on: vec![19], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::oauth_token_theft::check(t, c))) });
-    // === InitAccess ===
-    dag.add_node(ChainNode { id: 44, name: "Link Template Inject".into(), category: "injection".into(), phase: "InitAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::link_template_inject::check(t, c))) });
-    // === Execution ===
-    dag.add_node(ChainNode { id: 7, name: "RCE Check".into(), category: "rce".into(), phase: "Execution".into(),
-        depends_on: vec![2], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::rce::check(t, c))) });
-    dag.add_node(ChainNode { id: 8, name: "Hook Injection".into(), category: "injection".into(), phase: "Execution".into(),
-        depends_on: vec![0, 6], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::hook_inject::check(t, c))) });
-    // === CredAccess ===
-    dag.add_node(ChainNode { id: 9, name: "Secret Extract".into(), category: "credential".into(), phase: "CredAccess".into(),
-        depends_on: vec![0, 3], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::secret_extract::check(t, c))) });
-    // === Persistence ===
-    dag.add_node(ChainNode { id: 10, name: "Config Tamper".into(), category: "config".into(), phase: "Persistence".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::config_tamper::check(t, c))) });
-    // === Execution ===
-    dag.add_node(ChainNode { id: 11, name: "Tools Invoke".into(), category: "rce".into(), phase: "Execution".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::tools_invoke::check(t, c))) });
-    // === CredAccess ===
-    dag.add_node(ChainNode { id: 12, name: "Session Hijack".into(), category: "session".into(), phase: "CredAccess".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::session_hijack::check(t, c))) });
-    // === Execution ===
-    dag.add_node(ChainNode { id: 16, name: "Patch Escape".into(), category: "traversal".into(), phase: "Execution".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::patch_escape::check(t, c))) });
-    dag.add_node(ChainNode { id: 5, name: "Agent Inject".into(), category: "injection".into(), phase: "Execution".into(),
-        depends_on: vec![6], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::agent_inject::check(t, c))) });
-    dag.add_node(ChainNode { id: 14, name: "Agent File Inject".into(), category: "injection".into(), phase: "Execution".into(),
-        depends_on: vec![5], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::agent_file_inject::check(t, c))) });
-    dag.add_node(ChainNode { id: 45, name: "Marker Spoof".into(), category: "injection".into(), phase: "Execution".into(),
-        depends_on: vec![6], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::marker_spoof::check(t, c))) });
-    dag.add_node(ChainNode { id: 46, name: "Obfuscation Bypass".into(), category: "injection".into(), phase: "Execution".into(),
-        depends_on: vec![7], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::obfuscation_bypass::check(t, c))) });
-    dag.add_node(ChainNode { id: 47, name: "Skill Scanner Bypass".into(), category: "injection".into(), phase: "Execution".into(),
-        depends_on: vec![7], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::skill_scanner_bypass::check(t, c))) });
-    dag.add_node(ChainNode { id: 48, name: "Exec Race TOCTOU".into(), category: "rce".into(), phase: "Execution".into(),
-        depends_on: vec![11], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::exec_race_toctou::check(t, c))) });
-    dag.add_node(ChainNode { id: 49, name: "Keychain Cmd Inject".into(), category: "rce".into(), phase: "Execution".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::keychain_cmd_inject::check(t, c))) });
-    dag.add_node(ChainNode { id: 50, name: "QMD Cmd Inject".into(), category: "rce".into(), phase: "Execution".into(),
-        depends_on: vec![10], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::qmd_cmd_inject::check(t, c))) });
-    dag.add_node(ChainNode { id: 51, name: "Browser Request".into(), category: "ssrf".into(), phase: "Execution".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::browser_request::check(t, c))) });
-    dag.add_node(ChainNode { id: 52, name: "Browser Upload Traversal".into(), category: "rce".into(), phase: "Execution".into(),
-        depends_on: vec![51], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::browser_upload_traversal::check(t, c))) });
-    dag.add_node(ChainNode { id: 53, name: "Bypass Soul".into(), category: "injection".into(), phase: "Execution".into(),
-        depends_on: vec![6], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::bypass_soul::check(t, c))) });
-    dag.add_node(ChainNode { id: 54, name: "Approval Hijack".into(), category: "auth".into(), phase: "Execution".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::approval_hijack::check(t, c))) });
-    // === Persistence ===
-    dag.add_node(ChainNode { id: 55, name: "Cron Bypass".into(), category: "rce".into(), phase: "Persistence".into(),
-        depends_on: vec![7], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::cron_bypass::check(t, c))) });
-    // === CredAccess ===
-    dag.add_node(ChainNode { id: 56, name: "Auth Disable Leak".into(), category: "auth".into(), phase: "CredAccess".into(),
-        depends_on: vec![35], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::auth_disable_leak::check(t, c))) });
-    // === Persistence ===
-    dag.add_node(ChainNode { id: 57, name: "Skill Poison".into(), category: "injection".into(), phase: "Persistence".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::skill_poison::check(t, c))) });
-    dag.add_node(ChainNode { id: 58, name: "Webhook Verify".into(), category: "config".into(), phase: "Persistence".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::webhook_verify::check(t, c))) });
-    dag.add_node(ChainNode { id: 59, name: "Session File Write".into(), category: "rce".into(), phase: "Persistence".into(),
-        depends_on: vec![12], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::session_file_write::check(t, c))) });
-    dag.add_node(ChainNode { id: 60, name: "Flood Guard Reset".into(), category: "auth".into(), phase: "Persistence".into(),
-        depends_on: vec![42], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::flood_guard_reset::check(t, c))) });
-    // === LateralMove ===
-    dag.add_node(ChainNode { id: 61, name: "Rogue Node".into(), category: "injection".into(), phase: "LateralMove".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::rogue_node::check(t, c))) });
-    // === Execution ===
-    dag.add_node(ChainNode { id: 62, name: "Secret Exec Abuse".into(), category: "rce".into(), phase: "Execution".into(),
-        depends_on: vec![9], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::secret_exec_abuse::check(t, c))) });
-    // === CredAccess ===
-    dag.add_node(ChainNode { id: 63, name: "Secrets Resolve".into(), category: "credential".into(), phase: "CredAccess".into(),
-        depends_on: vec![9], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::secrets_resolve::check(t, c))) });
-    dag.add_node(ChainNode { id: 64, name: "Exec Socket Leak".into(), category: "dataleak".into(), phase: "CredAccess".into(),
-        depends_on: vec![11], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::exec_socket_leak::check(t, c))) });
-    // === ​Exfiltration ===
-    dag.add_node(ChainNode { id: 65, name: "C2 Exfil".into(), category: "exfil".into(), phase: "Exfiltration".into(),
-        depends_on: vec![7], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::c2_exfil::check(t, c))) });
-    dag.add_node(ChainNode { id: 66, name: "Memory Data Leak".into(), category: "dataleak".into(), phase: "Exfiltration".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::memory_data_leak::check(t, c))) });
-    dag.add_node(ChainNode { id: 67, name: "Talk Secrets".into(), category: "dataleak".into(), phase: "Exfiltration".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::talk_secrets::check(t, c))) });
-    dag.add_node(ChainNode { id: 68, name: "Redact Bypass".into(), category: "dataleak".into(), phase: "Exfiltration".into(),
-        depends_on: vec![67], fallback_for: None, condition: Some(Box::new(|r| has_any_finding(r))),
-        execute: Box::new(|t, c| Box::pin(exploit::redact_bypass::check(t, c))) });
-    dag.add_node(ChainNode { id: 69, name: "Transcript Theft".into(), category: "dataleak".into(), phase: "Exfiltration".into(),
-        depends_on: vec![0], fallback_for: None, condition: None,
-        execute: Box::new(|t, c| Box::pin(exploit::transcript_theft::check(t, c))) });
+    for def in CHAIN_DEFINITIONS {
+        dag.add_node(ChainNode {
+            id: def.id,
+            name: def.name.to_string(),
+            category: def.category.to_string(),
+            phase: def.phase.to_string(),
+            depends_on: def.depends_on.to_vec(),
+            fallback_for: def.fallback_for,
+            execute: build_execute_fn(def.check_fn),
+            condition: None,
+        });
+    }
 
     dag
+}
+
+/// Build execute function from function identifier
+fn build_execute_fn(fn_name: &str) -> crate::chain::dag::ExecFn {
+    use crate::exploit::registry::ExploitResult;
+    use crate::config::AppConfig;
+    use crate::utils::Target;
+
+    // Map function names to actual implementations
+    match fn_name {
+        // Recon
+        "cors_bypass::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::cors_bypass::check(t, c).await.into_standard() })
+        }),
+        "ws_hijack::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::ws_hijack::check(t, c).await.into_standard() })
+        }),
+        "auth_mode_abuse::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::auth_mode_abuse::check(t, c).await.into_standard() })
+        }),
+        "log_disclosure::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::log_disclosure::check(t, c).await.into_standard() })
+        }),
+        "hidden_content::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::hidden_content::check(t, c).await.into_standard() })
+        }),
+        "origin_wildcard::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::origin_wildcard::check(t, c).await.into_standard() })
+        }),
+
+        // Initial Access
+        "ssrf::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::ssrf::check(t, c).await.into_standard() })
+        }),
+        "eval_inject::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::eval_inject::check(t, c).await.into_standard() })
+        }),
+        "pairing_brute::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::pairing_brute::check(t, c).await.into_standard() })
+        }),
+        "prompt_inject::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::prompt_inject::check(t, c).await.into_standard() })
+        }),
+        "oauth_abuse::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::oauth_abuse::check(t, c).await.into_standard() })
+        }),
+        "responses_exploit::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::responses_exploit::check(t, c).await.into_standard() })
+        }),
+        "mcp_inject::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::mcp_inject::check(t, c).await.into_standard() })
+        }),
+        "acp_bypass::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::acp_bypass::check(t, c).await.into_standard() })
+        }),
+        "unicode_bypass::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::unicode_bypass::check(t, c).await.into_standard() })
+        }),
+        "channel_inject::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::channel_inject::check(t, c).await.into_standard() })
+        }),
+        "csrf_no_origin::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::csrf_no_origin::check(t, c).await.into_standard() })
+        }),
+        "silent_pair_abuse::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::silent_pair_abuse::check(t, c).await.into_standard() })
+        }),
+        "ratelimit_scope_bypass::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::ratelimit_scope_bypass::check(t, c).await.into_standard() })
+        }),
+
+        // Credential Access
+        "apikey_steal::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::apikey_steal::check(t, c).await.into_standard() })
+        }),
+        "oauth_token_theft::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::oauth_token_theft::check(t, c).await.into_standard() })
+        }),
+        "secret_extract::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::secret_extract::check(t, c).await.into_standard() })
+        }),
+        "secrets_resolve::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::secrets_resolve::check(t, c).await.into_standard() })
+        }),
+        "session_hijack::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::session_hijack::check(t, c).await.into_standard() })
+        }),
+        "auth_disable_leak::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::auth_disable_leak::check(t, c).await.into_standard() })
+        }),
+
+        // Execution
+        "rce::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::rce::check(t, c).await.into_standard() })
+        }),
+        "hook_inject::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::hook_inject::check(t, c).await.into_standard() })
+        }),
+        "tools_invoke::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::tools_invoke::check(t, c).await.into_standard() })
+        }),
+        "patch_escape::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::patch_escape::check(t, c).await.into_standard() })
+        }),
+        "agent_inject::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::agent_inject::check(t, c).await.into_standard() })
+        }),
+        "agent_file_inject::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::agent_file_inject::check(t, c).await.into_standard() })
+        }),
+        "marker_spoof::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::marker_spoof::check(t, c).await.into_standard() })
+        }),
+        "keychain_cmd_inject::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::keychain_cmd_inject::check(t, c).await.into_standard() })
+        }),
+        "browser_request::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::browser_request::check(t, c).await.into_standard() })
+        }),
+        "bypass_soul::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::bypass_soul::check(t, c).await.into_standard() })
+        }),
+        "approval_hijack::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::approval_hijack::check(t, c).await.into_standard() })
+        }),
+
+        // Persistence
+        "config_tamper::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::config_tamper::check(t, c).await.into_standard() })
+        }),
+        "skill_poison::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::skill_poison::check(t, c).await.into_standard() })
+        }),
+        "webhook_verify::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::webhook_verify::check(t, c).await.into_standard() })
+        }),
+        "flood_guard_reset::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::flood_guard_reset::check(t, c).await.into_standard() })
+        }),
+
+        // Lateral Movement
+        "rogue_node::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::rogue_node::check(t, c).await.into_standard() })
+        }),
+
+        // Exfiltration
+        "c2_exfil::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::c2_exfil::check(t, c).await.into_standard() })
+        }),
+        "memory_data_leak::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::memory_data_leak::check(t, c).await.into_standard() })
+        }),
+        "talk_secrets::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::talk_secrets::check(t, c).await.into_standard() })
+        }),
+        "transcript_theft::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::transcript_theft::check(t, c).await.into_standard() })
+        }),
+
+        // Additional modules
+        "exec_socket_leak::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::exec_socket_leak::check(t, c).await.into_standard() })
+        }),
+
+        _ => {
+            // Default: return empty findings
+            Box::new(|_t: Target, _c: AppConfig| {
+                Box::pin(async move { (vec![], crate::exploit::base::ExploitOutcome::Clean(String::new())) })
+            })
+        }
+    }
+}
+
+/// Get chain definition by ID
+pub fn get_chain_by_id(id: u32) -> Option<&'static ChainDef> {
+    CHAIN_DEFINITIONS.iter().find(|d| d.id == id)
+}
+
+/// Get all chains for a specific phase
+pub fn get_chains_by_phase(phase: &str) -> Vec<&'static ChainDef> {
+    CHAIN_DEFINITIONS
+        .iter()
+        .filter(|d| d.phase == phase)
+        .collect()
+}
+
+/// Get chain statistics
+pub fn chain_stats() -> (usize, std::collections::HashMap<&'static str, usize>) {
+    let total = CHAIN_DEFINITIONS.len();
+    let mut by_phase = std::collections::HashMap::new();
+
+    for def in CHAIN_DEFINITIONS {
+        *by_phase.entry(def.phase).or_insert(0) += 1;
+    }
+
+    (total, by_phase)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_chain_definitions_not_empty() {
+        assert!(!CHAIN_DEFINITIONS.is_empty());
+    }
+
+    #[test]
+    fn test_chain_stats() {
+        let (total, by_phase) = chain_stats();
+        assert!(total > 0);
+        assert!(by_phase.contains_key(&"Recon"));
+    }
+
+    #[test]
+    fn test_get_chain_by_id() {
+        let chain = get_chain_by_id(0);
+        assert!(chain.is_some());
+        assert_eq!(chain.unwrap().name, "CORS Bypass");
+    }
+
+    #[test]
+    fn test_get_chains_by_phase() {
+        let recon = get_chains_by_phase("Recon");
+        assert!(!recon.is_empty());
+    }
 }

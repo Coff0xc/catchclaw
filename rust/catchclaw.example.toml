@@ -1,0 +1,46 @@
+# CatchClaw Configuration File
+# Copy this file to catchclaw.toml and customize
+
+[target]
+# Default target host
+# host = "127.0.0.1"
+# Default target port  
+# port = 8080
+# Use TLS by default
+# tls = false
+# Default authentication token
+# token = ""
+
+[scanner]
+# Request timeout in seconds
+timeout = 10
+# Maximum concurrent workers
+concurrency = 10
+# Log level: trace, debug, info, warn, error, quiet
+log_level = "info"
+# Enable aggressive mode (more intensive scanning)
+aggressive = false
+# SSRF callback URL for out-of-band detection
+# callback_url = "http://your-callback-server:8080/callback"
+
+[proxy]
+# HTTP proxy URL
+# http = "http://127.0.0.1:8080"
+# HTTPS proxy URL
+# https = "http://127.0.0.1:8080"
+# SOCKS5 proxy URL
+# socks5 = "socks5://127.0.0.1:1080"
+
+[graph]
+# Export attack graph as Mermaid diagram
+export_mermaid = false
+# Export attack graph as JSON
+export_json = false
+# Output directory for graph files (default: current directory)
+# output_dir = "./reports"
+
+[payload]
+# Path to payloads.yaml file
+# file = "../payloads.yaml"
+# Enable payload mutation/obfuscation
+enable_mutation = false

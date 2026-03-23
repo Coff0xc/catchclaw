@@ -1,31 +1,37 @@
 mod chain;
 mod config;
 mod exploit;
+mod payload;
 mod report;
 mod scan;
 mod utils;
 
 use clap::{Parser, Subcommand};
 use colored::Colorize;
-use config::AppConfig;
+use config::{AppConfig, FileConfig, LogLevel};
 use std::path::PathBuf;
 use std::time::Duration;
 use utils::Target;
 
 #[derive(Parser)]
 #[command(
-    name = "Coff0xc-catchclaw",
+    name = "catchclaw",
     version = "5.0.0",
     about = "OpenClaw 安全评估工具 v5.0.0 (Rust)",
     long_about = "CatchClaw v5.0.0 — OpenClaw/Open-WebUI AI编程平台安全评估工具\n\n\
         功能特性:\n  \
-        DAG 攻击链 | AI 智能模糊测试 | CVE 漏洞库 | 高并发引擎 | MCP 集成\n\n\
+        DAG 攻击链 | 59个 Exploit 模块 | Payload Registry | 配置文件支持 | 代理支持\n\n\
         快速开始:\n  \
-        Coff0xc-catchclaw scan -t 目标IP:端口\n  \
-        Coff0xc-catchclaw scan -t 目标IP:端口 -o report.json\n  \
-        Coff0xc-catchclaw exploit -t 目标IP:端口 --token xxx"
+        catchclaw scan -t 目标IP:端口\n  \
+        catchclaw scan -t 目标IP:端口 -o report.json\n  \
+        catchclaw scan -t 目标IP:端口 --config catchclaw.toml\n  \
+        catchclaw exploit -t 目标IP:端口 --token xxx"
 )]
 struct Cli {
+    /// Configuration file path (TOML/YAML/JSON)
+    #[arg(short, long, global = true, env = "CATCHCLAW_CONFIG")]
+    config: Option<PathBuf>,
+
     #[command(subcommand)]
     command: Commands,
 }
@@ -39,68 +45,111 @@ enum Commands {
         target: String,
 
         /// Authentication token
-        #[arg(long, env = "CATCHCLAWGUARD_TOKEN", default_value = "")]
+        #[arg(long, env = "CATCHCLAW_TOKEN", default_value = "")]
         token: String,
 
         /// Request timeout in seconds
-        #[arg(long, default_value = "10")]
-        timeout: u64,
+        #[arg(long)]
+        timeout: Option<u64>,
 
         /// Output file (JSON)
         #[arg(short, long)]
         output: Option<PathBuf>,
 
-        /// Max ​concurrent exploit workers
-        #[arg(long, default_value = "10")]
-        concurrency: usize,
+        /// Max concurrent exploit workers
+        #[arg(long)]
+        concurrency: Option<usize>,
 
-        /// Use TLS
+        /// Use TLS (HTTPS/WSS)
         #[arg(long)]
         tls: bool,
 
         /// SSRF callback URL
         #[arg(long)]
         callback: Option<String>,
+
+        /// Log level: trace, debug, info, warn, error, quiet
+        #[arg(long)]
+        log_level: Option<String>,
+
+        /// Export attack graph as Mermaid
+        #[arg(long)]
+        export_graph: bool,
+
+        /// Graph output directory
+        #[arg(long)]
+        graph_dir: Option<PathBuf>,
     },
 
-    /// Run specific ​exploit chain
+    /// Run specific exploit chain
     Exploit {
         /// Target host:port
         #[arg(short, long)]
         target: String,
 
         /// Authentication token
-        #[arg(long, env = "CATCHCLAWGUARD_TOKEN", default_value = "")]
+        #[arg(long, env = "CATCHCLAW_TOKEN", default_value = "")]
         token: String,
 
         /// Request timeout in seconds
-        #[arg(long, default_value = "10")]
-        timeout: u64,
+        #[arg(long)]
+        timeout: Option<u64>,
 
         /// Specific chain node ID to run
         #[arg(long)]
         chain_id: Option<u32>,
 
-        /// Use TLS
+        /// Use TLS (HTTPS/WSS)
         #[arg(long)]
         tls: bool,
 
         /// Max concurrent workers
-        #[arg(long, default_value = "10")]
-        concurrency: usize,
+        #[arg(long)]
+        concurrency: Option<usize>,
+
+        /// Log level: trace, debug, info, warn, error, quiet
+        #[arg(long)]
+        log_level: Option<String>,
     },
 
-    /// List ‌registered exploit modules
+    /// List registered exploit modules
     List,
+
+    /// Show current configuration
+    Config,
 }
 
 fn parse_target(s: &str, tls: bool) -> Target {
     let parts: Vec<&str> = s.splitn(2, ':').collect();
     let host = parts[0].to_string();
-    let port = parts.get(1).and_then(|p| p.parse().ok()).unwrap_or(if tls { 443 } else { 8080 });
+    let port = parts
+        .get(1)
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(if tls { 443 } else { 8080 });
     let mut t = Target::new(host, port);
     t.use_tls = tls;
     t
+}
+
+fn setup_logging(level: LogLevel) {
+    let filter = match level {
+        LogLevel::Trace => "catchclaw=trace",
+        LogLevel::Debug => "catchclaw=debug",
+        LogLevel::Info => "catchclaw=info",
+        LogLevel::Warn => "catchclaw=warn",
+        LogLevel::Error => "catchclaw=error",
+        LogLevel::Quiet => "off",
+    };
+
+    if level != LogLevel::Quiet {
+        tracing_subscriber::fmt()
+            .with_env_filter(
+                tracing_subscriber::EnvFilter::from_default_env()
+                    .add_directive(filter.parse().unwrap()),
+            )
+            .with_target(false)
+            .init();
+    }
 }
 
 fn banner() {
@@ -116,17 +165,28 @@ fn banner() {
     );
 }
 
+fn load_config(cli_config_path: Option<PathBuf>) -> FileConfig {
+    if let Some(path) = cli_config_path {
+        match FileConfig::from_file(&path) {
+            Ok(cfg) => {
+                println!("{} Loaded config from {}", "[+]".green(), path.display());
+                return cfg;
+            }
+            Err(e) => {
+                eprintln!("{} Failed to load config: {e}", "[!]".red());
+            }
+        }
+    }
+    FileConfig::load_default()
+}
+
 #[tokio::main]
 async fn main() {
-    tracing_subscriber::fmt()
-        .with_env_filter(
-            tracing_subscriber::EnvFilter::from_default_env()
-                .add_directive("catchclaw=info".parse().unwrap()),
-        )
-        .init();
-
     let cli = Cli::parse();
     banner();
+
+    // Load configuration file
+    let file_config = load_config(cli.config);
 
     match cli.command {
         Commands::Scan {
@@ -137,17 +197,43 @@ async fn main() {
             concurrency,
             tls,
             callback,
+            log_level,
+            export_graph,
+            graph_dir,
         } => {
-            let t = parse_target(&target, tls);
-            let cfg = AppConfig {
-                token,
-                timeout: Duration::from_secs(timeout),
-                callback_url: callback,
-                concurrency,
-                ..Default::default()
-            };
+            let level = log_level
+                .and_then(|s| s.parse().ok())
+                .unwrap_or_default();
+            setup_logging(level);
 
-            let result = scan::run_full_scan(t, cfg).await;
+            let t = parse_target(&target, tls);
+
+            // Merge file config with CLI args
+            let mut cfg = file_config.merge_with_cli(
+                if token.is_empty() { None } else { Some(token) },
+                timeout,
+                concurrency,
+                tls,
+                callback,
+                Some(level),
+            );
+
+            // Override graph settings from CLI
+            if export_graph {
+                cfg.graph.export_mermaid = true;
+            }
+            if let Some(dir) = graph_dir {
+                cfg.graph.output_dir = Some(dir);
+            }
+
+            let result = scan::run_full_scan(t, cfg.clone()).await;
+
+            // Export attack graph if configured
+            if cfg.graph.export_mermaid || cfg.graph.export_json {
+                if let Err(e) = report::export_graph(&result, &cfg.graph).await {
+                    eprintln!("{} Failed to export graph: {e}", "[!]".red());
+                }
+            }
 
             if let Some(path) = output {
                 match report::write_json(&result, &path) {
@@ -164,14 +250,22 @@ async fn main() {
             chain_id,
             tls,
             concurrency,
+            log_level,
         } => {
+            let level = log_level
+                .and_then(|s| s.parse().ok())
+                .unwrap_or_default();
+            setup_logging(level);
+
             let t = parse_target(&target, tls);
-            let cfg = AppConfig {
-                token,
-                timeout: Duration::from_secs(timeout),
+            let cfg = file_config.merge_with_cli(
+                if token.is_empty() { None } else { Some(token) },
+                timeout,
                 concurrency,
-                ..Default::default()
-            };
+                tls,
+                None,
+                Some(level),
+            );
 
             let dag = chain::build_full_dag(cfg.concurrency);
 
@@ -204,6 +298,50 @@ async fn main() {
                 );
             }
             println!("\n  Total: {} modules", exploits.len());
+        }
+
+        Commands::Config => {
+            println!("{} Current configuration:\n", "[*]".cyan());
+            println!("  Default settings:");
+            let default = AppConfig::default();
+            println!("    Timeout: {:?}", default.timeout);
+            println!("    Concurrency: {}", default.concurrency);
+            println!("    Log level: {}", default.log_level);
+            println!("\n  File config loaded: {}", file_config.scanner.is_some() || file_config.target.is_some());
+            
+            if let Some(ref scanner) = file_config.scanner {
+                println!("\n  [scanner]");
+                if let Some(t) = scanner.timeout {
+                    println!("    timeout = {t}");
+                }
+                if let Some(c) = scanner.concurrency {
+                    println!("    concurrency = {c}");
+                }
+                if let Some(ref l) = scanner.log_level {
+                    println!("    log_level = {l}");
+                }
+            }
+            
+            if let Some(ref proxy) = file_config.proxy {
+                println!("\n  [proxy]");
+                if let Some(ref p) = proxy.http {
+                    println!("    http = {p}");
+                }
+                if let Some(ref p) = proxy.https {
+                    println!("    https = {p}");
+                }
+                if let Some(ref p) = proxy.socks5 {
+                    println!("    socks5 = {p}");
+                }
+            }
+            
+            if let Some(ref payload) = file_config.payload {
+                println!("\n  [payload]");
+                if let Some(ref f) = payload.file {
+                    println!("    file = {}", f.display());
+                }
+                println!("    enable_mutation = {}", payload.enable_mutation);
+            }
         }
     }
 }

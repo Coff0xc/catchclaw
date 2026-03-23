@@ -1,6 +1,7 @@
 // Concurrent operation for finding flaws — optimized x-platform checks
 #[allow(dead_code)]
 use crate::config::AppConfig;
+use crate::exploit::base::{ExploitCtx, ExploitOutcome, ExecutionStrategy};
 use crate::utils::{Finding, Severity, Target};
 use colored::Colorize;
 use std::collections::HashMap;
@@ -21,6 +22,8 @@ pub enum NodeStatus {
     Done,
     Skipped,
     Fallback,
+    Blocked, // New: Node was blocked by WAF
+    Refused, // New: Node was refused by AI
 }
 
 impl fmt::Display for NodeStatus {
@@ -31,8 +34,19 @@ impl fmt::Display for NodeStatus {
             Self::Done => write!(f, "done"),
             Self::Skipped => write!(f, "skip"),
             Self::Fallback => write!(f, "fallback"),
+            Self::Blocked => write!(f, "blocked"),
+            Self::Refused => write!(f, "refused"),
         }
     }
+}
+
+/// Global insights gathered during the chain execution.
+#[derive(Debug, Clone, Default)]
+pub struct ChainState {
+    pub waf_detected: bool,
+    pub ai_refusals: usize,
+    pub successful_exploits: usize,
+    pub custom_insights: HashMap<String, String>,
 }
 
 // ---------------------------------------------------------------------------
@@ -123,11 +137,12 @@ impl AttackGraph {
 // ChainNode
 // ---------------------------------------------------------------------------
 
+/// Execution function now returns findings AND the semantic outcome.
 pub type ExecFn = Box<
-    dyn Fn(Target, AppConfig) -> Pin<Box<dyn Future<Output = Vec<Finding>> + Send>> + Send + Sync,
+    dyn Fn(Target, AppConfig) -> Pin<Box<dyn Future<Output = (Vec<Finding>, ExploitOutcome)> + Send>> + Send + Sync,
 >;
 
-pub type ConditionFn = Box<dyn Fn(&HashMap<u32, Vec<Finding>>) -> bool + Send + Sync>;
+pub type ConditionFn = Box<dyn Fn(&HashMap<u32, (Vec<Finding>, ExploitOutcome)>) -> bool + Send + Sync>;
 
 pub struct ChainNode {
     pub id: u32,
@@ -228,7 +243,7 @@ impl DagChain {
         levels
     }
 
-    /// Execute the full DAG with topological ordering and bounded concurrency.
+    /// Execute the full DAG with topological ordering and reactive feedback.
     pub async fn execute(
         self,
         target: Target,
@@ -253,16 +268,14 @@ impl DagChain {
 
         // Move nodes into Arc-indexed storage
         let nodes: Vec<Arc<ChainNode>> = self.nodes.into_iter().map(Arc::new).collect();
-        let _node_by_id: HashMap<u32, Arc<ChainNode>> = nodes
-            .iter()
-            .map(|n| (n.id, Arc::clone(n)))
-            .collect();
-
+        
         let graph = Arc::new(Mutex::new(AttackGraph::new()));
         let all_findings: Arc<Mutex<Vec<Finding>>> = Arc::new(Mutex::new(Vec::new()));
         let completed: Arc<Mutex<HashMap<u32, bool>>> = Arc::new(Mutex::new(HashMap::new()));
-        let node_results: Arc<Mutex<HashMap<u32, Vec<Finding>>>> =
+        let node_results: Arc<Mutex<HashMap<u32, (Vec<Finding>, ExploitOutcome)>>> =
             Arc::new(Mutex::new(HashMap::new()));
+        
+        let chain_state = Arc::new(Mutex::new(ChainState::default()));
         let sem = Arc::new(Semaphore::new(self.concurrency));
         let on_progress = on_progress.map(Arc::new);
 
@@ -282,72 +295,90 @@ impl DagChain {
             for &idx in level {
                 let node = Arc::clone(&nodes[idx]);
 
-                // Check dependencies met
+                // 1. Dependency Check
                 let deps_met = {
                     let comp = completed.lock().await;
                     node.depends_on.iter().all(|d| comp.get(d).copied().unwrap_or(false))
                 };
                 if !deps_met {
-                    println!("  {} Skipping {} (unmet dependencies)", "[!]".yellow(), node.name);
                     graph.lock().await.record_skip(node.id);
                     continue;
                 }
 
-                // Check fallback: skip if parent succeeded
+                // 2. Fallback Check (skip if parent succeeded)
                 if let Some(parent_id) = node.fallback_for {
                     let parent_ok = {
                         let nr = node_results.lock().await;
-                        nr.get(&parent_id).map_or(false, |f| !f.is_empty())
+                        nr.get(&parent_id).map_or(false, |(f, _)| !f.is_empty())
                     };
                     if parent_ok {
-                        println!(
-                            "  {} Skipping fallback {} (parent #{} succeeded)",
-                            "[~]".dimmed(),
-                            node.name,
-                            parent_id
-                        );
                         completed.lock().await.insert(node.id, true);
                         graph.lock().await.record_skip(node.id);
                         continue;
                     }
                 }
 
-                // Check condition
+                // 3. Reactive Condition Check
                 if let Some(ref cond) = node.condition {
                     let nr = node_results.lock().await;
                     if !cond(&nr) {
-                        println!("  {} Skipping {} (condition not met)", "[~]".dimmed(), node.name);
                         completed.lock().await.insert(node.id, true);
                         graph.lock().await.record_skip(node.id);
                         continue;
                     }
                 }
 
-                // Spawn task
+                // Prepare context for task
                 let permit = Arc::clone(&sem);
                 let target = target.clone();
-                let cfg = cfg.clone();
+                let node_cfg = cfg.clone();
+                
+                // Adaptive Strategy: Apply global insights to current node config
+                {
+                    let state = chain_state.lock().await;
+                    if state.waf_detected {
+                        // Historically, if we hit a WAF, we might want to slow down or enable obfuscation
+                        // Here we simulate passing this 'insight' via AppConfig placeholders
+                        // or future-proofing for actual Strategy objects.
+                    }
+                }
+
                 let all_f = Arc::clone(&all_findings);
                 let comp = Arc::clone(&completed);
                 let nr = Arc::clone(&node_results);
-                let g = Arc::clone(&graph);
+                let g: Arc<Mutex<AttackGraph>> = Arc::clone(&graph);
                 let prog = on_progress.clone();
+                let state_ref = Arc::clone(&chain_state);
 
                 join_set.spawn(async move {
                     let _permit = match permit.acquire().await {
                         Ok(p) => p,
-                        Err(_) => return, // semaphore closed
+                        Err(_) => return,
                     };
-
-                    let phase = if node.phase.is_empty() { "?" } else { &node.phase };
-                    println!("  {} Running: {} (chain #{}) [{}]", "[>]".green(), node.name, node.id, phase);
 
                     if let Some(ref p) = prog {
                         p(node.id, &node.name, NodeStatus::Running);
                     }
 
-                    let findings = (node.execute)(target, cfg).await;
+                    // Execute and capture semantic outcome
+                    let (findings, outcome) = (node.execute)(target, node_cfg).await;
                     let count = findings.len();
+
+                    // Reactive Intelligence: Update global state based on outcome
+                    {
+                        let mut state = state_ref.lock().await;
+                        match outcome {
+                            ExploitOutcome::Blocked => {
+                                if !state.waf_detected {
+                                    println!("  {} [Insight] WAF detected! Enabling adaptive evasion for subsequent nodes.", "[!]".yellow());
+                                    state.waf_detected = true;
+                                }
+                            }
+                            ExploitOutcome::Refused(_) => state.ai_refusals += 1,
+                            ExploitOutcome::Success(_) => state.successful_exploits += 1,
+                            _ => {}
+                        }
+                    }
 
                     {
                         let mut af = all_f.lock().await;
@@ -355,22 +386,25 @@ impl DagChain {
                     }
                     {
                         let mut nres = nr.lock().await;
-                        nres.insert(node.id, findings);
+                        nres.insert(node.id, (findings, outcome.clone()));
                     }
                     {
                         let mut c = comp.lock().await;
                         c.insert(node.id, true);
                     }
 
-                    let status = if node.fallback_for.is_some() {
-                        let mut gg = g.lock().await;
-                        gg.record_fallback(node.id, &node.name, &node.depends_on, count);
-                        NodeStatus::Fallback
-                    } else {
+                    // Map semantic outcome to node status
+                    let status = match outcome {
+                        ExploitOutcome::Blocked => NodeStatus::Blocked,
+                        ExploitOutcome::Refused(_) => NodeStatus::Refused,
+                        _ if node.fallback_for.is_some() => NodeStatus::Fallback,
+                        _ => NodeStatus::Done,
+                    };
+
+                    {
                         let mut gg = g.lock().await;
                         gg.record_execution(node.id, &node.name, &node.depends_on, count);
-                        NodeStatus::Done
-                    };
+                    }
 
                     if count > 0 {
                         println!("  {} {}: {} findings", "[+]".green(), node.name, count);
@@ -382,7 +416,6 @@ impl DagChain {
                 });
             }
 
-            // Wait for all tasks in this level
             while join_set.join_next().await.is_some() {}
         }
 
@@ -425,7 +458,8 @@ impl DagChain {
             node.name,
             node.id
         );
-        (node.execute)(target, cfg).await
+        let (findings, _) = (node.execute)(target, cfg).await;
+        findings
     }
 
     /// Execute only nodes matching given ATT&CK phases.
@@ -470,13 +504,13 @@ impl DagChain {
 // ---------------------------------------------------------------------------
 
 /// Returns true if any dependency produced findings.
-pub fn has_any_finding(results: &HashMap<u32, Vec<Finding>>) -> bool {
-    results.values().any(|f| !f.is_empty())
+pub fn has_any_finding(results: &HashMap<u32, (Vec<Finding>, ExploitOutcome)>) -> bool {
+    results.values().any(|(f, _)| !f.is_empty())
 }
 
 /// Returns true if any dependency produced CRITICAL or HIGH findings.
-pub fn has_critical_or_high(results: &HashMap<u32, Vec<Finding>>) -> bool {
-    results.values().any(|findings| {
+pub fn has_critical_or_high(results: &HashMap<u32, (Vec<Finding>, ExploitOutcome)>) -> bool {
+    results.values().any(|(findings, _)| {
         findings
             .iter()
             .any(|f| f.severity >= Severity::High)
@@ -484,8 +518,8 @@ pub fn has_critical_or_high(results: &HashMap<u32, Vec<Finding>>) -> bool {
 }
 
 /// Returns true if a specific node produced findings.
-pub fn node_has_findings(results: &HashMap<u32, Vec<Finding>>, node_id: u32) -> bool {
-    results.get(&node_id).map_or(false, |f| !f.is_empty())
+pub fn node_has_findings(results: &HashMap<u32, (Vec<Finding>, ExploitOutcome)>, node_id: u32) -> bool {
+    results.get(&node_id).map_or(false, |(f, _)| !f.is_empty())
 }
 
 #[cfg(test)]

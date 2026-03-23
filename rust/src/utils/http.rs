@@ -1,17 +1,91 @@
-#[allow(dead_code)]
-use reqwest::{Client, StatusCode};
+//! HTTP client utilities with proxy support
+
+use crate::config::ProxyConfig;
+use reqwest::{Client, StatusCode, header};
 use std::collections::HashMap;
 use std::time::Duration;
+use rand::seq::SliceRandom;
 
-/// Build a pre-configured HTTP client.
+/// Modern browser User-Agent strings for rotation.
+const USER_AGENTS: &[&str] = &[
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+    "Mozilla/5.0 (Apple) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15",
+];
+
+/// Build a stealthy, pre-configured HTTP client.
 pub fn build_client(timeout: Duration) -> Client {
-    Client::builder()
+    build_client_with_proxy(timeout, None)
+}
+
+/// Build HTTP client with optional proxy support.
+pub fn build_client_with_proxy(timeout: Duration, proxy: Option<&ProxyConfig>) -> Client {
+    let mut headers = header::HeaderMap::new();
+
+    // Choose a random modern browser UA
+    let ua = USER_AGENTS
+        .choose(&mut rand::thread_rng())
+        .unwrap_or(&USER_AGENTS[0]);
+
+    // Set standard browser headers to match UA
+    headers.insert(
+        header::ACCEPT,
+        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+            .parse()
+            .unwrap(),
+    );
+    headers.insert(
+        header::ACCEPT_LANGUAGE,
+        "en-US,en;q=0.9".parse().unwrap(),
+    );
+    headers.insert(header::CACHE_CONTROL, "max-age=0".parse().unwrap());
+    headers.insert(
+        "sec-ch-ua",
+        "\"Chromium\";v=\"122\", \"Not(A:Brand\";v=\"24\", \"Google Chrome\";v=\"122\""
+            .parse()
+            .unwrap(),
+    );
+    headers.insert("sec-ch-ua-mobile", "?0".parse().unwrap());
+    headers.insert("sec-ch-ua-platform", "\"Windows\"".parse().unwrap());
+
+    let mut builder = Client::builder()
         .timeout(timeout)
-        .danger_accept_invalid_certs(true)
-        .redirect(reqwest::redirect::Policy::none()) // no redirect — prevents OAuth 302 FP
-        .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) CatchClaw/5.0")
-        .build()
-        .expect("failed to build HTTP client")
+        .default_headers(headers)
+        .user_agent(*ua)
+        // Disable common fingerprints
+        .tcp_nodelay(true)
+        .redirect(reqwest::redirect::Policy::none());
+
+    // Configure proxy if provided
+    if let Some(proxy_config) = proxy {
+        // Try SOCKS5 first, then HTTPS, then HTTP
+        if let Some(ref socks5_url) = proxy_config.socks5 {
+            if let Ok(p) = reqwest::Proxy::all(socks5_url) {
+                builder = builder.proxy(p);
+            }
+        } else if let Some(ref https_url) = proxy_config.https {
+            if let Ok(p) = reqwest::Proxy::https(https_url) {
+                builder = builder.proxy(p);
+            }
+            if let Some(ref http_url) = proxy_config.http {
+                if let Ok(p) = reqwest::Proxy::http(http_url) {
+                    builder = builder.proxy(p);
+                }
+            }
+        } else if let Some(ref http_url) = proxy_config.http {
+            if let Ok(p) = reqwest::Proxy::all(http_url) {
+                builder = builder.proxy(p);
+            }
+        }
+    }
+
+    // Warning: This disables certificate verification
+    // Only use in authorized testing environments
+    builder = builder.danger_accept_invalid_certs(true);
+
+    builder.build().expect("failed to build stealth HTTP client")
 }
 
 /// Standard auth + JSON headers.
@@ -25,7 +99,7 @@ pub fn auth_headers(token: &str) -> HashMap<String, String> {
 }
 
 // ---------------------------------------------------------------------------
-// False-positive ​filters (ported from Go)
+// False-positive filters (ported from Go)
 // ---------------------------------------------------------------------------
 
 /// Detect OpenClaw challenge-response handshake pages.
@@ -64,14 +138,24 @@ pub fn is_real_success(status: StatusCode, body: &str, content_type: Option<&str
 
 /// Common refusal phrases for LLM-based exploit detection.
 pub const REFUSAL_PHRASES: &[&str] = &[
-    "i cannot", "i can't", "i'm not able", "i am not able",
-    "i must decline", "i'm unable", "as an ai",
-    "i don't have the ability", "not possible for me",
-    "i apologize", "i'm sorry, but", "against my programming",
-    "ethical guidelines", "i cannot comply", "i ​won't",
+    "i cannot",
+    "i can't",
+    "i'm not able",
+    "i am not able",
+    "i must decline",
+    "i'm unable",
+    "as an ai",
+    "i don't have the ability",
+    "not possible for me",
+    "i apologize",
+    "i'm sorry, but",
+    "against my programming",
+    "ethical guidelines",
+    "i cannot comply",
+    "i won't",
 ];
 
-/// Check if ‌LLM response is a refusal.
+/// Check if LLM response is a refusal.
 pub fn is_refusal(text: &str) -> bool {
     let lower = text.to_lowercase();
     REFUSAL_PHRASES.iter().any(|p| lower.contains(p))
@@ -97,7 +181,9 @@ mod tests {
 
     #[test]
     fn challenge_response_detects_markers() {
-        assert!(is_challenge_response(r#"{"type":"challenge","token":"abc"}"#));
+        assert!(is_challenge_response(
+            r#"{\"type\":\"challenge\",\"token\":\"abc\"}"#
+        ));
         assert!(is_challenge_response("Welcome to connect.challenge gate"));
         assert!(is_challenge_response("X-Challenge-Token: abc123"));
         assert!(is_challenge_response("use challenge-response auth"));
@@ -110,7 +196,7 @@ mod tests {
 
     #[test]
     fn challenge_response_rejects_normal() {
-        assert!(!is_challenge_response(r#"{"status":"ok","data":[]}"#));
+        assert!(!is_challenge_response(r#"{\"status\":\"ok\",\"data\":[]}"#));
         assert!(!is_challenge_response("Hello World"));
         assert!(!is_challenge_response(""));
     }
@@ -120,7 +206,10 @@ mod tests {
     #[test]
     fn non_api_detects_html() {
         let html = "<!DOCTYPE html><html><body>App</body></html>";
-        assert!(is_non_api_response(html, Some("text/html; charset=utf-8")));
+        assert!(is_non_api_response(
+            html,
+            Some("text/html; charset=utf-8")
+        ));
     }
 
     #[test]
@@ -133,23 +222,42 @@ mod tests {
 
     #[test]
     fn non_api_passes_json() {
-        assert!(!is_non_api_response(r#"{"ok":true}"#, Some("application/json")));
+        assert!(!is_non_api_response(r#"{\"ok\":true}"#, Some("application/json")));
     }
 
     #[test]
     fn non_api_html_without_doctype() {
         // text/html but no <!DOCTYPE — only caught if SPA marker present
-        assert!(!is_non_api_response("<html><body>hi</body></html>", Some("text/html")));
+        assert!(!is_non_api_response(
+            "<html><body>hi</body></html>",
+            Some("text/html")
+        ));
     }
 
     // --- is_real_success ---
 
     #[test]
     fn real_success_filters_correctly() {
-        assert!(is_real_success(StatusCode::OK, r#"{"data":"x"}"#, Some("application/json")));
-        assert!(!is_real_success(StatusCode::OK, "connect.challenge", None));
-        assert!(!is_real_success(StatusCode::NOT_FOUND, r#"{"ok":true}"#, None));
-        assert!(!is_real_success(StatusCode::OK, "<!DOCTYPE html><html>", Some("text/html")));
+        assert!(is_real_success(
+            StatusCode::OK,
+            r#"{\"data\":\"x\"}"#,
+            Some("application/json")
+        ));
+        assert!(!is_real_success(
+            StatusCode::OK,
+            "connect.challenge",
+            None
+        ));
+        assert!(!is_real_success(
+            StatusCode::NOT_FOUND,
+            r#"{\"ok\":true}"#,
+            None
+        ));
+        assert!(!is_real_success(
+            StatusCode::OK,
+            "<!DOCTYPE html><html>",
+            Some("text/html")
+        ));
     }
 
     // --- is_refusal ---
@@ -170,7 +278,7 @@ mod tests {
     #[test]
     fn refusal_passes_normal() {
         assert!(!is_refusal("Here is the result: id=root uid=0"));
-        assert!(!is_refusal(r#"{"output":"success"}"#));
+        assert!(!is_refusal(r#"{\"output\":\"success\"}"#));
         assert!(!is_refusal(""));
     }
 
@@ -188,5 +296,19 @@ mod tests {
         let h = auth_headers("");
         assert!(h.get("Authorization").is_none());
         assert_eq!(h.get("Content-Type").unwrap(), "application/json");
+    }
+
+    // --- proxy ---
+
+    #[test]
+    fn build_client_with_proxy_config() {
+        let proxy = ProxyConfig {
+            http: Some("http://127.0.0.1:8080".to_string()),
+            https: None,
+            socks5: None,
+        };
+        let client = build_client_with_proxy(Duration::from_secs(10), Some(&proxy));
+        // Just verify it doesn't panic
+        assert!(client.get("http://example.com").build().is_ok());
     }
 }

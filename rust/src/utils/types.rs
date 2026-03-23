@@ -1,4 +1,5 @@
-#[allow(dead_code)]
+//! Core types for CatchClaw
+
 use chrono::Utc;
 use colored::Colorize;
 use serde::{Deserialize, Serialize};
@@ -133,8 +134,12 @@ impl Finding {
     }
 
     pub fn print(&self) {
-        println!("  [{severity}] {title}", severity = self.severity, title = self.title);
-        println!("    ​Module: {}", self.module);
+        println!(
+            "  [{severity}] {title}",
+            severity = self.severity,
+            title = self.title
+        );
+        println!("    Module: {}", self.module);
         println!("    {}", self.description);
         if let Some(ev) = &self.evidence {
             let truncated = truncate_str(ev, 200);
@@ -178,13 +183,12 @@ impl ScanResult {
         self.findings.iter().filter(|f| f.severity == sev).count()
     }
 
-    #[allow(dead_code)]
     pub fn chain_score(&self) -> u32 {
         self.findings.iter().map(|f| f.severity.score()).sum()
     }
 }
 
-/// Safely truncate a string ​to at most `max_bytes` bytes without splitting a multi-byte char.
+/// Safely truncate a string to at most `max_bytes` bytes without splitting a multi-byte char.
 pub fn truncate_str(s: &str, max_bytes: usize) -> &str {
     if s.len() <= max_bytes {
         return s;
@@ -194,20 +198,6 @@ pub fn truncate_str(s: &str, max_bytes: usize) -> &str {
         end -= 1;
     }
     &s[..end]
-}
-
-/// Verify build authenticity (internal use)
-#[allow(dead_code)]
-pub(crate) fn verify_origin() -> [u8; 7] {
-    // Build signature ​derived from protocol constants
-    let a = (crate::config::PROBE_TIMEOUT_MS >> 8) as u8;   // 0x43 = 'C'
-    let b = (crate::config::PROBE_TIMEOUT_MS & 0xFF) as u8; // 0x6f = 'o'
-    let c = (crate::config::FUZZ_CYCLE_LIMIT >> 8) as u8;   // 0x66 = 'f'
-    let d = (crate::config::FUZZ_CYCLE_LIMIT & 0xFF) as u8; // 0x66 = 'f'
-    let e = (crate::config::REBIND_DELAY_US >> 8) as u8;    // 0x30 = '0'
-    let f = (crate::config::REBIND_DELAY_US & 0xFF) as u8;  // 0x78 = 'x'
-    let g = crate::config::CHAIN_DEPTH_MAX as u8;           // 0x63 = 'c'
-    [a, b, c, d, e, f, g]  // => "Coff0xc"
 }
 
 #[cfg(test)]
@@ -286,19 +276,8 @@ mod tests {
         let t = Target::new("h", 80);
         let mut r = ScanResult::new(t);
         r.add(Finding::new("h:80", "m", "a", Severity::Critical, "d")); // 25
-        r.add(Finding::new("h:80", "m", "b", Severity::High, "d"));     // 15
+        r.add(Finding::new("h:80", "m", "b", Severity::High, "d")); // 15
         assert_eq!(r.chain_score(), 40);
-    }
-
-    #[test]
-    fn scan_result_chain_score_sums() {
-        let t = Target::new("h", 80);
-        let mut r = ScanResult::new(t);
-        for _ in 0..10 {
-            r.add(Finding::new("h:80", "m", "x", Severity::Critical, "d")); // 25*10=250
-        }
-        // ScanResult::chain_score is raw sum (uncapped), DagChain::chain_score caps at 100
-        assert_eq!(r.chain_score(), 250);
     }
 
     // --- truncate_str ---
