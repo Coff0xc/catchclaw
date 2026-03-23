@@ -90,6 +90,34 @@ pub fn write_json(result: &ScanResult, path: &Path) -> Result<(), ReportError> {
     Ok(())
 }
 
+/// Write JSON report for multiple scan results
+pub fn write_json_multi(results: &[ScanResult], path: &Path) -> Result<(), ReportError> {
+    let entries: Vec<_> = results
+        .iter()
+        .map(|r| {
+            let summary = ScanSummary::from_result(r);
+            serde_json::json!({
+                "target": r.target,
+                "findings": r.findings,
+                "summary": summary,
+                "start_at": r.start_at,
+                "end_at": r.end_at,
+            })
+        })
+        .collect();
+
+    let total_findings: usize = results.iter().map(|r| r.findings.len()).sum();
+    let output = serde_json::to_string_pretty(&serde_json::json!({
+        "targets_scanned": results.len(),
+        "total_findings": total_findings,
+        "results": entries,
+    }))
+    .map_err(|e| ReportError::SerializeError(e.to_string()))?;
+
+    std::fs::write(path, output)?;
+    Ok(())
+}
+
 /// Write Markdown report to file
 pub fn write_markdown(result: &ScanResult, path: &Path) -> Result<(), ReportError> {
     let summary = ScanSummary::from_result(result);

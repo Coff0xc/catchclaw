@@ -11,7 +11,7 @@ use colored::Colorize;
 use config::{AppConfig, FileConfig, LogLevel};
 use std::path::PathBuf;
 use std::time::Duration;
-use utils::Target;
+use utils::{Target, parse_targets, parse_targets_file};
 
 #[derive(Parser)]
 #[command(
@@ -40,9 +40,17 @@ struct Cli {
 enum Commands {
     /// Run full security scan
     Scan {
-        /// Target host:port
+        /// Target host:port (single target)
         #[arg(short, long)]
-        target: String,
+        target: Option<String>,
+
+        /// Multiple targets: comma-separated, CIDR, or IP range
+        #[arg(long)]
+        targets: Option<String>,
+
+        /// File with targets (one per line)
+        #[arg(short = 'f', long)]
+        targets_file: Option<PathBuf>,
 
         /// Authentication token
         #[arg(long, env = "CATCHCLAW_TOKEN", default_value = "")]
@@ -119,18 +127,6 @@ enum Commands {
     Config,
 }
 
-fn parse_target(s: &str, tls: bool) -> Target {
-    let parts: Vec<&str> = s.splitn(2, ':').collect();
-    let host = parts[0].to_string();
-    let port = parts
-        .get(1)
-        .and_then(|p| p.parse().ok())
-        .unwrap_or(if tls { 443 } else { 8080 });
-    let mut t = Target::new(host, port);
-    t.use_tls = tls;
-    t
-}
-
 fn setup_logging(level: LogLevel) {
     let filter = match level {
         LogLevel::Trace => "catchclaw=trace",
@@ -191,6 +187,8 @@ async fn main() {
     match cli.command {
         Commands::Scan {
             target,
+            targets,
+            targets_file,
             token,
             timeout,
             output,
@@ -206,7 +204,35 @@ async fn main() {
                 .unwrap_or_default();
             setup_logging(level);
 
-            let t = parse_target(&target, tls);
+            // Collect targets from all sources
+            let mut all_targets: Vec<Target> = Vec::new();
+
+            if let Some(ref t) = target {
+                all_targets.extend(parse_targets(t, tls));
+            }
+            if let Some(ref ts) = targets {
+                all_targets.extend(parse_targets(ts, tls));
+            }
+            if let Some(ref file) = targets_file {
+                match parse_targets_file(file, tls) {
+                    Ok(ts) => all_targets.extend(ts),
+                    Err(e) => {
+                        eprintln!("{} Failed to read targets file: {e}", "[!]".red());
+                        std::process::exit(1);
+                    }
+                }
+            }
+
+            if all_targets.is_empty() {
+                eprintln!("{} No targets specified. Use -t, --targets, or -f", "[!]".red());
+                std::process::exit(1);
+            }
+
+            // Apply token to all targets
+            let tok = if token.is_empty() { None } else { Some(token.clone()) };
+            for t in &mut all_targets {
+                t.token = tok.clone();
+            }
 
             // Merge file config with CLI args
             let mut cfg = file_config.merge_with_cli(
@@ -226,19 +252,31 @@ async fn main() {
                 cfg.graph.output_dir = Some(dir);
             }
 
-            let result = scan::run_full_scan(t, cfg.clone()).await;
+            if all_targets.len() == 1 {
+                let t = all_targets.into_iter().next().unwrap();
+                let result = scan::run_full_scan(t, cfg.clone()).await;
 
-            // Export attack graph if configured
-            if cfg.graph.export_mermaid || cfg.graph.export_json {
-                if let Err(e) = report::export_graph(&result, &cfg.graph).await {
-                    eprintln!("{} Failed to export graph: {e}", "[!]".red());
+                // Export attack graph if configured
+                if cfg.graph.export_mermaid || cfg.graph.export_json {
+                    if let Err(e) = report::export_graph(&result, &cfg.graph).await {
+                        eprintln!("{} Failed to export graph: {e}", "[!]".red());
+                    }
                 }
-            }
 
-            if let Some(path) = output {
-                match report::write_json(&result, &path) {
-                    Ok(()) => println!("\n{} Report saved to {}", "[+]".green(), path.display()),
-                    Err(e) => eprintln!("{} Failed to write report: {e}", "[!]".red()),
+                if let Some(path) = output {
+                    match report::write_json(&result, &path) {
+                        Ok(()) => println!("\n{} Report saved to {}", "[+]".green(), path.display()),
+                        Err(e) => eprintln!("{} Failed to write report: {e}", "[!]".red()),
+                    }
+                }
+            } else {
+                let results = scan::run_multi_scan(all_targets, cfg).await;
+
+                if let Some(path) = output {
+                    match report::write_json_multi(&results, &path) {
+                        Ok(()) => println!("\n{} Report saved to {}", "[+]".green(), path.display()),
+                        Err(e) => eprintln!("{} Failed to write report: {e}", "[!]".red()),
+                    }
                 }
             }
         }
@@ -257,7 +295,8 @@ async fn main() {
                 .unwrap_or_default();
             setup_logging(level);
 
-            let t = parse_target(&target, tls);
+            let t = parse_targets(&target, tls).into_iter().next()
+                .unwrap_or_else(|| { eprintln!("Invalid target"); std::process::exit(1); });
             let cfg = file_config.merge_with_cli(
                 if token.is_empty() { None } else { Some(token) },
                 timeout,

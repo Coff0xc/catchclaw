@@ -2,8 +2,11 @@
 
 use crate::chain;
 use crate::config::AppConfig;
-use crate::utils::{ScanResult, Target};
+use crate::utils::{PayloadRegistry, ScanResult, Target};
 use colored::Colorize;
+use std::path::Path;
+use std::sync::Arc;
+use tokio::sync::Semaphore;
 
 /// Run a full scan: build DAG, execute, collect results.
 pub async fn run_full_scan(target: Target, cfg: AppConfig) -> ScanResult {
@@ -23,6 +26,17 @@ pub async fn run_full_scan(target: Target, cfg: AppConfig) -> ScanResult {
 
     if cfg.has_proxy() {
         tracing::info!("Using proxy: {}", cfg.primary_proxy().unwrap_or("unknown"));
+    }
+
+    // Load external payloads
+    let _payload_registry = if let Some(ref path) = cfg.payload.file {
+        PayloadRegistry::from_file(path).ok()
+    } else {
+        PayloadRegistry::from_directory(Path::new("payloads")).ok()
+    };
+    if let Some(ref reg) = _payload_registry {
+        tracing::info!("Loaded {} external payloads across {} categories",
+            reg.total_count(), reg.categories().len());
     }
 
     let dag = chain::build_full_dag(cfg.concurrency);
@@ -72,4 +86,55 @@ pub async fn run_full_scan(target: Target, cfg: AppConfig) -> ScanResult {
     );
 
     result
+}
+
+/// Run scans on multiple targets concurrently with bounded parallelism.
+pub async fn run_multi_scan(targets: Vec<Target>, cfg: AppConfig) -> Vec<ScanResult> {
+    let total = targets.len();
+    let max_parallel = cfg.concurrency.min(total);
+    let semaphore = Arc::new(Semaphore::new(max_parallel));
+
+    println!(
+        "\n{} Scanning {} targets (max {} parallel) ...\n",
+        "[*]".cyan(),
+        total,
+        max_parallel,
+    );
+
+    let mut handles = Vec::with_capacity(total);
+
+    for (i, target) in targets.into_iter().enumerate() {
+        let cfg = cfg.clone();
+        let sem = semaphore.clone();
+        handles.push(tokio::spawn(async move {
+            let _permit = sem.acquire().await.expect("semaphore closed");
+            println!(
+                "{} Scanning target {}/{}: {}",
+                "[*]".cyan(),
+                i + 1,
+                total,
+                target,
+            );
+            run_full_scan(target, cfg).await
+        }));
+    }
+
+    let mut results = Vec::with_capacity(handles.len());
+    for handle in handles {
+        match handle.await {
+            Ok(result) => results.push(result),
+            Err(e) => eprintln!("{} Target scan task failed: {e}", "[!]".red()),
+        }
+    }
+
+    // Summary
+    let total_findings: usize = results.iter().map(|r| r.findings.len()).sum();
+    println!(
+        "\n{} Multi-scan complete: {} targets, {} total findings",
+        "[✓]".green(),
+        results.len(),
+        total_findings,
+    );
+
+    results
 }
