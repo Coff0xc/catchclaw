@@ -1,4 +1,4 @@
-<h1 align="center">🦞 CatchClaw v5.1.0</h1>
+<h1 align="center">🦞 CatchClaw v5.2.0</h1>
 
 <p align="center">
   <b>Automated Security Assessment Tool for OpenClaw / Open-WebUI AI Coding Platforms</b><br>
@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-5.1.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Version-5.2.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
   <img src="https://img.shields.io/badge/DAG_Chains-72-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
@@ -56,7 +56,7 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                          CatchClaw v5.1.0                                │
+│                          CatchClaw v5.2.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  ● 72 DAG Attack Chains  ● 72 Exploit Modules   ● Async Tokio Engine    │
 │  ● ATT&CK 9-Phase Map   ● Mermaid Attack Graph  ● JSON/HTML/MD Reports  │
@@ -230,7 +230,7 @@ catchclaw exploit -t TARGET_IP:PORT --chain-id 30
 ## CLI Usage
 
 ```
-CatchClaw v5.1.0 — OpenClaw Security Assessment Tool
+CatchClaw v5.2.0 — OpenClaw Security Assessment Tool
 
 Usage: catchclaw <COMMAND>
 

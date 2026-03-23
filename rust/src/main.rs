@@ -16,9 +16,9 @@ use utils::{Target, parse_targets, parse_targets_file};
 #[derive(Parser)]
 #[command(
     name = "catchclaw",
-    version = "5.1.0",
-    about = "OpenClaw 安全评估工具 v5.1.0 (Rust)",
-    long_about = "CatchClaw v5.1.0 — OpenClaw/Open-WebUI AI编程平台安全评估工具\n\n\
+    version = "5.2.0",
+    about = "OpenClaw 安全评估工具 v5.2.0 (Rust)",
+    long_about = "CatchClaw v5.2.0 — OpenClaw/Open-WebUI AI编程平台安全评估工具\n\n\
         功能特性:\n  \
         DAG 攻击链 | 59个 Exploit 模块 | Payload Registry | 配置文件支持 | 代理支持\n\n\
         快速开始:\n  \
@@ -172,7 +172,7 @@ fn banner() {
     "#;
     println!("{}", art.red().bold());
     println!(
-        "    {} v5.1.0 — OpenClaw Security Assessment Tool (Rust)\n",
+        "    {} v5.2.0 — OpenClaw Security Assessment Tool (Rust)\n",
         "CatchClaw".red().bold()
     );
 }

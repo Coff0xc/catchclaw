@@ -1,6 +1,6 @@
 [package]
 name = "catchclaw"
-version = "5.1.0"
+version = "5.2.0"
 edition = "2024"
 description = "Automated security assessment tool for OpenClaw / Open-WebUI AI coding platforms"
 license-file = "../LICENSE"

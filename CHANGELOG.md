@@ -4,7 +4,7 @@ All notable changes to CatchClaw will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [5.1.0] - 2026-03-24
+## [5.2.0] - 2026-03-24
 
 ### Added
 - **7 CVE-targeted exploit modules** from 2026 threat intelligence:

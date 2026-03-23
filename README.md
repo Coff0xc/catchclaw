@@ -1,4 +1,4 @@
-<h1 align="center">🦞 CatchClaw v5.1.0</h1>
+<h1 align="center">🦞 CatchClaw v5.2.0</h1>
 
 <p align="center">
   <b>OpenClaw / Open-WebUI AI 编程平台 — 自动化安全评估工具</b><br>
@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-5.1.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Version-5.2.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
   <img src="https://img.shields.io/badge/DAG_Chains-72-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
@@ -56,7 +56,7 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                          CatchClaw v5.1.0                                │
+│                          CatchClaw v5.2.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  ● 72 条 DAG 攻击链     ● 72 个 Exploit 模块    ● Async Tokio 引擎       │
 │  ● ATT&CK 9阶段映射    ● Mermaid 攻击图导出    ● JSON/HTML/MD 报告       │
@@ -230,7 +230,7 @@ catchclaw exploit -t 目标IP:端口 --chain-id 30
 ## CLI 用法
 
 ```
-CatchClaw v5.1.0 — OpenClaw 安全评估工具
+CatchClaw v5.2.0 — OpenClaw 安全评估工具
 
 Usage: catchclaw <COMMAND>
 
