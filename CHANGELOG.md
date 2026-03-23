@@ -16,6 +16,16 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   - `mdns_leak` — mDNS/HTTP configuration parameter leakage
   - `skill_supply_chain` — ClawHavoc campaign malicious skill detection
 - **CVE-specific payload library** — `payloads/cve_specific.yaml` with 8 targeted categories
+- **4 additional CVE exploit modules** (P0):
+  - `voice_ext_rce` — CVE-2026-28446 (CVSS 9.8) Voice Extension RCE
+  - `env_inject` — CVE-2026-32056 environment variable injection
+  - `ipv6_ssrf_bypass` — IPv4-mapped IPv6 SSRF bypass
+  - `msg_platform_spoof` — Telegram/Discord/Matrix/BlueBubbles identity spoofing
+- **Multi-platform security probes** (P2):
+  - `librechat_probe` — LibreChat CVE-2025-69222/69220/54868
+  - `lobechat_probe` — LobeChat CVE-2026-23733 Mermaid XSS→RCE
+- **Enhanced payloads** (P1): IPv6 bypass, request-side injection, extension SSRF, platform-specific fingerprints
+- **Platform-specific payload file** — `payloads/platform_specific.yaml` for LibreChat/LobeChat/AnythingLLM
 - **Multi-target scanning** — CIDR notation (/24, /16), IP range (start-end), comma-separated targets, target file (`-f targets.txt`)
 - **Port scanning & service discovery** — TCP connect scan with OpenClaw fingerprinting across common ports (80, 443, 3000, 8080, etc.)
 - **Comprehensive payload library** — 5 external YAML files with 200+ payloads: SSRF (AWS/GCP/Azure/DO metadata, IP bypass, protocol smuggling), command injection, prompt injection (DAN, jailbreak, extraction), auth bypass, XSS

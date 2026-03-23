@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>OpenClaw / Open-WebUI AI 编程平台 — 自动化安全评估工具</b><br>
-  <sub>66 条 DAG 攻击链 | 66 个 Exploit 模块 | ATT&CK 阶段映射 | Async Tokio 引擎 | 攻击图可视化</sub>
+  <sub>72 条 DAG 攻击链 | 72 个 Exploit 模块 | ATT&CK 阶段映射 | Async Tokio 引擎 | 攻击图可视化</sub>
 </p>
 
 <p align="center">
@@ -24,9 +24,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-5.1.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/DAG_Chains-66-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-72-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
-  <img src="https://img.shields.io/badge/Exploits-66_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Exploits-72_Modules-orange?style=flat-square" alt="Exploits">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
@@ -58,7 +58,7 @@
 ┌────────────────────────────────────────────────────────────────────────────┐
 │                          CatchClaw v5.1.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 66 条 DAG 攻击链     ● 66 个 Exploit 模块    ● Async Tokio 引擎       │
+│  ● 72 条 DAG 攻击链     ● 72 个 Exploit 模块    ● Async Tokio 引擎       │
 │  ● ATT&CK 9阶段映射    ● Mermaid 攻击图导出    ● JSON/HTML/MD 报告       │
 │  ● Kahn 拓扑排序引擎    ● Semaphore 并发控制    ● 条件/回退执行           │
 │  ● 多目标扫描 (CIDR)   ● 端口扫描/服务发现     ● 200+ 外部 Payload       │
@@ -78,7 +78,7 @@
 - [安装方式](#安装方式)
 - [快速开始](#快速开始)
 - [CLI 用法](#cli-用法)
-- [66 个 Exploit 模块](#59-个-exploit-模块)
+- [72 个 Exploit 模块](#59-个-exploit-模块)
 - [DAG 攻击链架构](#dag-攻击链架构)
 - [Nuclei 模板](#nuclei-模板)
 - [项目结构](#项目结构)
@@ -88,7 +88,7 @@
 
 ## 项目简介
 
-**CatchClaw** 是一款基于 Rust 的 [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI AI 编程平台安全评估工具。通过 66 条 DAG 攻击链和 66 个 Exploit 模块，覆盖从初始侦察到数据泄露的完整 ATT&CK 攻击链路。
+**CatchClaw** 是一款基于 Rust 的 [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI AI 编程平台安全评估工具。通过 72 条 DAG 攻击链和 72 个 Exploit 模块，覆盖从初始侦察到数据泄露的完整 ATT&CK 攻击链路。
 
 基于 Tokio 异步运行时，DAG 引擎使用 Kahn 拓扑排序按层级并发执行，Semaphore 控制并发度，支持条件执行与回退节点。攻击图可导出 Mermaid 流程图。
 
@@ -114,8 +114,8 @@
 
 ### 攻击引擎
 
-- **66 个 Exploit 模块** — 覆盖 10 大类别，`inventory` 宏自动注册
-- **66 条 DAG 攻击链** — 9 个 ATT&CK 阶段自动编排
+- **72 个 Exploit 模块** — 覆盖 10 大类别，`inventory` 宏自动注册
+- **72 条 DAG 攻击链** — 9 个 ATT&CK 阶段自动编排
 - **Kahn 拓扑排序** — 层级并发执行，自动解析依赖
 - **条件/回退节点** — 按前序结果动态决策执行路径
 - **攻击图可视化** — Mermaid 导出，标记命中/跳过/回退状态
@@ -266,7 +266,7 @@ Exploit Flags:
 
 ---
 
-## 66 个 Exploit 模块
+## 72 个 Exploit 模块
 
 按 ATT&CK 阶段和攻击类别分组：
 

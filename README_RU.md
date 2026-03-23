@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>Инструмент автоматизированной оценки безопасности для OpenClaw / Open-WebUI AI-платформ</b><br>
-  <sub>66 DAG-цепочек атак | 66 Exploit-модулей | ATT&CK-маппинг фаз | Async Tokio-движок | Визуализация графа атак</sub>
+  <sub>72 DAG-цепочек атак | 72 Exploit-модулей | ATT&CK-маппинг фаз | Async Tokio-движок | Визуализация графа атак</sub>
 </p>
 
 <p align="center">
@@ -24,9 +24,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-5.1.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/DAG_Chains-66-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-72-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
-  <img src="https://img.shields.io/badge/Exploits-66_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Exploits-72_Modules-orange?style=flat-square" alt="Exploits">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
@@ -58,7 +58,7 @@
 ┌────────────────────────────────────────────────────────────────────────────┐
 │                          CatchClaw v5.1.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 66 DAG-цепочек атак  ● 66 Exploit-модулей    ● Async Tokio-движок    │
+│  ● 72 DAG-цепочек атак  ● 72 Exploit-модулей    ● Async Tokio-движок    │
 │  ● ATT&CK 9 фаз        ● Mermaid граф атак     ● JSON/HTML/MD-отчёты   │
 │  ● Топосортировка Кана  ● Semaphore конкуренция ● Условия/Откат         │
 │  ● Мульти-цели (CIDR)  ● Скан портов / Обнаруж.● 200+ внешних пейлоадов│
@@ -78,7 +78,7 @@
 - [Установка](#установка)
 - [Быстрый старт](#быстрый-старт)
 - [Использование CLI](#использование-cli)
-- [66 Exploit-модулей](#59-exploit-модулей)
+- [72 Exploit-модулей](#59-exploit-модулей)
 - [Архитектура DAG-цепочек](#архитектура-dag-цепочек)
 - [Шаблоны Nuclei](#шаблоны-nuclei)
 - [Структура проекта](#структура-проекта)
@@ -88,7 +88,7 @@
 
 ## Обзор
 
-**CatchClaw** — инструмент автоматизированной оценки безопасности на Rust, разработанный для платформ [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI. 66 Exploit-модулей оркестрируются через DAG (направленный ациклический граф) цепочек атак, покрывая полный жизненный цикл ATT&CK от разведки до эксфильтрации данных.
+**CatchClaw** — инструмент автоматизированной оценки безопасности на Rust, разработанный для платформ [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI. 72 Exploit-модулей оркестрируются через DAG (направленный ациклический граф) цепочек атак, покрывая полный жизненный цикл ATT&CK от разведки до эксфильтрации данных.
 
 Построен на асинхронном рантайме Tokio. DAG-движок использует топологическую сортировку Кана для поуровневого параллельного выполнения с ограничением конкуренции через Semaphore, условным выполнением и узлами отката. Результаты атак визуализируются как Mermaid-диаграммы.
 
@@ -102,7 +102,7 @@
 
 ### Движок атак
 
-- **66 Exploit-модулей** — 10 категорий, автоматическая регистрация через `inventory`
+- **72 Exploit-модулей** — 10 категорий, автоматическая регистрация через `inventory`
 - **59 DAG-цепочек** — 9 фаз ATT&CK, автоматическая оркестрация
 - **Топосортировка Кана** — поуровневое параллельное выполнение с разрешением зависимостей
 - **Условия/Откат** — динамический выбор пути на основе предыдущих результатов
@@ -246,7 +246,7 @@ Exploit Flags:
 
 ---
 
-## 66 Exploit-модулей
+## 72 Exploit-модулей
 
 По фазам ATT&CK и категориям атак:
 

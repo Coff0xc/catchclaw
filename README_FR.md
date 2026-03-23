@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>Outil d'évaluation de sécurité automatisé pour les plateformes OpenClaw / Open-WebUI AI</b><br>
-  <sub>59 chaînes d'attaque DAG | 66 modules d'exploit | Mapping de phases ATT&CK | Moteur Async Tokio | Visualisation du graphe d'attaque</sub>
+  <sub>59 chaînes d'attaque DAG | 72 modules d'exploit | Mapping de phases ATT&CK | Moteur Async Tokio | Visualisation du graphe d'attaque</sub>
 </p>
 
 <p align="center">
@@ -24,9 +24,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-5.1.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/DAG_Chains-66-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-72-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
-  <img src="https://img.shields.io/badge/Exploits-66_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Exploits-72_Modules-orange?style=flat-square" alt="Exploits">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
@@ -58,7 +58,7 @@
 ┌────────────────────────────────────────────────────────────────────────────┐
 │                          CatchClaw v5.1.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 66 chaînes DAG       ● 66 modules d'exploit  ● Moteur Async Tokio    │
+│  ● 72 chaînes DAG       ● 72 modules d'exploit  ● Moteur Async Tokio    │
 │  ● ATT&CK 9 phases      ● Graphe Mermaid        ● Rapports JSON/HTML/MD │
 │  ● Tri topologique Kahn  ● Semaphore concurrence ● Condition/Fallback    │
 │  ● Multi-cibles (CIDR)  ● Scan ports / Découverte● 200+ payloads ext.   │
@@ -78,7 +78,7 @@
 - [Installation](#installation)
 - [Démarrage rapide](#démarrage-rapide)
 - [Utilisation CLI](#utilisation-cli)
-- [66 modules d'exploit](#59-modules-dexploit)
+- [72 modules d'exploit](#59-modules-dexploit)
 - [Architecture des chaînes d'attaque DAG](#architecture-des-chaînes-dattaque-dag)
 - [Modèles Nuclei](#modèles-nuclei)
 - [Structure du projet](#structure-du-projet)
@@ -88,7 +88,7 @@
 
 ## Aperçu
 
-**CatchClaw** est un outil d'évaluation de sécurité automatisé en Rust, conçu pour les plateformes [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI. Il orchestre 66 modules d'exploit via un DAG (Graphe Acyclique Dirigé) de chaînes d'attaque, couvrant le cycle de vie complet ATT&CK de la reconnaissance à l'exfiltration de données.
+**CatchClaw** est un outil d'évaluation de sécurité automatisé en Rust, conçu pour les plateformes [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI. Il orchestre 72 modules d'exploit via un DAG (Graphe Acyclique Dirigé) de chaînes d'attaque, couvrant le cycle de vie complet ATT&CK de la reconnaissance à l'exfiltration de données.
 
 Construit sur le runtime asynchrone Tokio, le moteur DAG utilise le tri topologique de Kahn pour une exécution parallèle par niveaux avec une concurrence limitée par Semaphore, une exécution conditionnelle et des nœuds de repli. Les résultats d'attaque sont visualisés sous forme de diagrammes Mermaid.
 
@@ -102,8 +102,8 @@ Construit sur le runtime asynchrone Tokio, le moteur DAG utilise le tri topologi
 
 ### Moteur d'attaque
 
-- **66 modules d'exploit** — 10 catégories, auto-enregistrement par macro `inventory`
-- **66 chaînes DAG** — 9 phases ATT&CK, orchestration automatisée
+- **72 modules d'exploit** — 10 catégories, auto-enregistrement par macro `inventory`
+- **72 chaînes DAG** — 9 phases ATT&CK, orchestration automatisée
 - **Tri topologique de Kahn** — Exécution parallèle par niveaux avec résolution des dépendances
 - **Nœuds conditionnels/repli** — Décisions de chemin dynamiques basées sur les résultats précédents
 - **Visualisation du graphe** — Export Mermaid avec statuts touché/ignoré/repli
@@ -246,7 +246,7 @@ Exploit Flags:
 
 ---
 
-## 66 modules d'exploit
+## 72 modules d'exploit
 
 Par phase ATT&CK et catégorie d'attaque :
 
