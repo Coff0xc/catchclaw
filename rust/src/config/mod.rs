@@ -100,6 +100,18 @@ pub struct FileConfig {
     pub graph: Option<GraphConfig>,
     /// Payload configuration
     pub payload: Option<PayloadConfig>,
+    /// Named profiles (e.g., [profile.quick], [profile.full], [profile.stealth])
+    #[serde(default)]
+    pub profile: std::collections::HashMap<String, ProfileConfig>,
+}
+
+/// A named scan profile that overrides scanner/proxy/graph settings
+#[derive(Debug, Clone, Default, serde::Deserialize)]
+pub struct ProfileConfig {
+    pub scanner: Option<ScannerConfig>,
+    pub proxy: Option<ProxyConfig>,
+    pub graph: Option<GraphConfig>,
+    pub payload: Option<PayloadConfig>,
 }
 
 #[derive(Debug, Clone, Default, serde::Deserialize)]
@@ -180,6 +192,33 @@ impl FileConfig {
         }
 
         Self::default()
+    }
+
+    /// Apply a named profile, overriding base settings
+    pub fn apply_profile(&mut self, profile_name: &str) -> Result<(), ConfigError> {
+        let profile = self.profile.get(profile_name).cloned().ok_or_else(|| {
+            ConfigError::ParseError(format!("Profile '{}' not found. Available: {:?}",
+                profile_name, self.profile.keys().collect::<Vec<_>>()))
+        })?;
+
+        if let Some(scanner) = profile.scanner {
+            self.scanner = Some(scanner);
+        }
+        if let Some(proxy) = profile.proxy {
+            self.proxy = Some(proxy);
+        }
+        if let Some(graph) = profile.graph {
+            self.graph = Some(graph);
+        }
+        if let Some(payload) = profile.payload {
+            self.payload = Some(payload);
+        }
+        Ok(())
+    }
+
+    /// List available profile names
+    pub fn available_profiles(&self) -> Vec<&str> {
+        self.profile.keys().map(|k| k.as_str()).collect()
     }
 
     /// Merge with CLI arguments (CLI takes precedence)
@@ -355,5 +394,41 @@ export_mermaid = true
         assert_eq!(config.scanner.as_ref().unwrap().concurrency, Some(20));
         assert_eq!(config.proxy.as_ref().unwrap().http, Some("http://127.0.0.1:8080".to_string()));
         assert!(config.graph.as_ref().unwrap().export_mermaid);
+    }
+
+    #[test]
+    fn test_profile_apply() {
+        let toml = r#"
+[scanner]
+timeout = 10
+concurrency = 10
+
+[profile.quick]
+[profile.quick.scanner]
+timeout = 5
+concurrency = 20
+
+[profile.stealth]
+[profile.stealth.scanner]
+timeout = 30
+concurrency = 2
+aggressive = false
+
+[profile.stealth.proxy]
+socks5 = "socks5://127.0.0.1:9050"
+"#;
+        let mut config: FileConfig = toml::from_str(toml).unwrap();
+        assert_eq!(config.available_profiles().len(), 2);
+
+        config.apply_profile("quick").unwrap();
+        assert_eq!(config.scanner.as_ref().unwrap().timeout, Some(5));
+        assert_eq!(config.scanner.as_ref().unwrap().concurrency, Some(20));
+    }
+
+    #[test]
+    fn test_profile_not_found() {
+        let config = FileConfig::default();
+        let mut config_mut = config;
+        assert!(config_mut.apply_profile("nonexistent").is_err());
     }
 }
