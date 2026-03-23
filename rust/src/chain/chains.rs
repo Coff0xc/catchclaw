@@ -122,6 +122,20 @@ pub static CHAIN_DEFINITIONS: &[ChainDef] = &[
     chain_node!(63, "Secrets Resolve", "credential", "CredAccess", &[9], "secrets_resolve::check"),
     chain_node!(64, "Exec Socket Leak", "dataleak", "CredAccess", &[11], "exec_socket_leak::check"),
     chain_node!(56, "Auth Disable Leak", "auth", "CredAccess", &[35], "auth_disable_leak::check"),
+
+    // === CVE-Targeted Modules (2026 Threat Intelligence) ===
+    // Recon
+    chain_node!(70, "Gateway Hijack", "transport", "Recon", "gateway_hijack::check"),          // CVE-2026-25253
+    chain_node!(71, "Localhost Trust", "auth", "Recon", "localhost_trust::check"),              // ClawJacked
+    chain_node!(72, "mDNS Config Leak", "dataleak", "Recon", "mdns_leak::check"),              // Config leak
+
+    // Initial Access
+    chain_node!(73, "WS Auth Brute", "auth", "InitAccess", &[13], "ws_auth_brute::check"),    // CVE-2026-32025
+    chain_node!(74, "Guest Mode Abuse", "config", "InitAccess", &[71], "guest_mode_abuse::check"),
+    chain_node!(75, "Skill Supply Chain", "dataleak", "InitAccess", &[0], "skill_supply_chain::check"), // ClawHavoc
+
+    // Execution
+    chain_node!(76, "SafeBins Bypass", "rce", "Execution", &[7], "safebins_bypass::check"),    // CVE-2026-28363
 ];
 
 /// Build the full attack DAG from definitions
@@ -304,6 +318,29 @@ fn build_execute_fn(fn_name: &str) -> crate::chain::dag::ExecFn {
         // Additional modules
         "exec_socket_leak::check" => Box::new(|t: Target, c: AppConfig| {
             Box::pin(async move { exploit::exec_socket_leak::check(t, c).await.into_standard() })
+        }),
+
+        // CVE-targeted modules (2026 threat intelligence)
+        "gateway_hijack::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::gateway_hijack::check(t, c).await.into_standard() })
+        }),
+        "localhost_trust::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::localhost_trust::check(t, c).await.into_standard() })
+        }),
+        "mdns_leak::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::mdns_leak::check(t, c).await.into_standard() })
+        }),
+        "ws_auth_brute::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::ws_auth_brute::check(t, c).await.into_standard() })
+        }),
+        "guest_mode_abuse::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::guest_mode_abuse::check(t, c).await.into_standard() })
+        }),
+        "skill_supply_chain::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::skill_supply_chain::check(t, c).await.into_standard() })
+        }),
+        "safebins_bypass::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::safebins_bypass::check(t, c).await.into_standard() })
         }),
 
         _ => {
