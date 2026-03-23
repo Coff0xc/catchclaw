@@ -34,6 +34,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Remove local cargo config
+        shell: bash
         run: rm -f .cargo/config.toml
 
       - name: Setup Rust
