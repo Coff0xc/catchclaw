@@ -60,9 +60,13 @@ enum Commands {
         #[arg(long)]
         timeout: Option<u64>,
 
-        /// Output file (JSON)
+        /// Output file path
         #[arg(short, long)]
         output: Option<PathBuf>,
+
+        /// Output format: json, html, markdown
+        #[arg(long, default_value = "json")]
+        format: String,
 
         /// Max concurrent exploit workers
         #[arg(long)]
@@ -87,6 +91,18 @@ enum Commands {
         /// Graph output directory
         #[arg(long)]
         graph_dir: Option<PathBuf>,
+
+        /// Scan profile from config (e.g., quick, stealth, full)
+        #[arg(long)]
+        profile: Option<String>,
+
+        /// Filter results by severity: critical,high,medium,low,info
+        #[arg(long)]
+        severity_filter: Option<String>,
+
+        /// Dry-run: show which exploits would execute without scanning
+        #[arg(long)]
+        dry_run: bool,
     },
 
     /// Run specific exploit chain
@@ -192,12 +208,16 @@ async fn main() {
             token,
             timeout,
             output,
+            format,
             concurrency,
             tls,
             callback,
             log_level,
             export_graph,
             graph_dir,
+            profile,
+            severity_filter,
+            dry_run,
         } => {
             let level = log_level
                 .and_then(|s| s.parse().ok())
@@ -234,8 +254,18 @@ async fn main() {
                 t.token = tok.clone();
             }
 
+            // Load and apply profile
+            let mut file_cfg = file_config;
+            if let Some(ref pname) = profile {
+                if let Err(e) = file_cfg.apply_profile(pname) {
+                    eprintln!("{} {e}", "[!]".red());
+                    std::process::exit(1);
+                }
+                println!("{} Using profile: {}", "[+]".green(), pname);
+            }
+
             // Merge file config with CLI args
-            let mut cfg = file_config.merge_with_cli(
+            let mut cfg = file_cfg.merge_with_cli(
                 if token.is_empty() { None } else { Some(token) },
                 timeout,
                 concurrency,
@@ -252,9 +282,23 @@ async fn main() {
                 cfg.graph.output_dir = Some(dir);
             }
 
+            // Print scan configuration summary
+            print_scan_config(&cfg, &all_targets);
+
+            // Dry-run mode
+            if dry_run {
+                print_dry_run();
+                return;
+            }
+
             if all_targets.len() == 1 {
                 let t = all_targets.into_iter().next().unwrap();
-                let result = scan::run_full_scan(t, cfg.clone()).await;
+                let mut result = scan::run_full_scan(t, cfg.clone()).await;
+
+                // Apply severity filter
+                if let Some(ref filter) = severity_filter {
+                    filter_findings(&mut result, filter);
+                }
 
                 // Export attack graph if configured
                 if cfg.graph.export_mermaid || cfg.graph.export_json {
@@ -264,8 +308,13 @@ async fn main() {
                 }
 
                 if let Some(path) = output {
-                    match report::write_json(&result, &path) {
-                        Ok(()) => println!("\n{} Report saved to {}", "[+]".green(), path.display()),
+                    let write_result = match format.as_str() {
+                        "html" => report::write_html(&result, &path),
+                        "markdown" | "md" => report::write_markdown(&result, &path),
+                        _ => report::write_json(&result, &path),
+                    };
+                    match write_result {
+                        Ok(()) => println!("\n{} Report saved to {} ({})", "[+]".green(), path.display(), format),
                         Err(e) => eprintln!("{} Failed to write report: {e}", "[!]".red()),
                     }
                 }
@@ -329,14 +378,19 @@ async fn main() {
 
         Commands::List => {
             let exploits = exploit::registered_exploits();
-            println!("{} Registered exploit modules:\n", "[*]".cyan());
-            for e in &exploits {
+            println!("{} Registered exploit modules ({} total)\n", "[*]".cyan(), exploits.len());
+            println!(
+                "  {:<4} {:<22} {:<26} {:<14} {}",
+                "#", "ID", "Name", "Category", "Phase"
+            );
+            println!("  {}", "─".repeat(80));
+            for (i, e) in exploits.iter().enumerate() {
                 println!(
-                    "  {:<20} {:<25} [{:?}] {:?}",
-                    e.id, e.name, e.category, e.phase
+                    "  {:<4} {:<22} {:<26} {:<14} {:?}",
+                    i + 1, e.id, e.name, format!("{:?}", e.category), e.phase
                 );
             }
-            println!("\n  Total: {} modules", exploits.len());
+            println!("\n  {} {} exploit modules registered", "[✓]".green(), exploits.len());
         }
 
         Commands::Config => {
@@ -382,5 +436,60 @@ async fn main() {
                 println!("    enable_mutation = {}", payload.enable_mutation);
             }
         }
+    }
+}
+
+/// Print scan configuration summary before starting
+fn print_scan_config(cfg: &AppConfig, targets: &[Target]) {
+    println!("{}", "┌─────────────────────────────────────────────┐".cyan());
+    println!("{} {:<43} {}", "│".cyan(), format!("Targets: {}", targets.len()), "│".cyan());
+    println!("{} {:<43} {}", "│".cyan(), format!("Timeout: {:?}", cfg.timeout), "│".cyan());
+    println!("{} {:<43} {}", "│".cyan(), format!("Concurrency: {}", cfg.concurrency), "│".cyan());
+    println!("{} {:<43} {}", "│".cyan(), format!("Aggressive: {}", cfg.aggressive), "│".cyan());
+    if cfg.has_proxy() {
+        println!("{} {:<43} {}", "│".cyan(),
+            format!("Proxy: {}", cfg.primary_proxy().unwrap_or("configured")), "│".cyan());
+    }
+    println!("{}", "└─────────────────────────────────────────────┘".cyan());
+}
+
+/// Print dry-run output showing which exploits would execute
+fn print_dry_run() {
+    let dag = chain::build_full_dag(10);
+    let levels = dag.topological_levels();
+    let nodes = dag.nodes_ref();
+
+    println!("\n{} Dry-run: {} nodes would execute across {} levels\n",
+        "[*]".cyan(), nodes.len(), levels.len());
+
+    let phase_names = ["Recon", "Initial Access", "Credential Access", "Execution", "Persistence", "Exfiltration"];
+    for (i, level) in levels.iter().enumerate() {
+        let phase = phase_names.get(i).unwrap_or(&"Advanced");
+        println!("  {} Level {}: {} ({}  nodes)", "▸".cyan(), i, phase, level.len());
+        for &idx in level {
+            if let Some(node) = nodes.get(idx) {
+                println!("    {} #{:<3} {}", "·".white(), node.id, node.name);
+            }
+        }
+    }
+    println!("\n{} No scan performed (--dry-run)", "[*]".yellow());
+}
+
+/// Filter findings by severity level
+fn filter_findings(result: &mut utils::ScanResult, filter: &str) {
+    use utils::Severity;
+    let allowed: Vec<Severity> = filter.split(',')
+        .filter_map(|s| match s.trim().to_lowercase().as_str() {
+            "critical" => Some(Severity::Critical),
+            "high" => Some(Severity::High),
+            "medium" => Some(Severity::Medium),
+            "low" => Some(Severity::Low),
+            "info" => Some(Severity::Info),
+            _ => None,
+        })
+        .collect();
+
+    if !allowed.is_empty() {
+        result.findings.retain(|f| allowed.contains(&f.severity));
     }
 }

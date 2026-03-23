@@ -196,8 +196,13 @@ impl DagChain {
         raw.min(100)
     }
 
+    /// Get a reference to all nodes (for dry-run inspection)
+    pub fn nodes_ref(&self) -> &[ChainNode] {
+        &self.nodes
+    }
+
     /// Topological sort via Kahn's algorithm — ​returns levels of node indices.
-    fn topological_levels(&self) -> Vec<Vec<usize>> {
+    pub fn topological_levels(&self) -> Vec<Vec<usize>> {
         let mut in_degree: HashMap<u32, usize> = HashMap::new();
         let mut children: HashMap<u32, Vec<u32>> = HashMap::new();
 
