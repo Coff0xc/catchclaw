@@ -136,6 +136,16 @@ pub static CHAIN_DEFINITIONS: &[ChainDef] = &[
 
     // Execution
     chain_node!(76, "SafeBins Bypass", "rce", "Execution", &[7], "safebins_bypass::check"),    // CVE-2026-28363
+
+    // === P0: Additional CVE coverage ===
+    chain_node!(77, "Voice Ext RCE", "rce", "Execution", &[0], "voice_ext_rce::check"),        // CVE-2026-28446
+    chain_node!(78, "Env Injection", "injection", "Execution", &[7], "env_inject::check"),      // CVE-2026-32056
+    chain_node!(79, "IPv6 SSRF Bypass", "ssrf", "InitAccess", &[1], "ipv6_ssrf_bypass::check"),
+    chain_node!(80, "Msg Platform Spoof", "auth", "InitAccess", &[0], "msg_platform_spoof::check"),
+
+    // === P2: Multi-platform probes ===
+    chain_node!(81, "LibreChat Probe", "recon", "Recon", "librechat_probe::check"),
+    chain_node!(82, "LobeChat Probe", "recon", "Recon", "lobechat_probe::check"),
 ];
 
 /// Build the full attack DAG from definitions
@@ -341,6 +351,28 @@ fn build_execute_fn(fn_name: &str) -> crate::chain::dag::ExecFn {
         }),
         "safebins_bypass::check" => Box::new(|t: Target, c: AppConfig| {
             Box::pin(async move { exploit::safebins_bypass::check(t, c).await.into_standard() })
+        }),
+
+        // P0: Additional CVE modules
+        "voice_ext_rce::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::voice_ext_rce::check(t, c).await.into_standard() })
+        }),
+        "env_inject::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::env_inject::check(t, c).await.into_standard() })
+        }),
+        "ipv6_ssrf_bypass::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::ipv6_ssrf_bypass::check(t, c).await.into_standard() })
+        }),
+        "msg_platform_spoof::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::msg_platform_spoof::check(t, c).await.into_standard() })
+        }),
+
+        // P2: Multi-platform probes
+        "librechat_probe::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::librechat_probe::check(t, c).await.into_standard() })
+        }),
+        "lobechat_probe::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::lobechat_probe::check(t, c).await.into_standard() })
         }),
 
         _ => {
