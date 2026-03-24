@@ -146,6 +146,12 @@ pub static CHAIN_DEFINITIONS: &[ChainDef] = &[
     // === P2: Multi-platform probes ===
     chain_node!(81, "LibreChat Probe", "recon", "Recon", "librechat_probe::check"),
     chain_node!(82, "LobeChat Probe", "recon", "Recon", "lobechat_probe::check"),
+    chain_node!(83, "Dify Probe", "recon", "Recon", "dify_probe::check"),
+    chain_node!(84, "FastGPT Probe", "recon", "Recon", "fastgpt_probe::check"),
+    chain_node!(85, "NextChat Probe", "recon", "Recon", "nextchat_probe::check"),
+    chain_node!(86, "AnythingLLM Probe", "recon", "Recon", "anythingllm_probe::check"),
+    chain_node!(87, "Flowise Probe", "recon", "Recon", "flowise_probe::check"),
+    chain_node!(88, "RAGFlow Probe", "recon", "Recon", "ragflow_probe::check"),
 ];
 
 /// Build the full attack DAG from definitions
@@ -373,6 +379,24 @@ fn build_execute_fn(fn_name: &str) -> crate::chain::dag::ExecFn {
         }),
         "lobechat_probe::check" => Box::new(|t: Target, c: AppConfig| {
             Box::pin(async move { exploit::lobechat_probe::check(t, c).await.into_standard() })
+        }),
+        "dify_probe::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::dify_probe::check(t, c).await.into_standard() })
+        }),
+        "fastgpt_probe::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::fastgpt_probe::check(t, c).await.into_standard() })
+        }),
+        "nextchat_probe::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::nextchat_probe::check(t, c).await.into_standard() })
+        }),
+        "anythingllm_probe::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::anythingllm_probe::check(t, c).await.into_standard() })
+        }),
+        "flowise_probe::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::flowise_probe::check(t, c).await.into_standard() })
+        }),
+        "ragflow_probe::check" => Box::new(|t: Target, c: AppConfig| {
+            Box::pin(async move { exploit::ragflow_probe::check(t, c).await.into_standard() })
         }),
 
         _ => {

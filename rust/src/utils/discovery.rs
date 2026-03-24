@@ -1,4 +1,4 @@
-//! Port scanning and OpenClaw service discovery
+//! Port scanning and service discovery
 
 use std::net::SocketAddr;
 use std::time::Duration;
@@ -6,6 +6,8 @@ use tokio::net::TcpStream;
 use tokio::sync::Semaphore;
 use tokio::time::timeout;
 use std::sync::Arc;
+
+use crate::platform::{TargetPlatform, registry::PlatformRegistry};
 
 /// Default ports commonly used by OpenClaw/Open-WebUI
 pub const COMMON_PORTS: &[u16] = &[
@@ -25,6 +27,7 @@ pub struct ServiceInfo {
     pub host: String,
     pub port: u16,
     pub is_openclaw: bool,
+    pub platform: TargetPlatform,
     pub version: Option<String>,
     pub features: Vec<String>,
 }
@@ -147,9 +150,83 @@ pub async fn fingerprint_openclaw(host: &str, port: u16, tls: bool, dur: Duratio
         host: host.to_string(),
         port,
         is_openclaw,
+        platform: if is_openclaw { TargetPlatform::OpenClaw } else { TargetPlatform::Unknown },
         version,
         features,
     }
+}
+
+/// Fingerprint a service against all registered platform profiles
+pub async fn fingerprint_service(host: &str, port: u16, tls: bool, dur: Duration) -> ServiceInfo {
+    let scheme = if tls { "https" } else { "http" };
+    let base = format!("{scheme}://{host}:{port}");
+    let client = crate::utils::build_client(dur);
+    let registry = PlatformRegistry::global();
+
+    // Fetch root page once for header/body checks
+    let (root_headers, root_body) = match client.get(&base).send().await {
+        Ok(resp) => {
+            let hdrs: Vec<(String, String)> = resp.headers().iter()
+                .filter_map(|(k, v)| v.to_str().ok().map(|vs| (k.to_string(), vs.to_string())))
+                .collect();
+            let body = resp.text().await.unwrap_or_default();
+            (hdrs, body)
+        }
+        Err(_) => (vec![], String::new()),
+    };
+
+    for profile in registry.all() {
+        let spec = profile.fingerprint_markers();
+        let mut score = 0u32;
+
+        // Check body keywords
+        for kw in &spec.body_keywords {
+            if root_body.to_lowercase().contains(&kw.to_lowercase()) {
+                score += 2;
+            }
+        }
+
+        // Check header markers
+        for (hdr_name, hdr_val) in &spec.header_markers {
+            for (k, v) in &root_headers {
+                if k.eq_ignore_ascii_case(hdr_name) && v.to_lowercase().contains(&hdr_val.to_lowercase()) {
+                    score += 3;
+                }
+            }
+        }
+
+        // Check probe endpoints
+        for probe in &spec.probe_endpoints {
+            if let Ok(resp) = client.get(format!("{base}{}", probe.path)).send().await {
+                let status = resp.status().as_u16();
+                if probe.accept_statuses.contains(&status) {
+                    score += 2;
+                    if let Some(contains) = probe.body_contains {
+                        if let Ok(body) = resp.text().await {
+                            if body.contains(contains) {
+                                score += 3;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if score >= 4 {
+            let is_oc = profile.platform() == TargetPlatform::OpenClaw;
+            return ServiceInfo {
+                host: host.to_string(),
+                port,
+                is_openclaw: is_oc,
+                platform: profile.platform(),
+                version: None,
+                features: vec![],
+            };
+        }
+    }
+
+    // Fallback to legacy OpenClaw check
+    fingerprint_openclaw(host, port, tls, dur).await
 }
 
 /// Discover OpenClaw services on a host across specified ports
@@ -265,10 +342,12 @@ mod tests {
             host: "example.com".into(),
             port: 8080,
             is_openclaw: true,
+            platform: TargetPlatform::OpenClaw,
             version: Some("0.5.0".into()),
             features: vec!["auth_api".into(), "websocket".into()],
         };
         assert!(s.is_openclaw);
+        assert_eq!(s.platform, TargetPlatform::OpenClaw);
         assert_eq!(s.version.as_deref(), Some("0.5.0"));
         assert_eq!(s.features.len(), 2);
     }

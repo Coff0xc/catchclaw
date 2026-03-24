@@ -2,6 +2,7 @@ mod chain;
 mod config;
 mod exploit;
 mod payload;
+mod platform;
 mod report;
 mod scan;
 mod utils;
@@ -12,6 +13,7 @@ use config::{AppConfig, FileConfig, LogLevel};
 use std::path::PathBuf;
 use std::time::Duration;
 use utils::{Target, parse_targets, parse_targets_file};
+use platform::TargetPlatform;
 
 #[derive(Parser)]
 #[command(
@@ -103,6 +105,10 @@ enum Commands {
         /// Dry-run: show which exploits would execute without scanning
         #[arg(long)]
         dry_run: bool,
+
+        /// Target platform: auto, openclaw, librechat, lobechat, dify, fastgpt, nextchat, anythingllm, flowise, ragflow
+        #[arg(long, default_value = "auto")]
+        platform: String,
     },
 
     /// Run specific exploit chain
@@ -218,6 +224,7 @@ async fn main() {
             profile,
             severity_filter,
             dry_run,
+            platform,
         } => {
             let level = log_level
                 .and_then(|s| s.parse().ok())
@@ -252,6 +259,12 @@ async fn main() {
             let tok = if token.is_empty() { None } else { Some(token.clone()) };
             for t in &mut all_targets {
                 t.token = tok.clone();
+            }
+
+            // Apply platform to all targets
+            let plat = platform.parse::<TargetPlatform>().unwrap_or(TargetPlatform::Unknown);
+            for t in &mut all_targets {
+                t.platform = plat;
             }
 
             // Load and apply profile

@@ -6,6 +6,8 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 use std::net::Ipv4Addr;
 
+use crate::platform::TargetPlatform;
+
 // ---------------------------------------------------------------------------
 // Severity
 // ---------------------------------------------------------------------------
@@ -56,6 +58,8 @@ pub struct Target {
     pub use_tls: bool,
     pub token: Option<String>,
     pub password: Option<String>,
+    #[serde(skip)]
+    pub platform: TargetPlatform,
 }
 
 impl Target {
@@ -66,6 +70,7 @@ impl Target {
             use_tls: false,
             token: None,
             password: None,
+            platform: TargetPlatform::Unknown,
         }
     }
 
