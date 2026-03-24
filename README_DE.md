@@ -1,8 +1,9 @@
-<h1 align="center">🦞 CatchClaw v5.2.0</h1>
+<h1 align="center">🦞 CatchClaw v5.3.0</h1>
 
 <p align="center">
-  <b>Automatisiertes Sicherheitsbewertungstool für OpenClaw / Open-WebUI AI-Codierungsplattformen</b><br>
-  <sub>72 DAG-Angriffsketten | 72 Exploit-Module | ATT&CK-Phasenzuordnung | Async Tokio-Engine | Angriffsgraph-Visualisierung</sub>
+  <b>Multi-Plattform AI-Agent Sicherheitsbewertungstool</b><br>
+  <sub>OpenClaw · Open-WebUI · LibreChat · LobeChat · Dify · FastGPT · NextChat · AnythingLLM · Flowise · RAGFlow</sub><br>
+  <sub>78 DAG-Angriffsketten | 78 Exploit-Module | ATT&CK-Phasenzuordnung | Async Tokio-Engine | Angriffsgraph-Visualisierung</sub>
 </p>
 
 <p align="center">
@@ -22,11 +23,12 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-5.2.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Version-5.3.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/DAG_Chains-72-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-78-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
-  <img src="https://img.shields.io/badge/Exploits-72_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Exploits-78_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Platforms-9-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
@@ -56,12 +58,13 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                          CatchClaw v5.2.0                                │
+│                          CatchClaw v5.3.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 72 DAG-Angriffsketten ● 72 Exploit-Module    ● Async Tokio-Engine    │
+│  ● 78 DAG-Angriffsketten ● 78 Exploit-Module    ● Async Tokio-Engine    │
 │  ● ATT&CK 9-Phasen-Map  ● Mermaid-Angriffsgraph ● JSON/HTML/MD-Berichte│
 │  ● Kahn Topologische Sort. ● Semaphore-Nebenläuf. ● Bedingung/Fallback  │
 │  ● Multi-Target (CIDR)  ● Port-Scan / Erkennung ● 200+ externe Payloads│
+│  ● 9 Plattformen         ● Auto-Plattformerkennung ● --platform Auswahl │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  Angriffsfläche: Gateway WS API | HTTP REST | OAuth | Webhook | Node    │
 │  Abdeckung: SSRF | RCE | Schlüsseldiebstahl | Session-Hijack | Privesc  │
@@ -75,10 +78,11 @@
 
 - [Überblick](#überblick)
 - [Kernfunktionen](#kernfunktionen)
+- [Unterstützte Plattformen](#unterstützte-plattformen)
 - [Installation](#installation)
 - [Schnellstart](#schnellstart)
 - [CLI-Verwendung](#cli-verwendung)
-- [72 Exploit-Module](#59-exploit-module)
+- [78 Exploit-Module](#78-exploit-module)
 - [DAG-Angriffsketten-Architektur](#dag-angriffsketten-architektur)
 - [Nuclei-Vorlagen](#nuclei-vorlagen)
 - [Projektstruktur](#projektstruktur)
@@ -88,7 +92,7 @@
 
 ## Überblick
 
-**CatchClaw** ist ein Rust-basiertes automatisiertes Sicherheitsbewertungstool für [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI AI-Coding-Agent-Plattformen. Es orchestriert 72 Exploit-Module durch eine DAG (Directed Acyclic Graph) Angriffskette und deckt den gesamten ATT&CK-Lebenszyklus von der Aufklärung bis zur Datenexfiltration ab.
+**CatchClaw** ist ein Rust-basiertes Multi-Plattform-Sicherheitsbewertungstool für AI-Agenten. Neben der primären Unterstützung für OpenClaw / Open-WebUI werden 9 Plattformen abgedeckt: LibreChat, LobeChat, Dify, FastGPT, NextChat, AnythingLLM, Flowise und RAGFlow. Es orchestriert 78 Exploit-Module durch eine DAG (Directed Acyclic Graph) Angriffskette und deckt den gesamten ATT&CK-Lebenszyklus von der Aufklärung bis zur Datenexfiltration ab.
 
 Basierend auf der Tokio-Async-Runtime verwendet die DAG-Engine Kahns topologische Sortierung für ebenenweise parallele Ausführung mit Semaphore-begrenzter Nebenläufigkeit, bedingter Ausführung und Fallback-Knoten. Angriffsergebnisse werden als Mermaid-Flussdiagramme visualisiert.
 
@@ -102,8 +106,8 @@ Basierend auf der Tokio-Async-Runtime verwendet die DAG-Engine Kahns topologisch
 
 ### Angriffs-Engine
 
-- **72 Exploit-Module** — 10 Kategorien, automatische `inventory`-Makro-Registrierung
-- **72 DAG-Angriffsketten** — 9 ATT&CK-Phasen, automatisierte Orchestrierung
+- **78 Exploit-Module** — 10 Kategorien, automatische `inventory`-Makro-Registrierung
+- **78 DAG-Angriffsketten** — 9 ATT&CK-Phasen, automatisierte Orchestrierung
 - **Kahn Topologische Sortierung** — Ebenenweise parallele Ausführung mit Abhängigkeitsauflösung
 - **Bedingungs-/Fallback-Knoten** — Dynamische Pfadentscheidungen basierend auf vorherigen Ergebnissen
 - **Angriffsgraph-Visualisierung** — Mermaid-Export mit Treffer/Skip/Fallback-Status
@@ -128,7 +132,7 @@ Basierend auf der Tokio-Async-Runtime verwendet die DAG-Engine Kahns topologisch
 
 - **Multi-Target-Scanning** — CIDR (/24), IP-Bereich, kommagetrennt, Zieldatei
 - **Port-Scanning** — TCP Connect Scan + benutzerdefinierte Portbereiche
-- **Service-Erkennung** — OpenClaw-Fingerprinting (API/WebSocket/Health)
+- **Multi-Plattform-Erkennung** — Automatisches Fingerprinting von 9 Plattformen (API/WebSocket/Health)
 - **200+ Payloads** — SSRF/Injection/Prompt/Auth/XSS externe YAML-Bibliothek
 - **Scan-Konfiguration** — TOML-Konfigurationsdatei + Profile + Proxy-Unterstützung
 
@@ -142,10 +146,28 @@ Basierend auf der Tokio-Async-Runtime verwendet die DAG-Engine Kahns topologisch
 - **`--format`** — Ausgabeformat: json/html/markdown
 - **`--dry-run`** — DAG-Ausführungsplan anzeigen ohne Scan
 - **`--targets-file`** — Batch-Zieldatei-Eingabe
+- **`--platform`** — Zielplattform angeben (auto/openclaw/librechat/lobechat usw.)
 
 </td>
 </tr>
 </table>
+
+---
+
+## Unterstützte Plattformen
+
+| Plattform | Beschreibung | Probe-Modul |
+|-----------|-------------|-------------|
+| **OpenClaw** | Anthropic AI-Coding-Agent-Plattform | Integriert (alle Module) |
+| **Open-WebUI** | Open-Source AI Web UI | Integriert (alle Module) |
+| **LibreChat** | Multi-Provider AI-Chat-Plattform | librechat_probe |
+| **LobeChat** | Open-Source AI-Chat-Framework | lobechat_probe |
+| **Dify** | LLM-Anwendungsentwicklungsplattform | dify_probe |
+| **FastGPT** | Wissensbasierte AI-Plattform | fastgpt_probe |
+| **NextChat** | ChatGPT Web UI | nextchat_probe |
+| **AnythingLLM** | All-in-One AI-Desktop-App | anythingllm_probe |
+| **Flowise** | Drag & Drop LLM-Flow-Builder | flowise_probe |
+| **RAGFlow** | RAG-basierte Wissens-Engine | ragflow_probe |
 
 ---
 
@@ -198,6 +220,9 @@ catchclaw scan -t ZIEL_IP:PORT --severity-filter critical,high
 # Ausführungsplan anzeigen
 catchclaw scan -t ZIEL_IP:PORT --dry-run
 
+# Zielplattform angeben
+catchclaw scan -t ZIEL_IP:PORT --platform librechat
+
 # Vollständige Angriffskette ausführen
 catchclaw exploit -t ZIEL_IP:PORT --token xxx
 
@@ -210,7 +235,7 @@ catchclaw exploit -t ZIEL_IP:PORT --chain-id 30
 ## CLI-Verwendung
 
 ```
-CatchClaw v5.2.0 — OpenClaw Sicherheitsbewertungstool
+CatchClaw v5.3.0 — Multi-Plattform AI-Agent Sicherheitsbewertungstool
 
 Usage: catchclaw <COMMAND>
 
@@ -235,6 +260,7 @@ Scan Flags:
       --tls                    HTTPS/WSS verwenden
       --callback <URL>         SSRF-Callback-URL
       --config <FILE>          TOML-Konfigurationsdatei
+      --platform <PLATFORM>    Zielplattform: auto/openclaw/librechat/lobechat/dify/fastgpt/nextchat/anythingllm/flowise/ragflow (Standard auto)
 
 Exploit Flags:
   -t, --target <HOST:PORT>     Zieladresse
@@ -246,13 +272,13 @@ Exploit Flags:
 
 ---
 
-## 72 Exploit-Module
+## 78 Exploit-Module
 
 Nach ATT&CK-Phase und Angriffskategorie:
 
 | Phase | Anzahl | Schlüsselmodule |
 |-------|--------|----------------|
-| **Recon** | 6 | cors_bypass, ws_hijack, auth_mode_abuse, log_disclosure, hidden_content, origin_wildcard |
+| **Recon** | 14 | cors_bypass, ws_hijack, auth_mode_abuse, log_disclosure, hidden_content, origin_wildcard, librechat_probe, lobechat_probe, dify_probe, fastgpt_probe, nextchat_probe, anythingllm_probe, flowise_probe, ragflow_probe |
 | **Initial Access** | 13 | ssrf, eval_inject, prompt_inject, mcp_inject, pairing_brute, oauth_abuse, responses_exploit, ws_fuzz, acp_bypass, ssrf_rebind, ssrf_proxy_bypass, browser_request, csrf_no_origin |
 | **Credential Access** | 5 | apikey_steal, oauth_token_theft, secret_extract, secrets_resolve, talk_secrets |
 | **Execution** | 7 | rce, hook_inject, tools_invoke, keychain_cmd_inject, qmd_cmd_inject, exec_race_toctou, exec_socket_leak |
@@ -326,11 +352,21 @@ catchclaw/
 │       ├── config/mod.rs          # AppConfig + Profile + Protokollkonstanten
 │       ├── chain/
 │       │   ├── dag.rs             # DAG-Engine (Toposort + Nebenläuf. + AttackGraph)
-│       │   └── chains.rs          # 59 Angriffsketten-Knotendefinitionen
+│       │   └── chains.rs          # 78 Angriffsketten-Knotendefinitionen
 │       ├── exploit/
 │       │   ├── registry.rs        # ExploitMeta + inventory-Registrierungssystem
 │       │   ├── base.rs            # ExploitCtx gemeinsamer Kontext
-│       │   └── *.rs               # 59 Exploit-Modul-Implementierungen
+│       │   └── *.rs               # 78 Exploit-Modul-Implementierungen
+│       ├── platform/              # Multi-Plattform-Probe-Module
+│       │   ├── mod.rs             # Plattformerkennung und -routing
+│       │   ├── librechat.rs       # LibreChat-Probe
+│       │   ├── lobechat.rs        # LobeChat-Probe
+│       │   ├── dify.rs            # Dify-Probe
+│       │   ├── fastgpt.rs         # FastGPT-Probe
+│       │   ├── nextchat.rs        # NextChat-Probe
+│       │   ├── anythingllm.rs     # AnythingLLM-Probe
+│       │   ├── flowise.rs         # Flowise-Probe
+│       │   └── ragflow.rs         # RAGFlow-Probe
 │       ├── scan/mod.rs            # Vollständiger Scan + Multi-Target
 │       ├── report/mod.rs          # JSON/HTML/Markdown-Berichte
 │       └── utils/
@@ -338,7 +374,7 @@ catchclaw/
 │           ├── http.rs            # HTTP-Client + False-Positive-Filter
 │           ├── ws.rs              # GatewayWsClient (WS + Challenge-Erkennung)
 │           ├── target_parser.rs   # Multi-Target-Parsing
-│           ├── port_scan.rs       # Port-Scanning + OpenClaw-Erkennung
+│           ├── port_scan.rs       # Port-Scanning + Service-Erkennung
 │           ├── payload_registry.rs # PayloadRegistry (YAML-Laden + Verzeichnismerge)
 │           └── payload_mutator.rs # Payload-Mutationsengine
 ├── payloads/                      # 200+ externe Payloads (YAML)

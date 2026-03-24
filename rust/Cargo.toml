@@ -1,13 +1,13 @@
 [package]
 name = "catchclaw"
-version = "5.2.0"
+version = "5.3.0"
 edition = "2024"
-description = "Automated security assessment tool for OpenClaw / Open-WebUI AI coding platforms"
+description = "Multi-platform AI agent security assessment tool — supports OpenClaw, Dify, FastGPT, LobeChat & 9 platforms"
 license-file = "../LICENSE"
 repository = "https://github.com/Coff0xc/catchclaw"
 homepage = "https://github.com/Coff0xc/catchclaw"
 authors = ["Coff0xc"]
-keywords = ["security", "pentest", "openclaw", "exploit", "assessment"]
+keywords = ["security", "pentest", "multi-platform", "exploit", "assessment"]
 categories = ["command-line-utilities"]
 rust-version = "1.85"
 

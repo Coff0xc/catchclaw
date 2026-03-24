@@ -1,8 +1,8 @@
-<h1 align="center">🦞 CatchClaw v5.2.0</h1>
+<h1 align="center">🦞 CatchClaw v5.3.0</h1>
 
 <p align="center">
-  <b>Automated Security Assessment Tool for OpenClaw / Open-WebUI AI Coding Platforms</b><br>
-  <sub>72 DAG Attack Chains | 72 Exploit Modules | ATT&CK Phase Mapping | Async Tokio Engine | Attack Graph Visualization</sub>
+  <b>Multi-Platform AI Agent Security Assessment Tool — Supporting OpenClaw, Dify, FastGPT, LobeChat & 9 Platforms</b><br>
+  <sub>78 DAG Attack Chains | 78 Exploit Modules | 9 Platform Support | ATT&CK Phase Mapping | Async Tokio Engine | Attack Graph Visualization</sub>
 </p>
 
 <p align="center">
@@ -22,11 +22,12 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-5.2.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Version-5.3.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/DAG_Chains-72-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-78-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
-  <img src="https://img.shields.io/badge/Exploits-72_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Exploits-78_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Platforms-9-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
@@ -56,14 +57,15 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                          CatchClaw v5.2.0                                │
+│                          CatchClaw v5.3.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 72 DAG Attack Chains  ● 72 Exploit Modules   ● Async Tokio Engine    │
+│  ● 78 DAG Attack Chains  ● 78 Exploit Modules   ● Async Tokio Engine    │
 │  ● ATT&CK 9-Phase Map   ● Mermaid Attack Graph  ● JSON/HTML/MD Reports  │
 │  ● Kahn Topological Sort ● Semaphore Concurrency ● Condition/Fallback    │
 │  ● Multi-Target (CIDR)  ● Port Scan / Discovery ● 200+ External Payloads│
+│  ● 9 Platform Support   ● Multi-Platform Fingerprint ● --platform Auto  │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  Attack Surface: Gateway WS API | HTTP REST | OAuth | Webhook | Node     │
+│  Attack Surface: Gateway WS API | HTTP REST | OAuth | Webhook | Node | Multi-Platform │
 │  Coverage: SSRF | RCE | Key Theft | Session Hijack | Privesc | Persist   │
 │  New: C2 Exfil | Skill Poison | Agent Inject | MCP Inject | DNS Rebind  │
 └────────────────────────────────────────────────────────────────────────────┘
@@ -75,10 +77,11 @@
 
 - [Overview](#overview)
 - [Core Features](#core-features)
+- [Supported Platforms](#supported-platforms)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [CLI Usage](#cli-usage)
-- [72 Exploit Modules](#59-exploit-modules)
+- [78 Exploit Modules](#59-exploit-modules)
 - [DAG Attack Chain Architecture](#dag-attack-chain-architecture)
 - [Nuclei Templates](#nuclei-templates)
 - [Project Structure](#project-structure)
@@ -88,7 +91,7 @@
 
 ## Overview
 
-**CatchClaw** is a Rust-based automated security assessment tool purpose-built for [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI AI coding agent platforms. It executes 59 exploit modules orchestrated through a DAG (Directed Acyclic Graph) attack chain, covering the full ATT&CK lifecycle from reconnaissance to data exfiltration.
+**CatchClaw** is a Rust-based multi-platform AI Agent security assessment tool supporting [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, LobeChat, and 9 major AI platforms. It executes 78 exploit modules orchestrated through a DAG (Directed Acyclic Graph) attack chain, covering the full ATT&CK lifecycle from reconnaissance to data exfiltration.
 
 Built on Tokio async runtime, the DAG engine uses Kahn's topological sort for level-by-level concurrent execution with Semaphore-bounded concurrency, conditional execution, and fallback nodes. Attack results are visualized as Mermaid flowcharts.
 
@@ -96,13 +99,14 @@ Built on Tokio async runtime, the DAG engine uses Kahn's topological sort for le
 
 | Scenario | Manual Testing | CatchClaw |
 |----------|---------------|-----------|
-| **Vulnerability Validation** | Write PoCs one by one | 59 chains with automated orchestration |
+| **Vulnerability Validation** | Write PoCs one by one | 78 chains with automated orchestration |
 | **Attack Surface Coverage** | Experience-dependent | WS + HTTP + OAuth + Webhook + Node full coverage |
 | **Dependency Chain Discovery** | Hard to track | DAG auto-discovers vulnerability dependency paths |
 | **Result Visualization** | Manual compilation | Mermaid attack graph + JSON/HTML/Markdown report |
 | **CI/CD Integration** | None | 24 Nuclei templates plug-and-play |
 | **Multi-Target Scanning** | Test one at a time | CIDR, IP range, target file batch scanning |
-| **Service Discovery** | Requires nmap | Built-in port scan + OpenClaw fingerprinting |
+| **Service Discovery** | Requires nmap | Built-in port scan + multi-platform fingerprinting |
+| **Multi-Platform Coverage** | Research each platform separately | OpenClaw/Dify/FastGPT/NextChat/AnythingLLM/Flowise/RagFlow/LibreChat/LobeChat — 9 platforms auto-detected |
 
 ---
 
@@ -114,8 +118,8 @@ Built on Tokio async runtime, the DAG engine uses Kahn's topological sort for le
 
 ### Attack Engine
 
-- **72 Exploit Modules** — 10 categories, `inventory` macro auto-registration
-- **72 DAG Attack Chains** — 9 ATT&CK phases, automated orchestration
+- **78 Exploit Modules** — 10 categories, `inventory` macro auto-registration
+- **78 DAG Attack Chains** — 9 ATT&CK phases, automated orchestration
 - **Kahn Topological Sort** — Level-by-level concurrent execution with dependency resolution
 - **Condition/Fallback Nodes** — Dynamic path decisions based on prior results
 - **Attack Graph Visualization** — Mermaid export with hit/skip/fallback status
@@ -140,7 +144,7 @@ Built on Tokio async runtime, the DAG engine uses Kahn's topological sort for le
 
 - **Multi-Target Scanning** — CIDR (/24), IP range, comma-separated, target file
 - **Port Scanning** — TCP connect scan + custom port ranges
-- **Service Discovery** — OpenClaw fingerprinting (API/WebSocket/health)
+- **Service Discovery** — Multi-platform fingerprinting (9 AI platforms auto-detected)
 - **200+ Payloads** — SSRF/Injection/Prompt/Auth/XSS external YAML library
 - **Scan Config** — TOML config file + Profile presets + proxy support
 
@@ -154,10 +158,27 @@ Built on Tokio async runtime, the DAG engine uses Kahn's topological sort for le
 - **`--format`** — Output format: json/html/markdown
 - **`--dry-run`** — Preview DAG execution plan without scanning
 - **`--targets-file`** — Batch target file input
+- **`--platform`** — Specify target platform type (auto-detect / manual)
 
 </td>
 </tr>
 </table>
+
+---
+
+## Supported Platforms
+
+| Platform | Version | Fingerprinting | CVE Coverage | Probe Module |
+|----------|---------|---------------|-------------|-------------|
+| **OpenClaw / Open-WebUI** | — | Auto | 72 dedicated modules | Built-in |
+| **Dify** | v1.5+ | Auto | CVE-2025-56157, CVE-2025-55182 | `dify_probe` |
+| **FastGPT** | v4.9+ | Auto | CVE-2025-27600, CVE-2025-52552 | `fastgpt_probe` |
+| **NextChat** | v2.12+ | Auto | CVE-2023-49785 | `nextchat_probe` |
+| **AnythingLLM** | v1.3+ | Auto | CVE-2024-13059, CVE-2024-0455 | `anythingllm_probe` |
+| **Flowise** | v1.6+ | Auto | CVE-2025-26319, CVE-2025-58434 | `flowise_probe` |
+| **RagFlow** | v0.14+ | Auto | CVE-2024-12433, CVE-2024-12450 | `ragflow_probe` |
+| **LibreChat** | — | Auto | CVE-2025-69222, CVE-2025-69220 | `librechat_probe` |
+| **LobeChat** | — | Auto | CVE-2026-23733 | `lobechat_probe` |
 
 ---
 
@@ -191,8 +212,11 @@ cargo build --release
 # List all registered modules
 catchclaw list
 
-# Full scan
+# Auto-detect platform type
 catchclaw scan -t TARGET_IP:PORT
+
+# Specify platform type
+catchclaw scan -t TARGET_IP:PORT --platform dify
 
 # Scan with JSON report output
 catchclaw scan -t TARGET_IP:PORT -o report.json
@@ -230,7 +254,7 @@ catchclaw exploit -t TARGET_IP:PORT --chain-id 30
 ## CLI Usage
 
 ```
-CatchClaw v5.2.0 — OpenClaw Security Assessment Tool
+CatchClaw v5.3.0 — Multi-Platform AI Agent Security Assessment Tool
 
 Usage: catchclaw <COMMAND>
 
@@ -255,6 +279,7 @@ Scan Flags:
       --severity-filter <SEV>  Filter by severity: critical,high,medium,low,info
       --dry-run                Preview DAG execution plan
       --config <FILE>          Config file path (TOML/YAML/JSON)
+      --platform <PLATFORM>    Specify target platform (auto|openclaw|dify|fastgpt|nextchat|anythingllm|flowise|ragflow|librechat|lobechat)
 
 Exploit Flags:
   -t, --target <HOST:PORT>     Target address
@@ -266,7 +291,7 @@ Exploit Flags:
 
 ---
 
-## 72 Exploit Modules
+## 78 Exploit Modules
 
 Grouped by ATT&CK phase and attack category:
 
@@ -280,6 +305,14 @@ Grouped by ATT&CK phase and attack category:
 | log_disclosure | DataLeak | logs.query credential/sensitive data exposure |
 | hidden_content | DataLeak | Hidden content discovery |
 | origin_wildcard | Config | Origin wildcard configuration detection |
+| librechat_probe | Recon | LibreChat security probe (CVE-2025-69222/69220/54868) |
+| lobechat_probe | Recon | LobeChat security probe (CVE-2026-23733 XSS) |
+| dify_probe | Recon | Dify security probe (CVE-2025-56157 default creds, SSRF) |
+| fastgpt_probe | Recon | FastGPT security probe (CVE-2025-27600 SSRF, XSS) |
+| nextchat_probe | Recon | NextChat security probe (CVE-2023-49785 SSRF) |
+| anythingllm_probe | Recon | AnythingLLM security probe (CVE-2024-0455 SSRF) |
+| flowise_probe | Recon | Flowise security probe (CVE-2025-26319 file upload) |
+| ragflow_probe | Recon | RagFlow security probe (CVE-2024-12433 RCE) |
 
 ### Initial Access
 
@@ -457,18 +490,22 @@ catchclaw/
 │       ├── config/mod.rs          # AppConfig + profiles + protocol constants
 │       ├── chain/
 │       │   ├── dag.rs             # DAG engine (topo sort + concurrency + AttackGraph)
-│       │   └── chains.rs          # 59 attack chain node definitions
+│       │   └── chains.rs          # 78 attack chain node definitions
 │       ├── exploit/
 │       │   ├── registry.rs        # ExploitMeta + inventory registration system
 │       │   ├── base.rs            # ExploitCtx shared context + PayloadRegistry
-│       │   └── *.rs               # 59 exploit module implementations
+│       │   └── *.rs               # 78 exploit module implementations
+│       ├── platform/
+│       │   ├── mod.rs             # PlatformProfile trait + TargetPlatform
+│       │   ├── registry.rs        # PlatformRegistry (9 platform registration)
+│       │   └── profiles/          # 9 platform Profile implementations
 │       ├── scan/mod.rs            # Full scan + multi-target orchestration
 │       ├── report/mod.rs          # JSON / HTML / Markdown report output
 │       └── utils/
 │           ├── types.rs           # Target / Finding / Severity / multi-target parsing
 │           ├── http.rs            # HTTP client + false positive filters
 │           ├── ws.rs              # GatewayWsClient (WS + challenge detection)
-│           ├── discovery.rs       # Port scanning + OpenClaw service discovery
+│           ├── discovery.rs       # Port scanning + multi-platform service discovery
 │           ├── payload.rs         # PayloadRegistry (YAML loading + directory merge)
 │           └── mutate.rs          # Payload mutation engine
 ├── payloads/                      # 200+ external payloads (YAML)

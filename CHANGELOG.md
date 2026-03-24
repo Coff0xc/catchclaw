@@ -4,6 +4,24 @@ All notable changes to CatchClaw will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [5.3.0] - 2026-03-24
+
+### Added
+- **Multi-platform support** — PlatformProfile trait + EndpointKind abstraction + PlatformRegistry for cross-platform security assessment
+- **9 platform profiles** — OpenClaw, LibreChat, LobeChat, Dify, FastGPT, NextChat, AnythingLLM, Flowise, RagFlow with fingerprint markers, endpoint mapping, and capability flags
+- **6 new platform probe modules** covering 25+ CVEs:
+  - `dify_probe` — CVE-2025-56157 default credentials, SSRF via workflow, version leak
+  - `fastgpt_probe` — CVE-2025-27600 SSRF, CVE-2025-52552 XSS, env leak
+  - `nextchat_probe` — CVE-2023-49785 critical SSRF via proxy, API key leak, WebDAV
+  - `anythingllm_probe` — CVE-2024-0455 SSRF, Swagger exposure, system config leak
+  - `flowise_probe` — CVE-2025-26319 file upload, CVE-2025-58434 account takeover, no-auth detection
+  - `ragflow_probe` — CVE-2024-12433 pickle RCE, SSRF, tenant isolation, KB exposure
+- **Multi-platform fingerprinting** — `fingerprint_service()` auto-detects platform via body keywords, header markers, and probe endpoints
+- **`--platform` CLI flag** — specify target platform or use `auto` for fingerprint-based detection
+- **ExploitCtx endpoint resolution** — `endpoint()` and `endpoint_with_fallbacks()` methods for platform-aware URL generation
+- **DAG chain expanded** from 72 to 78 nodes with 6 new Recon-phase probe nodes
+- **Platform research docs** — `docs/multi-platform-research.md` and `docs/platform-abstraction-design.md`
+
 ## [5.2.0] - 2026-03-24
 
 ### Added

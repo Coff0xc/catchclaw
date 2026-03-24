@@ -1,8 +1,8 @@
-<h1 align="center">🦞 CatchClaw v5.2.0</h1>
+<h1 align="center">🦞 CatchClaw v5.3.0</h1>
 
 <p align="center">
-  <b>OpenClaw / Open-WebUI AI 编程平台 — 自动化安全评估工具</b><br>
-  <sub>72 条 DAG 攻击链 | 72 个 Exploit 模块 | ATT&CK 阶段映射 | Async Tokio 引擎 | 攻击图可视化</sub>
+  <b>多平台 AI Agent 安全评估工具 — 支持 OpenClaw / Dify / FastGPT / LobeChat 等 9 大平台</b><br>
+  <sub>78 条 DAG 攻击链 | 78 个 Exploit 模块 | 9 平台支持 | ATT&CK 阶段映射 | Async Tokio 引擎 | 攻击图可视化</sub>
 </p>
 
 <p align="center">
@@ -22,11 +22,12 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-5.2.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Version-5.3.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/DAG_Chains-72-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-78-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
-  <img src="https://img.shields.io/badge/Exploits-72_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Exploits-78_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Platforms-9-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
@@ -56,14 +57,15 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                          CatchClaw v5.2.0                                │
+│                          CatchClaw v5.3.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 72 条 DAG 攻击链     ● 72 个 Exploit 模块    ● Async Tokio 引擎       │
+│  ● 78 条 DAG 攻击链     ● 78 个 Exploit 模块    ● Async Tokio 引擎       │
 │  ● ATT&CK 9阶段映射    ● Mermaid 攻击图导出    ● JSON/HTML/MD 报告       │
 │  ● Kahn 拓扑排序引擎    ● Semaphore 并发控制    ● 条件/回退执行           │
 │  ● 多目标扫描 (CIDR)   ● 端口扫描/服务发现     ● 200+ 外部 Payload       │
+│  ● 9 平台支持          ● 多平台指纹识别      ● --platform 自动检测       │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  攻击面: Gateway WS API | HTTP REST | OAuth | Webhook | Node Pairing     │
+│  攻击面: Gateway WS API | HTTP REST | OAuth | Webhook | Node | Multi-Platform │
 │  覆盖: SSRF | RCE | 密钥窃取 | 会话劫持 | 提权 | 持久化 | 数据泄露      │
 │  新增: C2外泄 | Skill投毒 | Agent注入 | MCP注入 | OAuth窃取 | DNS Rebind  │
 └────────────────────────────────────────────────────────────────────────────┘
@@ -75,10 +77,11 @@
 
 - [项目简介](#项目简介)
 - [核心特性](#核心特性)
+- [支持平台](#支持平台)
 - [安装方式](#安装方式)
 - [快速开始](#快速开始)
 - [CLI 用法](#cli-用法)
-- [72 个 Exploit 模块](#59-个-exploit-模块)
+- [78 个 Exploit 模块](#59-个-exploit-模块)
 - [DAG 攻击链架构](#dag-攻击链架构)
 - [Nuclei 模板](#nuclei-模板)
 - [项目结构](#项目结构)
@@ -88,7 +91,7 @@
 
 ## 项目简介
 
-**CatchClaw** 是一款基于 Rust 的 [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI AI 编程平台安全评估工具。通过 72 条 DAG 攻击链和 72 个 Exploit 模块，覆盖从初始侦察到数据泄露的完整 ATT&CK 攻击链路。
+**CatchClaw** 是一款基于 Rust 的多平台 AI Agent 安全评估工具，支持 [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI、Dify、FastGPT、LobeChat 等 9 大 AI 平台。通过 78 条 DAG 攻击链和 78 个 Exploit 模块，覆盖从初始侦察到数据泄露的完整 ATT&CK 攻击链路。
 
 基于 Tokio 异步运行时，DAG 引擎使用 Kahn 拓扑排序按层级并发执行，Semaphore 控制并发度，支持条件执行与回退节点。攻击图可导出 Mermaid 流程图。
 
@@ -96,13 +99,14 @@
 
 | 场景 | 手工测试 | CatchClaw |
 |------|---------|-----------|
-| **漏洞验证** | 逐个手写 PoC | 59 条链自动编排验证 |
+| **漏洞验证** | 逐个手写 PoC | 78 条链自动编排验证 |
 | **攻击面覆盖** | 靠经验判断 | WS + HTTP + OAuth + Webhook + Node 全覆盖 |
 | **依赖链发现** | 难以追踪 | DAG 自动发现漏洞依赖路径 |
 | **结果可视化** | 手工整理 | Mermaid 攻击图 + JSON/HTML/Markdown 报告 |
 | **CI/CD 集成** | 无 | 24 Nuclei 模板即插即用 |
 | **多目标扫描** | 逐个手动测试 | CIDR、IP 范围、目标文件批量扫描 |
-| **服务发现** | 需配合 nmap | 内置端口扫描 + OpenClaw 指纹识别 |
+| **服务发现** | 需配合 nmap | 内置端口扫描 + 多平台指纹识别 |
+| **多平台覆盖** | 每个平台单独研究 | OpenClaw/Dify/FastGPT/NextChat/AnythingLLM/Flowise/RagFlow/LibreChat/LobeChat 9 平台自动检测 |
 
 ---
 
@@ -114,8 +118,8 @@
 
 ### 攻击引擎
 
-- **72 个 Exploit 模块** — 覆盖 10 大类别，`inventory` 宏自动注册
-- **72 条 DAG 攻击链** — 9 个 ATT&CK 阶段自动编排
+- **78 个 Exploit 模块** — 覆盖 10 大类别，`inventory` 宏自动注册
+- **78 条 DAG 攻击链** — 9 个 ATT&CK 阶段自动编排
 - **Kahn 拓扑排序** — 层级并发执行，自动解析依赖
 - **条件/回退节点** — 按前序结果动态决策执行路径
 - **攻击图可视化** — Mermaid 导出，标记命中/跳过/回退状态
@@ -140,7 +144,7 @@
 
 - **多目标扫描** — CIDR (/24)、IP 范围、逗号分隔、目标文件
 - **端口扫描** — TCP connect 扫描 + 自定义端口范围
-- **服务发现** — OpenClaw 指纹识别（API/WebSocket/健康检查）
+- **服务发现** — 多平台指纹识别（9 大 AI 平台自动检测）
 - **200+ Payload** — SSRF/注入/Prompt/Auth/XSS 外部 YAML 库
 - **扫描配置** — TOML 配置文件 + Profile 预设 + 代理支持
 
@@ -154,10 +158,27 @@
 - **`--format`** — 选择输出格式：json/html/markdown
 - **`--dry-run`** — 预览 DAG 执行计划，不实际扫描
 - **`--targets-file`** — 批量目标文件输入
+- **`--platform`** — 指定目标平台类型（自动检测 / 手动指定）
 
 </td>
 </tr>
 </table>
+
+---
+
+## 支持平台
+
+| 平台 | 版本 | 指纹识别 | CVE 覆盖 | 探测模块 |
+|------|------|---------|---------|---------|
+| **OpenClaw / Open-WebUI** | — | 自动 | 72 个专属模块 | 内置 |
+| **Dify** | v1.5+ | 自动 | CVE-2025-56157, CVE-2025-55182 | `dify_probe` |
+| **FastGPT** | v4.9+ | 自动 | CVE-2025-27600, CVE-2025-52552 | `fastgpt_probe` |
+| **NextChat** | v2.12+ | 自动 | CVE-2023-49785 | `nextchat_probe` |
+| **AnythingLLM** | v1.3+ | 自动 | CVE-2024-13059, CVE-2024-0455 | `anythingllm_probe` |
+| **Flowise** | v1.6+ | 自动 | CVE-2025-26319, CVE-2025-58434 | `flowise_probe` |
+| **RagFlow** | v0.14+ | 自动 | CVE-2024-12433, CVE-2024-12450 | `ragflow_probe` |
+| **LibreChat** | — | 自动 | CVE-2025-69222, CVE-2025-69220 | `librechat_probe` |
+| **LobeChat** | — | 自动 | CVE-2026-23733 | `lobechat_probe` |
 
 ---
 
@@ -191,8 +212,11 @@ cargo build --release
 # 查看所有注册模块
 catchclaw list
 
-# 全量扫描
+# 自动检测平台类型
 catchclaw scan -t 目标IP:端口
+
+# 指定平台类型
+catchclaw scan -t 目标IP:端口 --platform dify
 
 # 扫描并输出 JSON 报告
 catchclaw scan -t 目标IP:端口 -o report.json
@@ -230,7 +254,7 @@ catchclaw exploit -t 目标IP:端口 --chain-id 30
 ## CLI 用法
 
 ```
-CatchClaw v5.2.0 — OpenClaw 安全评估工具
+CatchClaw v5.3.0 — 多平台 AI Agent 安全评估工具
 
 Usage: catchclaw <COMMAND>
 
@@ -255,6 +279,7 @@ Scan Flags:
       --severity-filter <SEV>  按严重级别过滤：critical,high,medium,low,info
       --dry-run                预览 DAG 执行计划
       --config <FILE>          配置文件路径 (TOML/YAML/JSON)
+      --platform <PLATFORM>    指定目标平台类型 (auto|openclaw|dify|fastgpt|nextchat|anythingllm|flowise|ragflow|librechat|lobechat)
 
 Exploit Flags:
   -t, --target <HOST:PORT>     目标地址
@@ -266,7 +291,7 @@ Exploit Flags:
 
 ---
 
-## 72 个 Exploit 模块
+## 78 个 Exploit 模块
 
 按 ATT&CK 阶段和攻击类别分组：
 
@@ -280,6 +305,14 @@ Exploit Flags:
 | log_disclosure | DataLeak | logs.query 凭证/敏感数据泄露 |
 | hidden_content | DataLeak | 隐藏内容发现 |
 | origin_wildcard | Config | Origin 通配符配置检测 |
+| librechat_probe | Recon | LibreChat 安全探测 (CVE-2025-69222/69220/54868) |
+| lobechat_probe | Recon | LobeChat 安全探测 (CVE-2026-23733 XSS) |
+| dify_probe | Recon | Dify 安全探测 (CVE-2025-56157 默认凭据, SSRF) |
+| fastgpt_probe | Recon | FastGPT 安全探测 (CVE-2025-27600 SSRF, XSS) |
+| nextchat_probe | Recon | NextChat 安全探测 (CVE-2023-49785 SSRF) |
+| anythingllm_probe | Recon | AnythingLLM 安全探测 (CVE-2024-0455 SSRF) |
+| flowise_probe | Recon | Flowise 安全探测 (CVE-2025-26319 文件上传) |
+| ragflow_probe | Recon | RagFlow 安全探测 (CVE-2024-12433 RCE) |
 
 ### Initial Access（初始访问）
 
@@ -457,18 +490,22 @@ catchclaw/
 │       ├── config/mod.rs          # AppConfig + Profile + 协议常量
 │       ├── chain/
 │       │   ├── dag.rs             # DAG 引擎 (拓扑排序 + 并发 + AttackGraph)
-│       │   └── chains.rs          # 59 条攻击链节点定义
+│       │   └── chains.rs          # 78 条攻击链节点定义
 │       ├── exploit/
 │       │   ├── registry.rs        # ExploitMeta + inventory 注册系统
 │       │   ├── base.rs            # ExploitCtx 公共上下文 + PayloadRegistry 集成
-│       │   └── *.rs               # 59 个 exploit 模块实现
+│       │   └── *.rs               # 78 个 exploit 模块实现
+│       ├── platform/
+│       │   ├── mod.rs             # PlatformProfile trait + TargetPlatform
+│       │   ├── registry.rs        # PlatformRegistry (9 平台注册)
+│       │   └── profiles/          # 9 个平台 Profile 实现
 │       ├── scan/mod.rs            # 全量扫描 + 多目标扫描编排
 │       ├── report/mod.rs          # JSON / HTML / Markdown 报告输出
 │       └── utils/
 │           ├── types.rs           # Target / Finding / Severity / 多目标解析
 │           ├── http.rs            # HTTP 客户端 + 误报过滤器
 │           ├── ws.rs              # GatewayWsClient (WS + challenge)
-│           ├── discovery.rs       # 端口扫描 + OpenClaw 服务发现
+│           ├── discovery.rs       # 端口扫描 + 多平台服务发现
 │           ├── payload.rs         # PayloadRegistry (YAML 加载 + 目录合并)
 │           └── mutate.rs          # Payload 变异引擎
 ├── payloads/                      # 200+ 外部 Payload (YAML)
