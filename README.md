@@ -1,14 +1,13 @@
 <h1 align="center">🦞 CatchClaw v5.3.0</h1>
 
 <p align="center">
-  <b>多平台 AI Agent 安全评估工具 — 支持 OpenClaw / Dify / FastGPT / LobeChat 等 9 大平台</b><br>
-  <sub>78 条 DAG 攻击链 | 78 个 Exploit 模块 | 9 平台支持 | ATT&CK 阶段映射 | Async Tokio 引擎 | 攻击图可视化</sub>
+  <b>Multi-platform AI Agent security assessment tool — supports 9 major platforms including OpenClaw / Dify / FastGPT / LobeChat</b><br>
+  <sub>78 DAG attack chains | 78 Exploit modules | 9 platforms supported | ATT&CK stage mapping | Async Tokio engine | Attack graph visualization</sub>
 </p>
 
 <p align="center">
-  <a href="README.md"><b>简体中文</b></a> ·
-  <a href="README_EN.md">English</a> ·
-  <a href="README_JA.md">日本語</a> ·
+  <a href="README.md"><b>English</b></a> ·
+  <a href="README_JA.md">Japanese</a> ·
   <a href="README_RU.md">Русский</a> ·
   <a href="README_DE.md">Deutsch</a> ·
   <a href="README_FR.md">Français</a>
@@ -33,132 +32,132 @@
 
 ---
 
-> **⚠️ 商业使用严格禁止 | COMMERCIAL USE STRICTLY PROHIBITED**
+> **⚠️ COMMERCIAL USE STRICTLY PROHIBITED**
 >
-> 本项目采用 **CatchClaw Strict Non-Commercial License v2.0**。
+> This project is licensed under the **CatchClaw Strict Non-Commercial License v2.0**.
 >
-> **未经版权持有人 (Coff0xc) 书面授权，严禁任何形式的商业使用。** 违反者将被追究法律责任。
+> **Any form of commercial use is strictly prohibited without written authorization from the copyright holder (Coff0xc).** Violators will be held legally liable.
 >
-> 禁止行为包括但不限于：
-> - 出售、转授权、租赁本软件或其衍生作品
-> - 将本软件用于 SaaS、渗透测试服务、咨询或任何付费服务
-> - 集成至商业产品、平台或工具
-> - 用于训练商业 AI/ML 模型
-> - 改名、换皮、重新包装后分发
-> - 任何直接或间接产生收入的行为
+> Prohibited activities include, but are not limited to:
+> - Selling, sublicensing, or renting this software or its derivative works
+> - Using this software for SaaS, penetration testing services, consulting, or any paid service
+> - Integrating it into commercial products, platforms, or tools
+> - Using it to train commercial AI/ML models
+> - Renaming, reskinning, or repackaging and redistributing it
+> - Any activity that directly or indirectly generates revenue
 >
-> **版权持有人保留无限期追溯追诉权，包括追偿全部利润、法律费用及惩罚性赔偿。**
+> **The copyright holder reserves the right to pursue claims indefinitely, including recovery of all profits, legal fees, and punitive damages.**
 >
-> 详见 [LICENSE](LICENSE)。
+> See [LICENSE](LICENSE) for details.
 
 ---
 
-## 项目亮点
+## Highlights
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
 │                          CatchClaw v5.3.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 78 条 DAG 攻击链     ● 78 个 Exploit 模块    ● Async Tokio 引擎       │
-│  ● ATT&CK 9阶段映射    ● Mermaid 攻击图导出    ● JSON/HTML/MD 报告       │
-│  ● Kahn 拓扑排序引擎    ● Semaphore 并发控制    ● 条件/回退执行           │
-│  ● 多目标扫描 (CIDR)   ● 端口扫描/服务发现     ● 200+ 外部 Payload       │
-│  ● 9 平台支持          ● 多平台指纹识别      ● --platform 自动检测       │
+│  ● 78 DAG attack chains ● 78 Exploit modules ● Async Tokio engine        │
+│  ● ATT&CK 9-stage mapping ● Mermaid graph export ● JSON/HTML/MD reports  │
+│  ● Kahn topological sort ● Semaphore control ● Conditional/fallback      │
+│  ● Multi-target scan (CIDR) ● Port scan/service discovery ● 200+ Payloads│
+│  ● 9 platforms ● Multi-platform fingerprinting ● --platform auto-detect  │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  攻击面: Gateway WS API | HTTP REST | OAuth | Webhook | Node | Multi-Platform │
-│  覆盖: SSRF | RCE | 密钥窃取 | 会话劫持 | 提权 | 持久化 | 数据泄露      │
-│  新增: C2外泄 | Skill投毒 | Agent注入 | MCP注入 | OAuth窃取 | DNS Rebind  │
+│  Attack surface: WS API | HTTP REST | OAuth | Webhook | Node | Multi-Platform │
+│  Coverage: SSRF | RCE | key theft | hijacking | privesc | persistence | leaks │
+│  New: C2 exfil, Skill poison, Agent inject, MCP inject, OAuth theft, DNS Rebind │
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 目录
+## Table of Contents
 
-- [项目简介](#项目简介)
-- [核心特性](#核心特性)
-- [支持平台](#支持平台)
-- [安装方式](#安装方式)
-- [快速开始](#快速开始)
-- [CLI 用法](#cli-用法)
-- [78 个 Exploit 模块](#59-个-exploit-模块)
-- [DAG 攻击链架构](#dag-攻击链架构)
-- [Nuclei 模板](#nuclei-模板)
-- [项目结构](#项目结构)
-- [免责声明](#免责声明)
+- [Project Overview](#project-overview)
+- [Core Features](#core-features)
+- [Supported Platforms](#supported-platforms)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [CLI Usage](#cli-usage)
+- [78 Exploit Modules](#78-exploit-modules)
+- [DAG Attack Chain Architecture](#dag-attack-chain-architecture)
+- [Nuclei Templates](#nuclei-templates)
+- [Project Structure](#project-structure)
+- [Disclaimer](#disclaimer)
 
 ---
 
-## 项目简介
+## Project Overview
 
-**CatchClaw** 是一款基于 Rust 的多平台 AI Agent 安全评估工具，支持 [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI、Dify、FastGPT、LobeChat 等 9 大 AI 平台。通过 78 条 DAG 攻击链和 78 个 Exploit 模块，覆盖从初始侦察到数据泄露的完整 ATT&CK 攻击链路。
+**CatchClaw** is a Rust-based multi-platform AI Agent security assessment tool supporting 9 major AI platforms, including [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, and LobeChat. With 78 DAG attack chains and 78 Exploit modules, it covers the full ATT&CK kill chain, from initial reconnaissance to data exfiltration.
 
-基于 Tokio 异步运行时，DAG 引擎使用 Kahn 拓扑排序按层级并发执行，Semaphore 控制并发度，支持条件执行与回退节点。攻击图可导出 Mermaid 流程图。
+Built on the Tokio async runtime, the DAG engine executes level by level in parallel using Kahn's topological sort, with a Semaphore controlling concurrency, and supports conditional execution and fallback nodes. Attack graphs can be exported as Mermaid flowcharts.
 
-### 为什么选择 CatchClaw？
+### Why Choose CatchClaw?
 
-| 场景 | 手工测试 | CatchClaw |
+| Scenario | Manual Testing | CatchClaw |
 |------|---------|-----------|
-| **漏洞验证** | 逐个手写 PoC | 78 条链自动编排验证 |
-| **攻击面覆盖** | 靠经验判断 | WS + HTTP + OAuth + Webhook + Node 全覆盖 |
-| **依赖链发现** | 难以追踪 | DAG 自动发现漏洞依赖路径 |
-| **结果可视化** | 手工整理 | Mermaid 攻击图 + JSON/HTML/Markdown 报告 |
-| **CI/CD 集成** | 无 | 24 Nuclei 模板即插即用 |
-| **多目标扫描** | 逐个手动测试 | CIDR、IP 范围、目标文件批量扫描 |
-| **服务发现** | 需配合 nmap | 内置端口扫描 + 多平台指纹识别 |
-| **多平台覆盖** | 每个平台单独研究 | OpenClaw/Dify/FastGPT/NextChat/AnythingLLM/Flowise/RagFlow/LibreChat/LobeChat 9 平台自动检测 |
+| **Vulnerability validation** | Hand-written PoCs, one by one | 78 chains orchestrated and validated automatically |
+| **Attack surface coverage** | Based on experience | Full coverage of WS + HTTP + OAuth + Webhook + Node |
+| **Dependency chain discovery** | Hard to trace | DAG automatically discovers vulnerability dependency paths |
+| **Result visualization** | Organized by hand | Mermaid attack graphs + JSON/HTML/Markdown reports |
+| **CI/CD integration** | None | 24 Nuclei templates, plug and play |
+| **Multi-target scanning** | Tested manually, one by one | Batch scanning of CIDR blocks, IP ranges, and target files |
+| **Service discovery** | Requires nmap | Built-in port scanning + multi-platform fingerprinting |
+| **Multi-platform coverage** | Each platform researched separately | Automatic detection across 9 platforms: OpenClaw/Dify/FastGPT/NextChat/AnythingLLM/Flowise/RagFlow/LibreChat/LobeChat |
 
 ---
 
-## 核心特性
+## Core Features
 
 <table>
 <tr>
 <td width="50%">
 
-### 攻击引擎
+### Attack Engine
 
-- **78 个 Exploit 模块** — 覆盖 10 大类别，`inventory` 宏自动注册
-- **78 条 DAG 攻击链** — 9 个 ATT&CK 阶段自动编排
-- **Kahn 拓扑排序** — 层级并发执行，自动解析依赖
-- **条件/回退节点** — 按前序结果动态决策执行路径
-- **攻击图可视化** — Mermaid 导出，标记命中/跳过/回退状态
+- **78 Exploit modules** — covering 10 major categories, auto-registered by the `inventory` macro
+- **78 DAG attack chains** — auto-orchestrated across 9 ATT&CK stages
+- **Kahn topological sort** — level-by-level parallel execution with automatic dependency resolution
+- **Conditional/fallback nodes** — execution paths decided dynamically from earlier results
+- **Attack graph visualization** — Mermaid export, marking hit/skipped/fallback status
 
 </td>
 <td width="50%">
 
-### 协议支持
+### Protocol Support
 
-- **WebSocket Gateway** — challenge 握手检测，JSON-RPC 调用
-- **HTTP REST** — 禁用重定向防止 OAuth 302 误报
-- **误报消除** — challenge 页面 / SPA 回退 / LLM 拒绝检测
-- **TLS 支持** — rustls 后端，`--tls` 启用 HTTPS/WSS
-- **多格式报告** — JSON + HTML（暗色主题）+ Markdown
+- **WebSocket Gateway** — challenge handshake detection, JSON-RPC calls
+- **HTTP REST** — redirects disabled to prevent OAuth 302 false positives
+- **False-positive elimination** — challenge page / SPA fallback / LLM refusal detection
+- **TLS support** — rustls backend, `--tls` enables HTTPS/WSS
+- **Multi-format reports** — JSON + HTML (dark theme) + Markdown
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-### 扫描增强
+### Scanning Enhancements
 
-- **多目标扫描** — CIDR (/24)、IP 范围、逗号分隔、目标文件
-- **端口扫描** — TCP connect 扫描 + 自定义端口范围
-- **服务发现** — 多平台指纹识别（9 大 AI 平台自动检测）
-- **200+ Payload** — SSRF/注入/Prompt/Auth/XSS 外部 YAML 库
-- **扫描配置** — TOML 配置文件 + Profile 预设 + 代理支持
+- **Multi-target scanning** — CIDR (/24), IP ranges, comma-separated lists, target files
+- **Port scanning** — TCP connect scan + custom port ranges
+- **Service discovery** — multi-platform fingerprinting (automatic detection of 9 major AI platforms)
+- **200+ Payloads** — external YAML libraries for SSRF/injection/prompt/auth/XSS
+- **Scan configuration** — TOML config files + Profile presets + proxy support
 
 </td>
 <td width="50%">
 
-### CLI 体验
+### CLI Experience
 
-- **`--profile`** — 使用预设扫描配置（quick/stealth/full）
-- **`--severity-filter`** — 按严重级别过滤结果
-- **`--format`** — 选择输出格式：json/html/markdown
-- **`--dry-run`** — 预览 DAG 执行计划，不实际扫描
-- **`--targets-file`** — 批量目标文件输入
-- **`--platform`** — 指定目标平台类型（自动检测 / 手动指定）
+- **`--profile`** — Use a preset scan configuration (quick/stealth/full)
+- **`--severity-filter`** — Filter results by severity
+- **`--format`** — Choose the output format: json/html/markdown
+- **`--dry-run`** — Preview the DAG execution plan without actually scanning
+- **`--targets-file`** — Batch target file input
+- **`--platform`** — Specify the target platform type (auto-detect / manual)
 
 </td>
 </tr>
@@ -166,252 +165,252 @@
 
 ---
 
-## 支持平台
+## Supported Platforms
 
-| 平台 | 版本 | 指纹识别 | CVE 覆盖 | 探测模块 |
+| Platform | Version | Fingerprinting | CVE Coverage | Probe Module |
 |------|------|---------|---------|---------|
-| **OpenClaw / Open-WebUI** | — | 自动 | 72 个专属模块 | 内置 |
-| **Dify** | v1.5+ | 自动 | CVE-2025-56157, CVE-2025-55182 | `dify_probe` |
-| **FastGPT** | v4.9+ | 自动 | CVE-2025-27600, CVE-2025-52552 | `fastgpt_probe` |
-| **NextChat** | v2.12+ | 自动 | CVE-2023-49785 | `nextchat_probe` |
-| **AnythingLLM** | v1.3+ | 自动 | CVE-2024-13059, CVE-2024-0455 | `anythingllm_probe` |
-| **Flowise** | v1.6+ | 自动 | CVE-2025-26319, CVE-2025-58434 | `flowise_probe` |
-| **RagFlow** | v0.14+ | 自动 | CVE-2024-12433, CVE-2024-12450 | `ragflow_probe` |
-| **LibreChat** | — | 自动 | CVE-2025-69222, CVE-2025-69220 | `librechat_probe` |
-| **LobeChat** | — | 自动 | CVE-2026-23733 | `lobechat_probe` |
+| **OpenClaw / Open-WebUI** | — | Auto | 72 dedicated modules | Built-in |
+| **Dify** | v1.5+ | Auto | CVE-2025-56157, CVE-2025-55182 | `dify_probe` |
+| **FastGPT** | v4.9+ | Auto | CVE-2025-27600, CVE-2025-52552 | `fastgpt_probe` |
+| **NextChat** | v2.12+ | Auto | CVE-2023-49785 | `nextchat_probe` |
+| **AnythingLLM** | v1.3+ | Auto | CVE-2024-13059, CVE-2024-0455 | `anythingllm_probe` |
+| **Flowise** | v1.6+ | Auto | CVE-2025-26319, CVE-2025-58434 | `flowise_probe` |
+| **RagFlow** | v0.14+ | Auto | CVE-2024-12433, CVE-2024-12450 | `ragflow_probe` |
+| **LibreChat** | — | Auto | CVE-2025-69222, CVE-2025-69220 | `librechat_probe` |
+| **LobeChat** | — | Auto | CVE-2026-23733 | `lobechat_probe` |
 
 ---
 
-## 安装方式
+## Installation
 
-### 从源码构建
+### Build from Source
 
 ```bash
 git clone https://github.com/Coff0xc/catchclaw.git
 cd catchclaw/rust
 
-# Debug 构建
+# Debug build
 cargo build
 
-# Release 构建（优化 + 剥离符号表）
+# Release build (optimized, with symbol table stripped)
 cargo build --release
 
-# 二进制位于 target/release/catchclaw
+# The binary is at target/release/catchclaw
 ```
 
-### 系统要求
+### System Requirements
 
 - Rust Edition 2024 (rustc 1.85+)
-- 支持 Windows / Linux / macOS
+- Windows / Linux / macOS supported
 
 ---
 
-## 快速开始
+## Quick Start
 
 ```bash
-# 查看所有注册模块
+# List all registered modules
 catchclaw list
 
-# 自动检测平台类型
-catchclaw scan -t 目标IP:端口
+# Auto-detect the platform type
+catchclaw scan -t TARGET_IP:PORT
 
-# 指定平台类型
-catchclaw scan -t 目标IP:端口 --platform dify
+# Specify the platform type
+catchclaw scan -t TARGET_IP:PORT --platform dify
 
-# 扫描并输出 JSON 报告
-catchclaw scan -t 目标IP:端口 -o report.json
+# Scan and output a JSON report
+catchclaw scan -t TARGET_IP:PORT -o report.json
 
-# 输出 HTML 报告
-catchclaw scan -t 目标IP:端口 -o report.html --format html
+# Output an HTML report
+catchclaw scan -t TARGET_IP:PORT -o report.html --format html
 
-# 多目标扫描 (CIDR)
+# Multi-target scan (CIDR)
 catchclaw scan --targets "192.168.1.0/24:8080"
 
-# 从文件批量扫描
+# Batch scan from a file
 catchclaw scan -f targets.txt -o results.json
 
-# 使用 Profile 预设
-catchclaw scan -t 目标IP:端口 --profile stealth
+# Use a Profile preset
+catchclaw scan -t TARGET_IP:PORT --profile stealth
 
-# 仅显示高危结果
-catchclaw scan -t 目标IP:端口 --severity-filter critical,high
+# Show only critical/high-severity results
+catchclaw scan -t TARGET_IP:PORT --severity-filter critical,high
 
-# 预览执行计划
-catchclaw scan -t 目标IP:端口 --dry-run
+# Preview the execution plan
+catchclaw scan -t TARGET_IP:PORT --dry-run
 
-# 带 Token 扫描
-catchclaw scan -t 目标IP:端口 --token "your-gateway-token"
+# Scan with a token
+catchclaw scan -t TARGET_IP:PORT --token "your-gateway-token"
 
-# 执行完整攻击链
-catchclaw exploit -t 目标IP:端口 --token xxx
+# Run the full attack chain
+catchclaw exploit -t TARGET_IP:PORT --token xxx
 
-# 执行单条攻击链
-catchclaw exploit -t 目标IP:端口 --chain-id 30
+# Run a single attack chain
+catchclaw exploit -t TARGET_IP:PORT --chain-id 30
 ```
 
 ---
 
-## CLI 用法
+## CLI Usage
 
 ```
-CatchClaw v5.3.0 — 多平台 AI Agent 安全评估工具
+CatchClaw v5.3.0 — Multi-platform AI Agent security assessment tool
 
 Usage: catchclaw <COMMAND>
 
 Commands:
-  scan      全量安全扫描（构建 DAG → 执行 → 汇总）
-  exploit   执行攻击链（完整 DAG 或单节点）
-  list      列出所有注册的 Exploit 模块
-  config    显示当前配置
+  scan      Full security scan (build DAG → execute → summarize)
+  exploit   Run attack chains (full DAG or a single node)
+  list      List all registered Exploit modules
+  config    Show the current configuration
 
 Scan Flags:
-  -t, --target <HOST:PORT>     目标地址（单目标）
-      --targets <SPEC>         多目标：逗号分隔、CIDR 或 IP 范围
-  -f, --targets-file <FILE>    目标文件（每行一个 host:port）
-      --token <TOKEN>          Gateway Token (或 CATCHCLAW_TOKEN 环境变量)
-      --timeout <SECS>         请求超时秒数 (默认 10)
-  -o, --output <FILE>          报告输出路径
-      --format <FMT>           输出格式：json | html | markdown (默认 json)
-      --concurrency <N>        最大并发数 (默认 10)
-      --tls                    使用 HTTPS/WSS
-      --callback <URL>         SSRF 回调地址
-      --profile <NAME>         使用配置文件中的 Profile 预设
-      --severity-filter <SEV>  按严重级别过滤：critical,high,medium,low,info
-      --dry-run                预览 DAG 执行计划
-      --config <FILE>          配置文件路径 (TOML/YAML/JSON)
-      --platform <PLATFORM>    指定目标平台类型 (auto|openclaw|dify|fastgpt|nextchat|anythingllm|flowise|ragflow|librechat|lobechat)
+  -t, --target <HOST:PORT>     Target address (single target)
+      --targets <SPEC>         Multiple targets: comma-separated, CIDR, or IP range
+  -f, --targets-file <FILE>    Target file (one host:port per line)
+      --token <TOKEN>          Gateway Token (or CATCHCLAW_TOKEN environment variable)
+      --timeout <SECS>         Request timeout in seconds (default 10)
+  -o, --output <FILE>          Report output path
+      --format <FMT>           Output format: json | html | markdown (default json)
+      --concurrency <N>        Maximum concurrency (default 10)
+      --tls                    Use HTTPS/WSS
+      --callback <URL>         SSRF callback URL
+      --profile <NAME>         Use a Profile preset from the config file
+      --severity-filter <SEV>  Filter by severity: critical,high,medium,low,info
+      --dry-run                Preview the DAG execution plan
+      --config <FILE>          Config file path (TOML/YAML/JSON)
+      --platform <PLATFORM>    Specify the target platform type (auto|openclaw|dify|fastgpt|nextchat|anythingllm|flowise|ragflow|librechat|lobechat)
 
 Exploit Flags:
-  -t, --target <HOST:PORT>     目标地址
+  -t, --target <HOST:PORT>     Target address
       --token <TOKEN>          Gateway Token
-      --chain-id <ID>          指定运行单条链节点 ID
-      --concurrency <N>        最大并发数 (默认 10)
-      --tls                    使用 HTTPS/WSS
+      --chain-id <ID>          Run a single chain node ID
+      --concurrency <N>        Maximum concurrency (default 10)
+      --tls                    Use HTTPS/WSS
 ```
 
 ---
 
-## 78 个 Exploit 模块
+## 78 Exploit Modules
 
-按 ATT&CK 阶段和攻击类别分组：
+Grouped by ATT&CK stage and attack category:
 
-### Recon（侦察）
+### Recon
 
-| 模块 | 类别 | 说明 |
+| Module | Category | Description |
 |------|------|------|
-| cors_bypass | Config | Origin 反射 → 跨域 WS/API 访问 |
-| ws_hijack | Transport | 跨域 WebSocket 升级 + Token 重放 |
-| auth_mode_abuse | Auth | 认证模式检测与滥用 |
-| log_disclosure | DataLeak | logs.query 凭证/敏感数据泄露 |
-| hidden_content | DataLeak | 隐藏内容发现 |
-| origin_wildcard | Config | Origin 通配符配置检测 |
-| librechat_probe | Recon | LibreChat 安全探测 (CVE-2025-69222/69220/54868) |
-| lobechat_probe | Recon | LobeChat 安全探测 (CVE-2026-23733 XSS) |
-| dify_probe | Recon | Dify 安全探测 (CVE-2025-56157 默认凭据, SSRF) |
-| fastgpt_probe | Recon | FastGPT 安全探测 (CVE-2025-27600 SSRF, XSS) |
-| nextchat_probe | Recon | NextChat 安全探测 (CVE-2023-49785 SSRF) |
-| anythingllm_probe | Recon | AnythingLLM 安全探测 (CVE-2024-0455 SSRF) |
-| flowise_probe | Recon | Flowise 安全探测 (CVE-2025-26319 文件上传) |
-| ragflow_probe | Recon | RagFlow 安全探测 (CVE-2024-12433 RCE) |
+| cors_bypass | Config | Origin reflection → cross-origin WS/API access |
+| ws_hijack | Transport | Cross-origin WebSocket upgrade + token replay |
+| auth_mode_abuse | Auth | Authentication mode detection and abuse |
+| log_disclosure | DataLeak | Credential/sensitive data leakage via logs.query |
+| hidden_content | DataLeak | Hidden content discovery |
+| origin_wildcard | Config | Origin wildcard configuration detection |
+| librechat_probe | Recon | LibreChat security probe (CVE-2025-69222/69220/54868) |
+| lobechat_probe | Recon | LobeChat security probe (CVE-2026-23733 XSS) |
+| dify_probe | Recon | Dify security probe (CVE-2025-56157 default credentials, SSRF) |
+| fastgpt_probe | Recon | FastGPT security probe (CVE-2025-27600 SSRF, XSS) |
+| nextchat_probe | Recon | NextChat security probe (CVE-2023-49785 SSRF) |
+| anythingllm_probe | Recon | AnythingLLM security probe (CVE-2024-0455 SSRF) |
+| flowise_probe | Recon | Flowise security probe (CVE-2025-26319 file upload) |
+| ragflow_probe | Recon | RagFlow security probe (CVE-2024-12433 RCE) |
 
-### Initial Access（初始访问）
+### Initial Access
 
-| 模块 | 类别 | 说明 |
+| Module | Category | Description |
 |------|------|------|
-| ssrf | SSRF | browser.request/navigate → 云元数据 (AWS/GCP/Azure) |
-| eval_inject | Injection | eval/exec 代码执行 |
-| prompt_inject | Injection | 系统提示词提取 + 指令覆盖 |
-| mcp_inject | Injection | MCP 插件注入 |
-| pairing_brute | Auth | DM 配对码 6 位爆破 |
-| oauth_abuse | Auth | Slack OAuth 重定向劫持 |
-| responses_exploit | API | /v1/responses 认证绕过 + 工具注入 |
-| ws_fuzz | Fuzz | 畸形 JSON-RPC + 方法注入 |
-| acp_bypass | Auth | ACP 访问控制绕过 |
+| ssrf | SSRF | browser.request/navigate → cloud metadata (AWS/GCP/Azure) |
+| eval_inject | Injection | eval/exec code execution |
+| prompt_inject | Injection | System prompt extraction + instruction override |
+| mcp_inject | Injection | MCP plugin injection |
+| pairing_brute | Auth | 6-digit DM pairing code brute force |
+| oauth_abuse | Auth | Slack OAuth redirect hijacking |
+| responses_exploit | API | /v1/responses authentication bypass + tool injection |
+| ws_fuzz | Fuzz | Malformed JSON-RPC + method injection |
+| acp_bypass | Auth | ACP access control bypass |
 | ssrf_rebind | SSRF | DNS Rebind SSRF |
-| ssrf_proxy_bypass | SSRF | 代理绕过 SSRF |
-| browser_request | SSRF | 浏览器请求内部分发 |
-| csrf_no_origin | Config | 无 Origin 验证 CSRF |
+| ssrf_proxy_bypass | SSRF | Proxy bypass SSRF |
+| browser_request | SSRF | Browser request internal dispatch |
+| csrf_no_origin | Config | CSRF without Origin validation |
 
-### Credential Access（凭证获取）
+### Credential Access
 
-| 模块 | 类别 | 说明 |
+| Module | Category | Description |
 |------|------|------|
-| apikey_steal | Credential | Provider API Key 提取 |
-| oauth_token_theft | Credential | OAuth Token 窃取 |
-| secret_extract | Credential | secrets.list + secrets.get 明文窃取 |
-| secrets_resolve | Credential | secrets.resolve 内部注入 API |
-| talk_secrets | Credential | talk.config(includeSecrets) 密钥泄露 |
+| apikey_steal | Credential | Provider API key extraction |
+| oauth_token_theft | Credential | OAuth token theft |
+| secret_extract | Credential | Plaintext theft via secrets.list + secrets.get |
+| secrets_resolve | Credential | secrets.resolve internal injection API |
+| talk_secrets | Credential | Key leakage via talk.config(includeSecrets) |
 
-### Execution（执行）
+### Execution
 
-| 模块 | 类别 | 说明 |
+| Module | Category | Description |
 |------|------|------|
-| rce | RCE | system.run 命令执行探测 |
-| hook_inject | RCE | Webhook 端点注入执行命令 |
-| tools_invoke | RCE | tools.invoke 绕过 Chat 层安全 |
-| keychain_cmd_inject | RCE | Keychain 命令注入 |
-| qmd_cmd_inject | RCE | QMD 命令注入 |
-| exec_race_toctou | RCE | 执行竞态条件 (TOCTOU) |
-| exec_socket_leak | RCE | 执行 Socket 泄露 |
+| rce | RCE | Command execution probe via system.run |
+| hook_inject | RCE | Command execution via webhook endpoint injection |
+| tools_invoke | RCE | Bypass the Chat-layer security via tools.invoke |
+| keychain_cmd_inject | RCE | Keychain command injection |
+| qmd_cmd_inject | RCE | QMD command injection |
+| exec_race_toctou | RCE | Execution race condition (TOCTOU) |
+| exec_socket_leak | RCE | Execution socket leak |
 
-### Persistence（持久化）
+### Persistence
 
-| 模块 | 类别 | 说明 |
+| Module | Category | Description |
 |------|------|------|
-| agent_inject | Injection | agents.create/update 后门 + 系统提示词泄露 |
-| agent_file_inject | Injection | agents.files.set 持久化提示词后门 |
-| channel_inject | Injection | Mattermost/Slack/Discord 无签名命令注入 |
-| skill_poison | Injection | Skill 投毒 |
-| cron_bypass | Persistence | Cron 黑名单绕过 + 持久化 |
-| session_file_write | RCE | sessions.patch 任意文件写入 |
-| patch_escape | RCE | apply_patch 路径穿越 → 任意文件写入 |
-| link_template_inject | Injection | 链接模板注入 |
+| agent_inject | Injection | Backdoor via agents.create/update + system prompt leakage |
+| agent_file_inject | Injection | Persistent prompt backdoor via agents.files.set |
+| channel_inject | Injection | Unsigned command injection for Mattermost/Slack/Discord |
+| skill_poison | Injection | Skill poisoning |
+| cron_bypass | Persistence | Cron blacklist bypass + persistence |
+| session_file_write | RCE | Arbitrary file write via sessions.patch |
+| patch_escape | RCE | Path traversal in apply_patch → arbitrary file write |
+| link_template_inject | Injection | Link template injection |
 
-### Privilege Escalation（提权）
+### Privilege Escalation
 
-| 模块 | 类别 | 说明 |
+| Module | Category | Description |
 |------|------|------|
-| approval_hijack | Auth | 前缀 ID 匹配 + 执行策略篡改 |
-| config_tamper | Config | config.set 安全配置写入 |
-| rogue_node | RCE | 自批准节点配对 → 命令拦截 |
-| silent_pair_abuse | Auth | 静默配对滥用 |
-| auth_disable_leak | Auth | 认证禁用泄露 |
+| approval_hijack | Auth | Prefix ID matching + execution policy tampering |
+| config_tamper | Config | config.set security configuration write |
+| rogue_node | RCE | Self-approved node pairing → command interception |
+| silent_pair_abuse | Auth | Silent pairing abuse |
+| auth_disable_leak | Auth | Authentication-disable leakage |
 
-### Lateral Movement / Exfiltration（横移 / 泄露）
+### Lateral Movement / Exfiltration
 
-| 模块 | 类别 | 说明 |
+| Module | Category | Description |
 |------|------|------|
-| session_hijack | DataLeak | sessions.preview IDOR + 跨会话注入 |
-| transcript_theft | DataLeak | 会话记录窃取 |
-| memory_data_leak | DataLeak | 内存数据泄露 |
-| c2_exfil | DataLeak | C2 数据外泄 |
-| browser_upload_traversal | RCE | 浏览器上传路径穿越 |
-| secret_exec_abuse | RCE | 密钥执行滥用 |
-| bypass_soul | Injection | Soul 绕过 |
-| marker_spoof | Injection | 标记欺骗 |
-| redact_bypass | DataLeak | 脱敏绕过 |
-| obfuscation_bypass | Injection | 混淆绕过 |
-| unicode_bypass | Injection | Unicode 绕过 |
-| ratelimit_scope_bypass | Config | 速率限制范围绕过 |
-| flood_guard_reset | Config | 洪水防护重置 |
-| webhook_verify | Config | Webhook 验证绕过 |
-| skill_scanner_bypass | Config | Skill 扫描器绕过 |
+| session_hijack | DataLeak | IDOR in sessions.preview + cross-session injection |
+| transcript_theft | DataLeak | Session transcript theft |
+| memory_data_leak | DataLeak | Memory data leakage |
+| c2_exfil | DataLeak | C2 data exfiltration |
+| browser_upload_traversal | RCE | Browser upload path traversal |
+| secret_exec_abuse | RCE | Secret execution abuse |
+| bypass_soul | Injection | Soul bypass |
+| marker_spoof | Injection | Marker spoofing |
+| redact_bypass | DataLeak | Redaction bypass |
+| obfuscation_bypass | Injection | Obfuscation bypass |
+| unicode_bypass | Injection | Unicode bypass |
+| ratelimit_scope_bypass | Config | Rate-limit scope bypass |
+| flood_guard_reset | Config | Flood guard reset |
+| webhook_verify | Config | Webhook verification bypass |
+| skill_scanner_bypass | Config | Skill scanner bypass |
 
-### CVE 针对性模块（2026 威胁情报）
+### CVE-Specific Modules (2026 Threat Intelligence)
 
-| 模块 | CVE / 来源 | 说明 |
+| Module | CVE / Source | Description |
 |------|-----------|------|
-| gateway_hijack | CVE-2026-25253 | gatewayURL WebSocket 劫持 → Token 窃取 |
-| safebins_bypass | CVE-2026-28363 | GNU 长选项缩写绕过 safeBins 白名单 → RCE |
-| ws_auth_brute | CVE-2026-32025 | WebSocket 认证爆破 + localhost 速率限制豁免 |
-| localhost_trust | ClawJacked | localhost 隐式信任绕过认证 |
-| guest_mode_abuse | Conscia 审计 | Guest Mode 暴露危险 API 端点 |
-| mdns_leak | Conscia 审计 | mDNS/HTTP 配置参数泄露 |
-| skill_supply_chain | ClawHavoc | 恶意 Skill 供应链攻击检测 (AMOS 窃密) |
+| gateway_hijack | CVE-2026-25253 | gatewayURL WebSocket hijacking → token theft |
+| safebins_bypass | CVE-2026-28363 | GNU long-option abbreviation bypass of the safeBins allowlist → RCE |
+| ws_auth_brute | CVE-2026-32025 | WebSocket authentication brute force + localhost rate-limit exemption |
+| localhost_trust | ClawJacked | Authentication bypass via implicit localhost trust |
+| guest_mode_abuse | Conscia audit | Guest Mode exposes dangerous API endpoints |
+| mdns_leak | Conscia audit | mDNS/HTTP configuration parameter leakage |
+| skill_supply_chain | ClawHavoc | Malicious Skill supply-chain attack detection (AMOS credential theft) |
 
 ---
 
-## DAG 攻击链架构
+## DAG Attack Chain Architecture
 
 ```
                         ┌─────────────────────┐
@@ -452,83 +451,83 @@ Exploit Flags:
                   └─────────────────────────┘
 ```
 
-**执行特性：**
-- Kahn 拓扑排序 → 按层级并发执行
-- `Semaphore` 控制最大并发数
-- `depends_on` — 前驱节点必须完成
-- `fallback_for` — 父节点有发现则跳过回退节点
-- `condition` — 按前序结果条件执行
-- `AttackGraph` — 记录每个节点执行/跳过/回退状态，导出 Mermaid 图
+**Execution characteristics:**
+- Kahn topological sort → level-by-level parallel execution
+- `Semaphore` controls maximum concurrency
+- `depends_on` — predecessor nodes must complete
+- `fallback_for` — skip the fallback node if the parent node has findings
+- `condition` — conditional execution based on earlier results
+- `AttackGraph` — records each node's executed/skipped/fallback status and exports a Mermaid diagram
 
 ---
 
-## Nuclei 模板
+## Nuclei Templates
 
-`nuclei-templates/` 包含 24 个独立 Nuclei 兼容 YAML 模板：
+`nuclei-templates/` contains 24 standalone Nuclei-compatible YAML templates:
 
 ```bash
-# 扫描单目标
-nuclei -t nuclei-templates/ -u http://目标IP:端口
+# Scan a single target
+nuclei -t nuclei-templates/ -u http://TARGET_IP:PORT
 
-# 扫描目标列表
+# Scan a target list
 nuclei -t nuclei-templates/ -l targets.txt
 
-# 仅 Critical
-nuclei -t nuclei-templates/ -u http://目标IP:端口 -severity critical
+# Critical only
+nuclei -t nuclei-templates/ -u http://TARGET_IP:PORT -severity critical
 ```
 
 ---
 
-## 项目结构
+## Project Structure
 
 ```
 catchclaw/
 ├── rust/
-│   ├── Cargo.toml                 # 项目配置
+│   ├── Cargo.toml                 # Project configuration
 │   └── src/
-│       ├── main.rs                # CLI 入口 (clap derive)
-│       ├── config/mod.rs          # AppConfig + Profile + 协议常量
+│       ├── main.rs                # CLI entry point (clap derive)
+│       ├── config/mod.rs          # AppConfig + Profile + protocol constants
 │       ├── chain/
-│       │   ├── dag.rs             # DAG 引擎 (拓扑排序 + 并发 + AttackGraph)
-│       │   └── chains.rs          # 78 条攻击链节点定义
+│       │   ├── dag.rs             # DAG engine (topological sort + concurrency + AttackGraph)
+│       │   └── chains.rs          # Definitions of the 78 attack chain nodes
 │       ├── exploit/
-│       │   ├── registry.rs        # ExploitMeta + inventory 注册系统
-│       │   ├── base.rs            # ExploitCtx 公共上下文 + PayloadRegistry 集成
-│       │   └── *.rs               # 78 个 exploit 模块实现
+│       │   ├── registry.rs        # ExploitMeta + inventory registration system
+│       │   ├── base.rs            # ExploitCtx shared context + PayloadRegistry integration
+│       │   └── *.rs               # Implementations of the 78 exploit modules
 │       ├── platform/
 │       │   ├── mod.rs             # PlatformProfile trait + TargetPlatform
-│       │   ├── registry.rs        # PlatformRegistry (9 平台注册)
-│       │   └── profiles/          # 9 个平台 Profile 实现
-│       ├── scan/mod.rs            # 全量扫描 + 多目标扫描编排
-│       ├── report/mod.rs          # JSON / HTML / Markdown 报告输出
+│       │   ├── registry.rs        # PlatformRegistry (9 platform registrations)
+│       │   └── profiles/          # Implementations of the 9 platform profiles
+│       ├── scan/mod.rs            # Full scan + multi-target scan orchestration
+│       ├── report/mod.rs          # JSON / HTML / Markdown report output
 │       └── utils/
-│           ├── types.rs           # Target / Finding / Severity / 多目标解析
-│           ├── http.rs            # HTTP 客户端 + 误报过滤器
+│           ├── types.rs           # Target / Finding / Severity / multi-target parsing
+│           ├── http.rs            # HTTP client + false-positive filter
 │           ├── ws.rs              # GatewayWsClient (WS + challenge)
-│           ├── discovery.rs       # 端口扫描 + 多平台服务发现
-│           ├── payload.rs         # PayloadRegistry (YAML 加载 + 目录合并)
-│           └── mutate.rs          # Payload 变异引擎
-├── payloads/                      # 200+ 外部 Payload (YAML)
-│   ├── ssrf.yaml                  # SSRF: AWS/GCP/Azure/IP绕过/协议走私
-│   ├── injection.yaml             # 命令注入/Shell元字符/编码绕过
-│   ├── prompt_inject.yaml         # Prompt注入/越狱/角色覆盖
-│   ├── auth_bypass.yaml           # Token/Header/路径穿越/默认凭证
-│   └── xss.yaml                   # XSS: 反射/事件/过滤绕过/Polyglot
-├── nuclei-templates/              # 24 Nuclei YAML 模板
+│           ├── discovery.rs       # Port scanning + multi-platform service discovery
+│           ├── payload.rs         # PayloadRegistry (YAML loading + directory merging)
+│           └── mutate.rs          # Payload mutation engine
+├── payloads/                      # 200+ external Payloads (YAML)
+│   ├── ssrf.yaml                  # SSRF: AWS/GCP/Azure/IP bypass/protocol smuggling
+│   ├── injection.yaml             # Command injection/shell metacharacters/encoding bypass
+│   ├── prompt_inject.yaml         # Prompt injection/jailbreak/role override
+│   ├── auth_bypass.yaml           # Token/Header/path traversal/default credentials
+│   └── xss.yaml                   # XSS: reflected/event-based/filter bypass/polyglot
+├── nuclei-templates/              # 24 Nuclei YAML templates
 ├── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
 └── README.md
 ```
 
 ---
 
-## 免责声明
+## Disclaimer
 
-本工具仅用于**授权安全测试**。请仅对您拥有或获得明确书面授权的系统进行测试。未经授权访问计算机系统属于违法行为。作者不对任何滥用行为承担责任。
+This tool is intended for **authorized security testing** only. Test only systems you own or have explicit written authorization to test. Unauthorized access to computer systems is illegal. The author is not responsible for any misuse.
 
-## 作者
+## Author
 
 **Coff0xc** — [https://github.com/Coff0xc](https://github.com/Coff0xc)
 
-## 许可证
+## License
 
-[CatchClaw Strict Non-Commercial License v2.0](LICENSE) — 严禁商业使用，违者必究。
+[CatchClaw Strict Non-Commercial License v2.0](LICENSE) — commercial use is strictly prohibited; violators will be held liable.
