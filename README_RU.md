@@ -1,9 +1,9 @@
-<h1 align="center">🦞 CatchClaw v5.3.0</h1>
+<h1 align="center">🦞 CatchClaw v6.0.0</h1>
 
 <p align="center">
   <b>Мультиплатформенный инструмент оценки безопасности AI-агентов</b><br>
   <sub>OpenClaw · Open-WebUI · LibreChat · LobeChat · Dify · FastGPT · NextChat · AnythingLLM · Flowise · RAGFlow</sub><br>
-  <sub>78 DAG-цепочек атак | 78 Exploit-модулей | ATT&CK-маппинг фаз | Async Tokio-движок | Визуализация графа атак</sub>
+  <sub>87 DAG-цепочек атак | 87 Exploit-модулей | ATT&CK-маппинг фаз | Goroutine-движок | Визуализация графа атак</sub>
 </p>
 
 <p align="center">
@@ -24,10 +24,10 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-5.3.0-blue?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/DAG_Chains-78-FF6B6B?style=flat-square" alt="Chains">
-  <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
-  <img src="https://img.shields.io/badge/Exploits-78_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Go">
+  <img src="https://img.shields.io/badge/DAG_Chains-87-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
+  <img src="https://img.shields.io/badge/Exploits-87_Modules-orange?style=flat-square" alt="Exploits">
   <img src="https://img.shields.io/badge/Platforms-9-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
@@ -58,13 +58,13 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                          CatchClaw v5.3.0                                │
+│                          CatchClaw v6.0.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 78 DAG-цепочек атак  ● 78 Exploit-модулей    ● Async Tokio-движок    │
+│  ● 87 DAG-цепочек атак  ● 87 Exploit-модулей    ● Goroutine-движок    │
 │  ● ATT&CK 9 фаз        ● Mermaid граф атак     ● JSON/HTML/MD-отчёты   │
 │  ● Топосортировка Кана  ● Semaphore конкуренция ● Условия/Откат         │
 │  ● Мульти-цели (CIDR)  ● Скан портов / Обнаруж.● 200+ внешних пейлоадов│
-│  ● 9 платформ           ● Авто-идентификация    ● --platform выбор      │
+│  ● 15 платформ           ● Авто-идентификация    ● --platform выбор      │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  Поверхность атаки: Gateway WS API | HTTP REST | OAuth | Webhook | Node │
 │  Покрытие: SSRF | RCE | Кража ключей | Перехват сессий | Эскалация      │
@@ -82,7 +82,7 @@
 - [Установка](#установка)
 - [Быстрый старт](#быстрый-старт)
 - [Использование CLI](#использование-cli)
-- [78 Exploit-модулей](#78-exploit-модулей)
+- [87 Exploit-модулей](#87-exploit-модулей)
 - [Архитектура DAG-цепочек](#архитектура-dag-цепочек)
 - [Шаблоны Nuclei](#шаблоны-nuclei)
 - [Структура проекта](#структура-проекта)
@@ -92,9 +92,9 @@
 
 ## Обзор
 
-**CatchClaw** — мультиплатформенный инструмент автоматизированной оценки безопасности AI-агентов на Rust. Помимо основной поддержки OpenClaw / Open-WebUI, охватывает 9 платформ: LibreChat, LobeChat, Dify, FastGPT, NextChat, AnythingLLM, Flowise и RAGFlow. 78 Exploit-модулей оркестрируются через DAG (направленный ациклический граф) цепочек атак, покрывая полный жизненный цикл ATT&CK от разведки до эксфильтрации данных.
+**CatchClaw** — мультиплатформенный инструмент автоматизированной оценки безопасности AI-агентов на Go. Помимо основной поддержки OpenClaw / Open-WebUI, охватывает 15 платформ: LibreChat, LobeChat, Dify, FastGPT, NextChat, AnythingLLM, Flowise и RAGFlow. 87 Exploit-модулей оркестрируются через DAG (направленный ациклический граф) цепочек атак, покрывая полный жизненный цикл ATT&CK от разведки до эксфильтрации данных.
 
-Построен на асинхронном рантайме Tokio. DAG-движок использует топологическую сортировку Кана для поуровневого параллельного выполнения с ограничением конкуренции через Semaphore, условным выполнением и узлами отката. Результаты атак визуализируются как Mermaid-диаграммы.
+Построен на Go goroutines. DAG-движок использует топологическую сортировку Кана для поуровневого параллельного выполнения с ограничением конкуренции через Semaphore, условным выполнением и узлами отката. Результаты атак визуализируются как Mermaid-диаграммы.
 
 ---
 
@@ -106,7 +106,7 @@
 
 ### Движок атак
 
-- **78 Exploit-модулей** — 10 категорий, автоматическая регистрация через `inventory`
+- **87 Exploit-модулей** — 10 категорий, автоматическая регистрация через `init()`
 - **78 DAG-цепочек** — 9 фаз ATT&CK, автоматическая оркестрация
 - **Топосортировка Кана** — поуровневое параллельное выполнение с разрешением зависимостей
 - **Условия/Откат** — динамический выбор пути на основе предыдущих результатов
@@ -132,7 +132,7 @@
 
 - **Мульти-целевое сканирование** — CIDR (/24), диапазон IP, через запятую, файл целей
 - **Сканирование портов** — TCP connect + пользовательские диапазоны
-- **Мультиплатформенная идентификация** — автоматический фингерпринт 9 платформ (API/WebSocket/health)
+- **Мультиплатформенная идентификация** — автоматический фингерпринт 15 платформ (API/WebSocket/health)
 - **200+ Пейлоадов** — SSRF/Инъекция/Prompt/Auth/XSS внешняя YAML-библиотека
 - **Конфигурация** — TOML-файл + профили сканирования + поддержка прокси
 
@@ -178,12 +178,12 @@ git clone https://github.com/Coff0xc/catchclaw.git
 cd catchclaw/rust
 
 # Release-сборка (оптимизация + удаление символов)
-cargo build --release
+go build -o catchclaw .
 
 # Бинарник: target/release/catchclaw
 ```
 
-**Требования:** Rust Edition 2024 (rustc 1.85+) | Windows / Linux / macOS
+**Требования:** Go 1.22+ | Windows / Linux / macOS
 
 ---
 
@@ -235,7 +235,7 @@ catchclaw exploit -t ЦЕЛЬ_IP:ПОРТ --chain-id 30
 ## Использование CLI
 
 ```
-CatchClaw v5.3.0 — Мультиплатформенный инструмент оценки безопасности AI-агентов
+CatchClaw v6.0.0 — Мультиплатформенный инструмент оценки безопасности AI-агентов
 
 Usage: catchclaw <COMMAND>
 
@@ -272,7 +272,7 @@ Exploit Flags:
 
 ---
 
-## 78 Exploit-модулей
+## 87 Exploit-модулей
 
 По фазам ATT&CK и категориям атак:
 
@@ -345,47 +345,25 @@ nuclei -t nuclei-templates/ -u http://ЦЕЛЬ:ПОРТ -severity critical
 
 ```
 catchclaw/
-├── rust/
-│   ├── Cargo.toml                 # Конфигурация проекта
-│   └── src/
-│       ├── main.rs                # Точка входа CLI (clap derive)
-│       ├── config/mod.rs          # AppConfig + профили + константы
-│       ├── chain/
-│       │   ├── dag.rs             # DAG-движок (топосорт + конкуренция + AttackGraph)
-│       │   └── chains.rs          # 78 определений узлов цепочек атак
-│       ├── exploit/
-│       │   ├── registry.rs        # ExploitMeta + система регистрации inventory
-│       │   ├── base.rs            # ExploitCtx общий контекст
-│       │   └── *.rs               # 78 реализаций Exploit-модулей
-│       ├── platform/              # Мультиплатформенные модули-пробы
-│       │   ├── mod.rs             # Определение и маршрутизация платформ
-│       │   ├── librechat.rs       # LibreChat-проба
-│       │   ├── lobechat.rs        # LobeChat-проба
-│       │   ├── dify.rs            # Dify-проба
-│       │   ├── fastgpt.rs         # FastGPT-проба
-│       │   ├── nextchat.rs        # NextChat-проба
-│       │   ├── anythingllm.rs     # AnythingLLM-проба
-│       │   ├── flowise.rs         # Flowise-проба
-│       │   └── ragflow.rs         # RAGFlow-проба
-│       ├── scan/mod.rs            # Полное сканирование + мульти-целевое
-│       ├── report/mod.rs          # JSON/HTML/Markdown-отчёты
-│       └── utils/
-│           ├── types.rs           # Target / Finding / Severity / ScanResult
-│           ├── http.rs            # HTTP-клиент + фильтры ложных срабатываний
-│           ├── ws.rs              # GatewayWsClient (WS + обнаружение challenge)
-│           ├── target_parser.rs   # Мульти-целевой парсинг
-│           ├── port_scan.rs       # Скан портов + обнаружение сервисов
-│           ├── payload_registry.rs # PayloadRegistry (загрузка YAML + слияние каталогов)
-│           └── payload_mutator.rs # Движок мутации пейлоадов
-├── payloads/                      # 200+ внешних пейлоадов (YAML)
-│   ├── ssrf/                      # SSRF: AWS/GCP/Azure/обход IP
-│   ├── command_injection/         # Инъекция команд/метасимволы
-│   ├── prompt_injection/          # Prompt-инъекция/jailbreak
-│   ├── auth/                      # Token/заголовки/обход пути
-│   └── xss/                       # XSS: отражённый/события/обход фильтра
-├── nuclei-templates/              # 24 Nuclei YAML-шаблонов
-├── scripts/gen_dag_chains.py      # Помощник генерации DAG-цепочек
-└── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
+├── go/
+│   ├── main.go                      # Точка входа CLI
+│   ├── go.mod                       # Определение Go-модуля
+│   └── internal/
+│       ├── cli/                     # CLI-команды и флаги
+│       ├── config/                  # Загрузка конфигурации (YAML/TOML/JSON)
+│       ├── core/                    # Target, Finding, Severity, DAG-движок
+│       ├── exploit/                 # Реестр модулей + контекст
+│       │   └── modules/             # 87 реализаций Exploit-модулей
+│       ├── platform/                # 15 профилей платформ
+│       ├── payload/                 # YAML-реестр пейлоадов + мутация
+│       ├── nuclei/                  # Запускатель Nuclei-шаблонов
+│       ├── scan/                    # Оркестрация сканирования + обнаружение
+│       ├── report/                  # JSON/HTML/Markdown/Mermaid-экспорт
+│       └── utils/                   # HTTP-клиент, фильтры ЛС, WS
+├── payloads/                        # 200+ внешних пейлоадов (YAML)
+├── nuclei-templates/                # 24 Nuclei YAML-шаблонов
+├── LICENSE                          # CatchClaw Strict Non-Commercial License v2.0
+└── README.md
 ```
 
 ---
