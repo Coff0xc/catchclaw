@@ -24,7 +24,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-5.3.0-blue?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Go">
+  <img src="https://img.shields.io/badge/Go-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/DAG_Chains-87-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
   <img src="https://img.shields.io/badge/Exploits-87_Modules-orange?style=flat-square" alt="Exploits">
@@ -107,7 +107,7 @@
 ### Движок атак
 
 - **87 Exploit-модулей** — 10 категорий, автоматическая регистрация через `init()`
-- **78 DAG-цепочек** — 9 фаз ATT&CK, автоматическая оркестрация
+- **87 DAG-цепочек** — 9 фаз ATT&CK, автоматическая оркестрация
 - **Топосортировка Кана** — поуровневое параллельное выполнение с разрешением зависимостей
 - **Условия/Откат** — динамический выбор пути на основе предыдущих результатов
 - **Визуализация графа** — Mermaid-экспорт со статусами попадания/пропуска/отката

@@ -24,7 +24,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-5.3.0-blue?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Go">
+  <img src="https://img.shields.io/badge/Go-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/DAG_Chains-87-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
   <img src="https://img.shields.io/badge/Exploits-87_Modules-orange?style=flat-square" alt="Exploits">
@@ -60,7 +60,7 @@
 ┌────────────────────────────────────────────────────────────────────────────┐
 │                          CatchClaw v6.0.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 78 chaînes DAG       ● 87 modules d'exploit  ● Moteur Goroutine    │
+│  ● 87 chaînes DAG       ● 87 modules d'exploit  ● Moteur Goroutine    │
 │  ● ATT&CK 9 phases      ● Graphe Mermaid        ● Rapports JSON/HTML/MD │
 │  ● Tri topologique Kahn  ● Semaphore concurrence ● Condition/Fallback    │
 │  ● Multi-cibles (CIDR)  ● Scan ports / Découverte● 200+ payloads ext.   │
@@ -107,7 +107,7 @@ Construit sur le Go goroutines, le moteur DAG utilise le tri topologique de Kahn
 ### Moteur d'attaque
 
 - **87 modules d'exploit** — 10 catégories, auto-enregistrement par `init()`
-- **78 chaînes DAG** — 9 phases ATT&CK, orchestration automatisée
+- **87 chaînes DAG** — 9 phases ATT&CK, orchestration automatisée
 - **Tri topologique de Kahn** — Exécution parallèle par niveaux avec résolution des dépendances
 - **Nœuds conditionnels/repli** — Décisions de chemin dynamiques basées sur les résultats précédents
 - **Visualisation du graphe** — Export Mermaid avec statuts touché/ignoré/repli
