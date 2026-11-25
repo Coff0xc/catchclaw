@@ -1,9 +1,9 @@
-<h1 align="center">🦞 CatchClaw v5.3.0</h1>
+<h1 align="center">🦞 CatchClaw v6.0.0</h1>
 
 <p align="center">
   <b>マルチプラットフォーム AI エージェント セキュリティ評価ツール</b><br>
-  <sub>OpenClaw · Open-WebUI · LibreChat · LobeChat · Dify · FastGPT · NextChat · AnythingLLM · Flowise · RAGFlow</sub><br>
-  <sub>78 DAG攻撃チェーン | 78 Exploitモジュール | ATT&CKフェーズマッピング | Async Tokioエンジン | 攻撃グラフ可視化</sub>
+  <sub>OpenClaw · Open-WebUI · LibreChat · LobeChat · Dify · FastGPT · NextChat · AnythingLLM · Flowise · RAGFlow · Langflow · LiteLLM · Ollama · vLLM</sub><br>
+  <sub>87 DAG攻撃チェーン | 87 Exploitモジュール | ATT&CKフェーズマッピング | Goroutine並行エンジン | 攻撃グラフ可視化</sub>
 </p>
 
 <p align="center">
@@ -24,10 +24,10 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-5.3.0-blue?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/DAG_Chains-78-FF6B6B?style=flat-square" alt="Chains">
-  <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
-  <img src="https://img.shields.io/badge/Exploits-78_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Go">
+  <img src="https://img.shields.io/badge/DAG_Chains-87-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
+  <img src="https://img.shields.io/badge/Exploits-87_Modules-orange?style=flat-square" alt="Exploits">
   <img src="https://img.shields.io/badge/Platforms-9-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
@@ -58,13 +58,13 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                          CatchClaw v5.3.0                                │
+│                          CatchClaw v6.0.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 78 DAG攻撃チェーン   ● 78 Exploitモジュール  ● Async Tokioエンジン    │
+│  ● 87 DAG攻撃チェーン   ● 87 Exploitモジュール  ● Goroutine並行エンジン    │
 │  ● ATT&CK 9フェーズ    ● Mermaid攻撃グラフ     ● JSON/HTML/MDレポート    │
 │  ● Kahnトポロジカルソート ● Semaphore並行制御    ● 条件/フォールバック     │
 │  ● マルチターゲット(CIDR) ● ポートスキャン/発見   ● 200+外部ペイロード     │
-│  ● 9プラットフォーム対応  ● 自動プラットフォーム識別 ● --platform指定スキャン │
+│  ● 15プラットフォーム対応  ● 自動プラットフォーム識別 ● --platform指定スキャン │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  攻撃面: Gateway WS API | HTTP REST | OAuth | Webhook | Node Pairing     │
 │  カバレッジ: SSRF | RCE | 鍵窃取 | セッション乗っ取り | 権限昇格 | 持続  │
@@ -82,7 +82,7 @@
 - [インストール](#インストール)
 - [クイックスタート](#クイックスタート)
 - [CLI使用方法](#cli使用方法)
-- [78 Exploitモジュール](#78-exploitモジュール)
+- [87 Exploitモジュール](#87-exploitモジュール)
 - [DAG攻撃チェーンアーキテクチャ](#dag攻撃チェーンアーキテクチャ)
 - [Nucleiテンプレート](#nucleiテンプレート)
 - [プロジェクト構成](#プロジェクト構成)
@@ -92,9 +92,9 @@
 
 ## 概要
 
-**CatchClaw** は、マルチプラットフォームAIエージェントセキュリティ評価のために構築されたRustベースの自動化ツールです。OpenClaw / Open-WebUI を中心に、LibreChat、LobeChat、Dify、FastGPT、NextChat、AnythingLLM、Flowise、RAGFlow を含む9つのプラットフォームをサポートしています。78のExploitモジュールをDAG（有向非巡回グラフ）攻撃チェーンで編成し、偵察からデータ流出までの完全なATT&CKライフサイクルをカバーします。
+**CatchClaw** は、マルチプラットフォームAIエージェントセキュリティ評価のために構築されたGoベースの自動化ツールです。OpenClaw / Open-WebUI を中心に、LibreChat、LobeChat、Dify、FastGPT、NextChat、AnythingLLM、Flowise、RAGFlow を含む15つのプラットフォームをサポートしています。87のExploitモジュールをDAG（有向非巡回グラフ）攻撃チェーンで編成し、偵察からデータ流出までの完全なATT&CKライフサイクルをカバーします。
 
-Tokio非同期ランタイム上で動作し、DAGエンジンはKahnのトポロジカルソートによるレベル別並行実行、Semaphoreによる並行度制御、条件実行とフォールバックノードをサポートします。攻撃結果はMermaidフローチャートとして可視化可能です。
+Go goroutine上で動作し、DAGエンジンはKahnのトポロジカルソートによるレベル別並行実行、Semaphoreによる並行度制御、条件実行とフォールバックノードをサポートします。攻撃結果はMermaidフローチャートとして可視化可能です。
 
 ---
 
@@ -106,8 +106,8 @@ Tokio非同期ランタイム上で動作し、DAGエンジンはKahnのトポ�
 
 ### 攻撃エンジン
 
-- **78 Exploitモジュール** — 10カテゴリ、`inventory`マクロ自動登録
-- **78 DAG攻撃チェーン** — 9つのATT&CKフェーズで自動編成
+- **87 Exploitモジュール** — 10カテゴリ、`inventory`マクロ自動登録
+- **87 DAG攻撃チェーン** — 9つのATT&CKフェーズで自動編成
 - **Kahnトポロジカルソート** — 依存関係解決付きレベル別並行実行
 - **条件/フォールバック** — 前段の結果に基づく動的パス決定
 - **攻撃グラフ可視化** — ヒット/スキップ/フォールバック状態付きMermaid出力
@@ -132,7 +132,7 @@ Tokio非同期ランタイム上で動作し、DAGエンジンはKahnのトポ�
 
 - **マルチターゲットスキャン** — CIDR (/24)、IP範囲、カンマ区切り、ターゲットファイル
 - **ポートスキャン** — TCPコネクトスキャン + カスタムポート範囲
-- **マルチプラットフォーム識別** — 9プラットフォーム自動フィンガープリント（API/WebSocket/ヘルスチェック）
+- **マルチプラットフォーム識別** — 15プラットフォーム自動フィンガープリント（API/WebSocket/ヘルスチェック）
 - **200+ ペイロード** — SSRF/インジェクション/Prompt/Auth/XSS外部YAMLライブラリ
 - **スキャン設定** — TOML設定ファイル + プロファイルプリセット + プロキシ対応
 
@@ -178,12 +178,12 @@ git clone https://github.com/Coff0xc/catchclaw.git
 cd catchclaw/rust
 
 # Releaseビルド（最適化 + シンボル削除）
-cargo build --release
+go build -o catchclaw .
 
 # バイナリ: target/release/catchclaw
 ```
 
-**要件:** Rust Edition 2024 (rustc 1.85+) | Windows / Linux / macOS
+**要件:** Go 1.22+ | Windows / Linux / macOS
 
 ---
 
@@ -235,7 +235,7 @@ catchclaw exploit -t ターゲットIP:ポート --chain-id 30
 ## CLI使用方法
 
 ```
-CatchClaw v5.3.0 — マルチプラットフォーム AIエージェント セキュリティ評価ツール
+CatchClaw v6.0.0 — マルチプラットフォーム AIエージェント セキュリティ評価ツール
 
 Usage: catchclaw <COMMAND>
 
@@ -272,7 +272,7 @@ Exploit Flags:
 
 ---
 
-## 78 Exploitモジュール
+## 87 Exploitモジュール
 
 ATT&CKフェーズと攻撃カテゴリ別:
 
@@ -345,47 +345,25 @@ nuclei -t nuclei-templates/ -u http://ターゲット:ポート -severity critic
 
 ```
 catchclaw/
-├── rust/
-│   ├── Cargo.toml                 # プロジェクト設定
-│   └── src/
-│       ├── main.rs                # CLIエントリポイント (clap derive)
-│       ├── config/mod.rs          # AppConfig + プロファイル + プロトコル定数
-│       ├── chain/
-│       │   ├── dag.rs             # DAGエンジン (トポソート + 並行 + AttackGraph)
-│       │   └── chains.rs          # 78攻撃チェーンノード定義
-│       ├── exploit/
-│       │   ├── registry.rs        # ExploitMeta + inventory登録システム
-│       │   ├── base.rs            # ExploitCtx共有コンテキスト
-│       │   └── *.rs               # 78 Exploitモジュール実装
-│       ├── platform/              # マルチプラットフォームプローブモジュール
-│       │   ├── mod.rs             # プラットフォーム検出・ルーティング
-│       │   ├── librechat.rs       # LibreChatプローブ
-│       │   ├── lobechat.rs        # LobeChatプローブ
-│       │   ├── dify.rs            # Difyプローブ
-│       │   ├── fastgpt.rs         # FastGPTプローブ
-│       │   ├── nextchat.rs        # NextChatプローブ
-│       │   ├── anythingllm.rs     # AnythingLLMプローブ
-│       │   ├── flowise.rs         # Flowiseプローブ
-│       │   └── ragflow.rs         # RAGFlowプローブ
-│       ├── scan/mod.rs            # フルスキャン + マルチターゲット編成
-│       ├── report/mod.rs          # JSON/HTML/Markdownレポート出力
-│       └── utils/
-│           ├── types.rs           # Target / Finding / Severity / ScanResult
-│           ├── http.rs            # HTTPクライアント + 誤検知フィルタ
-│           ├── ws.rs              # GatewayWsClient (WS + チャレンジ検出)
-│           ├── target_parser.rs   # マルチターゲット解析
-│           ├── port_scan.rs       # ポートスキャン + サービス発見
-│           ├── payload_registry.rs # PayloadRegistry (YAML読込 + ディレクトリ統合)
-│           └── payload_mutator.rs # ペイロード変異エンジン
-├── payloads/                      # 200+外部ペイロード (YAML)
-│   ├── ssrf/                      # SSRF: AWS/GCP/Azure/IPバイパス
-│   ├── command_injection/         # コマンドインジェクション/シェルメタ文字
-│   ├── prompt_injection/          # Promptインジェクション/脱獄
-│   ├── auth/                      # Token/ヘッダー/パストラバーサル
-│   └── xss/                       # XSS: 反射/イベント/フィルターバイパス
-├── nuclei-templates/              # 24+のNuclei YAMLテンプレート
-├── scripts/gen_dag_chains.py      # DAGチェーン生成ヘルパー
-└── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
+├── go/
+│   ├── main.go                      # CLIエントリポイント
+│   ├── go.mod                       # Goモジュール定義
+│   └── internal/
+│       ├── cli/                     # CLIコマンドとフラグ
+│       ├── config/                  # 設定読み込み (YAML/TOML/JSON)
+│       ├── core/                    # Target, Finding, Severity, DAGエンジン
+│       ├── exploit/                 # モジュールレジストリ + コンテキスト
+│       │   └── modules/             # 87 Exploitモジュール実装
+│       ├── platform/                # 15プラットフォーンプロファイル
+│       ├── payload/                 # YAMLペイロードレジストリ + 変異
+│       ├── nuclei/                  # Nucleiテンプレートランナー
+│       ├── scan/                    # スキャン編成 + サービス発見
+│       ├── report/                  # JSON/HTML/Markdown/Mermaid出力
+│       └── utils/                   # HTTPクライアント、誤検知フィルタ、WS
+├── payloads/                        # 200+外部ペイロード (YAML)
+├── nuclei-templates/                # 24のNuclei YAMLテンプレート
+├── LICENSE                          # CatchClaw Strict Non-Commercial License v2.0
+└── README.md
 ```
 
 ---
