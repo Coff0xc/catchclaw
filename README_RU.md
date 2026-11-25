@@ -25,9 +25,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-5.3.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Go-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/DAG_Chains-101-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-370-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
-  <img src="https://img.shields.io/badge/Exploits-101_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Exploits-370_Modules-orange?style=flat-square" alt="Exploits">
   <img src="https://img.shields.io/badge/Platforms-9-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>

@@ -1,16 +1,16 @@
 <h1 align="center">🦞 CatchClaw v6.0.0 (Go)</h1>
 
 <p align="center">
-  <b>Multi-platform AI Agent security assessment tool — 101 exploit modules | 27 platforms | DAG attack chains</b><br>
+  <b>Multi-platform AI Agent security assessment tool — 370 exploit modules | 27 platforms | DAG attack chains</b><br>
   <sub>Complete Go rewrite of CatchClaw Rust v5.3.0 | ATT&CK mapping | Concurrent execution | 2025-2026 CVE coverage</sub>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/Modules-101-FF6B6B?style=flat-square" alt="Modules">
+  <img src="https://img.shields.io/badge/Modules-370-FF6B6B?style=flat-square" alt="Modules">
   <img src="https://img.shields.io/badge/Platforms-27-purple?style=flat-square" alt="Platforms">
-  <img src="https://img.shields.io/badge/DAG_Chains-101-4CAF50?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-370-4CAF50?style=flat-square" alt="Chains">
 </p>
 
 ---
@@ -74,7 +74,7 @@ GOOS=windows GOARCH=amd64 go build -o catchclaw.exe .
 ## Quick Start
 
 ```bash
-# List all 101 exploit modules
+# List all 370 exploit modules
 catchclaw list
 
 # Scan a target (auto-detect platform)
@@ -470,7 +470,7 @@ go/
     ├── exploit/
     │   ├── registry.go              # Module registry
     │   ├── context.go               # Exploit execution context
-    │   └── modules/                 # 101 exploit modules
+    │   └── modules/                 # 370 exploit modules
     │       ├── core.go              # SSRF, RCE, eval, prompt injection, etc.
     │       ├── auth.go              # CORS, WS hijack, OAuth, pairing, etc.
     │       ├── dataleak.go          # API key, secrets, sessions, etc.

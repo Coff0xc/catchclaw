@@ -1,8 +1,8 @@
 <h1 align="center">🦞 CatchClaw v6.0.0</h1>
 
 <p align="center">
-  <b>Multi-platform AI Agent security assessment tool — 101 exploit modules | 27 platforms | DAG attack chains</b><br>
-  <sub>Complete Go rewrite | 101 DAG attack chains | ATT&CK stage mapping | Goroutine concurrency | 2025-2026 CVE coverage</sub>
+  <b>Multi-platform AI Agent security assessment tool — 370 exploit modules | 27 platforms | DAG attack chains</b><br>
+  <sub>Complete Go rewrite | 370 DAG attack chains | ATT&CK stage mapping | Goroutine concurrency | 2025-2026 CVE coverage</sub>
 </p>
 
 <p align="center">
@@ -24,9 +24,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/DAG_Chains-101-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-370-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
-  <img src="https://img.shields.io/badge/Exploits-101_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Exploits-370_Modules-orange?style=flat-square" alt="Exploits">
   <img src="https://img.shields.io/badge/Platforms-27-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
@@ -63,7 +63,7 @@
 ┌────────────────────────────────────────────────────────────────────────────┐
 │                          CatchClaw v6.0.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 101 DAG attack chains ● 101 Exploit modules ● Goroutine concurrency        │
+│  ● 370 DAG attack chains ● 370 Exploit modules ● Goroutine concurrency        │
 │  ● ATT&CK 9-stage mapping ● Mermaid graph export ● JSON/HTML/MD reports  │
 │  ● Kahn topological sort ● Semaphore control ● Conditional/fallback      │
 │  ● Multi-target scan (CIDR) ● Port scan/service discovery ● 200+ Payloads│
@@ -95,7 +95,7 @@
 
 ## Project Overview
 
-**CatchClaw** is a Go-based multi-platform AI Agent security assessment tool supporting 27 major AI platforms, including [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, and LobeChat. With 101 DAG attack chains and 101 Exploit modules, it covers the full ATT&CK kill chain, from initial reconnaissance to data exfiltration.
+**CatchClaw** is a Go-based multi-platform AI Agent security assessment tool supporting 27 major AI platforms, including [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, and LobeChat. With 370 DAG attack chains and 370 Exploit modules, it covers the full ATT&CK kill chain, from initial reconnaissance to data exfiltration.
 
 Built on Go goroutines, the DAG engine executes level by level in parallel using Kahn's topological sort, with a Semaphore controlling concurrency, and supports conditional execution and fallback nodes. Attack graphs can be exported as Mermaid flowcharts.
 
@@ -103,7 +103,7 @@ Built on Go goroutines, the DAG engine executes level by level in parallel using
 
 | Scenario | Manual Testing | CatchClaw |
 |------|---------|-----------|
-| **Vulnerability validation** | Hand-written PoCs, one by one | 101 chains orchestrated and validated automatically |
+| **Vulnerability validation** | Hand-written PoCs, one by one | 370 chains orchestrated and validated automatically |
 | **Attack surface coverage** | Based on experience | Full coverage of WS + HTTP + OAuth + Webhook + Node |
 | **Dependency chain discovery** | Hard to trace | DAG automatically discovers vulnerability dependency paths |
 | **Result visualization** | Organized by hand | Mermaid attack graphs + JSON/HTML/Markdown reports |
@@ -122,8 +122,8 @@ Built on Go goroutines, the DAG engine executes level by level in parallel using
 
 ### Attack Engine
 
-- **101 Exploit modules** — covering 10 major categories, auto-registered by the `inventory` macro
-- **101 DAG attack chains** — auto-orchestrated across 9 ATT&CK stages
+- **370 Exploit modules** — covering 10 major categories, auto-registered by the `inventory` macro
+- **370 DAG attack chains** — auto-orchestrated across 9 ATT&CK stages
 - **Kahn topological sort** — level-by-level parallel execution with automatic dependency resolution
 - **Conditional/fallback nodes** — execution paths decided dynamically from earlier results
 - **Attack graph visualization** — Mermaid export, marking hit/skipped/fallback status
@@ -511,7 +511,7 @@ catchclaw/
 │       ├── config/                  # Config loading (YAML/TOML/JSON)
 │       ├── core/                    # Target, Finding, Severity, DAG engine
 │       ├── exploit/                 # Module registry and context
-│       │   └── modules/             # 101 exploit modules implementation
+│       │   └── modules/             # 370 exploit modules implementation
 │       ├── platform/                # 15 platform profiles
 │       ├── payload/                 # YAML payload registry + mutation
 │       ├── nuclei/                  # Nuclei template runner

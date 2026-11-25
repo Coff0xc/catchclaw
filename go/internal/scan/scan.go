@@ -150,10 +150,16 @@ func (s *Scanner) buildDAG() *core.DAG {
 		moduleMap[meta.ID] = m
 	}
 
+	chained := make(map[string]bool)
+	nextID := 0
 	for _, def := range chainDefs {
 		mod, ok := moduleMap[def.moduleID]
 		if !ok {
 			continue
+		}
+		chained[def.moduleID] = true
+		if def.id >= nextID {
+			nextID = def.id + 1
 		}
 		meta := mod.Meta()
 		m := mod
@@ -171,6 +177,28 @@ func (s *Scanner) buildDAG() *core.DAG {
 				return m.Run(target, c)
 			},
 		})
+	}
+
+	for _, m := range s.registry.All() {
+		meta := m.Meta()
+		if chained[meta.ID] {
+			continue
+		}
+		mod := m
+		dag.AddNode(core.Node{
+			ID:       nextID,
+			Name:     meta.Name,
+			Category: string(meta.Category),
+			Phase:    string(meta.Phase),
+			Run: func(target core.Target, cfg interface{}) ([]core.Finding, core.Outcome) {
+				c, ok := cfg.(*config.Config)
+				if !ok {
+					return nil, core.OutcomeError
+				}
+				return mod.Run(target, c)
+			},
+		})
+		nextID++
 	}
 
 	return dag
