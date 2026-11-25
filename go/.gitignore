@@ -1,0 +1,6 @@
+catchclaw
+catchclaw-*
+*.exe
+*.test
+*.out
+vendor/

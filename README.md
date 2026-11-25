@@ -1,12 +1,13 @@
-<h1 align="center">🦞 CatchClaw v5.3.0</h1>
+<h1 align="center">🦞 CatchClaw v6.0.0</h1>
 
 <p align="center">
-  <b>Multi-platform AI Agent security assessment tool — supports 9 major platforms including OpenClaw / Dify / FastGPT / LobeChat</b><br>
-  <sub>78 DAG attack chains | 78 Exploit modules | 9 platforms supported | ATT&CK stage mapping | Async Tokio engine | Attack graph visualization</sub>
+  <b>Multi-platform AI Agent security assessment tool — 82 exploit modules | 15 platforms | DAG attack chains</b><br>
+  <sub>Complete Go rewrite | 82 DAG attack chains | ATT&CK stage mapping | Goroutine concurrency | 2025-2026 CVE coverage</sub>
 </p>
 
 <p align="center">
   <a href="README.md"><b>English</b></a> ·
+  <a href="go/README.md">Go Rewrite</a> ·
   <a href="README_JA.md">Japanese</a> ·
   <a href="README_RU.md">Русский</a> ·
   <a href="README_DE.md">Deutsch</a> ·
@@ -21,14 +22,18 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-5.3.0-blue?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/Rust-Edition_2024-DEA584?style=flat-square&logo=rust&logoColor=white" alt="Rust">
-  <img src="https://img.shields.io/badge/DAG_Chains-78-FF6B6B?style=flat-square" alt="Chains">
-  <img src="https://img.shields.io/badge/Async-Tokio-4CAF50?style=flat-square" alt="Tokio">
-  <img src="https://img.shields.io/badge/Exploits-78_Modules-orange?style=flat-square" alt="Exploits">
-  <img src="https://img.shields.io/badge/Platforms-9-purple?style=flat-square" alt="Platforms">
+  <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
+  <img src="https://img.shields.io/badge/DAG_Chains-82-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
+  <img src="https://img.shields.io/badge/Exploits-82_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Platforms-15-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
+
+---
+
+> **🆕 v6.0.0 Go Rewrite** — CatchClaw has been completely rewritten in Go. See [go/README.md](go/README.md) for the new version. The Rust version (v5.3.0) is preserved in `rust/` for reference.
 
 ---
 
