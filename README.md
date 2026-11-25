@@ -1,8 +1,8 @@
 <h1 align="center">🦞 CatchClaw v6.0.0</h1>
 
 <p align="center">
-  <b>Multi-platform AI Agent security assessment tool — 82 exploit modules | 15 platforms | DAG attack chains</b><br>
-  <sub>Complete Go rewrite | 82 DAG attack chains | ATT&CK stage mapping | Goroutine concurrency | 2025-2026 CVE coverage</sub>
+  <b>Multi-platform AI Agent security assessment tool — 87 exploit modules | 15 platforms | DAG attack chains</b><br>
+  <sub>Complete Go rewrite | 87 DAG attack chains | ATT&CK stage mapping | Goroutine concurrency | 2025-2026 CVE coverage</sub>
 </p>
 
 <p align="center">
@@ -24,16 +24,16 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/DAG_Chains-82-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-87-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
-  <img src="https://img.shields.io/badge/Exploits-82_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Exploits-87_Modules-orange?style=flat-square" alt="Exploits">
   <img src="https://img.shields.io/badge/Platforms-15-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
 ---
 
-> **🆕 v6.0.0 Go Rewrite** — CatchClaw has been completely rewritten in Go. See [go/README.md](go/README.md) for the new version. The Rust version (v5.3.0) is preserved in `rust/` for reference.
+> **🆕 v6.0.0 Go Rewrite** — CatchClaw has been completely rewritten in Go. See [go/README.md](go/README.md) for the new version. The Go version (v5.3.0) is preserved in `go/` for reference.
 
 ---
 
@@ -61,13 +61,13 @@
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                          CatchClaw v5.3.0                                │
+│                          CatchClaw v6.0.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 78 DAG attack chains ● 78 Exploit modules ● Async Tokio engine        │
+│  ● 87 DAG attack chains ● 87 Exploit modules ● Goroutine concurrency        │
 │  ● ATT&CK 9-stage mapping ● Mermaid graph export ● JSON/HTML/MD reports  │
 │  ● Kahn topological sort ● Semaphore control ● Conditional/fallback      │
 │  ● Multi-target scan (CIDR) ● Port scan/service discovery ● 200+ Payloads│
-│  ● 9 platforms ● Multi-platform fingerprinting ● --platform auto-detect  │
+│  ● 15 platforms ● Multi-platform fingerprinting ● --platform auto-detect  │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  Attack surface: WS API | HTTP REST | OAuth | Webhook | Node | Multi-Platform │
 │  Coverage: SSRF | RCE | key theft | hijacking | privesc | persistence | leaks │
@@ -85,7 +85,7 @@
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [CLI Usage](#cli-usage)
-- [78 Exploit Modules](#78-exploit-modules)
+- [87 Exploit Modules](#87-exploit-modules)
 - [DAG Attack Chain Architecture](#dag-attack-chain-architecture)
 - [Nuclei Templates](#nuclei-templates)
 - [Project Structure](#project-structure)
@@ -95,22 +95,22 @@
 
 ## Project Overview
 
-**CatchClaw** is a Rust-based multi-platform AI Agent security assessment tool supporting 9 major AI platforms, including [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, and LobeChat. With 78 DAG attack chains and 78 Exploit modules, it covers the full ATT&CK kill chain, from initial reconnaissance to data exfiltration.
+**CatchClaw** is a Go-based multi-platform AI Agent security assessment tool supporting 15 major AI platforms, including [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, and LobeChat. With 87 DAG attack chains and 87 Exploit modules, it covers the full ATT&CK kill chain, from initial reconnaissance to data exfiltration.
 
-Built on the Tokio async runtime, the DAG engine executes level by level in parallel using Kahn's topological sort, with a Semaphore controlling concurrency, and supports conditional execution and fallback nodes. Attack graphs can be exported as Mermaid flowcharts.
+Built on Go goroutines, the DAG engine executes level by level in parallel using Kahn's topological sort, with a Semaphore controlling concurrency, and supports conditional execution and fallback nodes. Attack graphs can be exported as Mermaid flowcharts.
 
 ### Why Choose CatchClaw?
 
 | Scenario | Manual Testing | CatchClaw |
 |------|---------|-----------|
-| **Vulnerability validation** | Hand-written PoCs, one by one | 78 chains orchestrated and validated automatically |
+| **Vulnerability validation** | Hand-written PoCs, one by one | 87 chains orchestrated and validated automatically |
 | **Attack surface coverage** | Based on experience | Full coverage of WS + HTTP + OAuth + Webhook + Node |
 | **Dependency chain discovery** | Hard to trace | DAG automatically discovers vulnerability dependency paths |
 | **Result visualization** | Organized by hand | Mermaid attack graphs + JSON/HTML/Markdown reports |
 | **CI/CD integration** | None | 24 Nuclei templates, plug and play |
 | **Multi-target scanning** | Tested manually, one by one | Batch scanning of CIDR blocks, IP ranges, and target files |
 | **Service discovery** | Requires nmap | Built-in port scanning + multi-platform fingerprinting |
-| **Multi-platform coverage** | Each platform researched separately | Automatic detection across 9 platforms: OpenClaw/Dify/FastGPT/NextChat/AnythingLLM/Flowise/RagFlow/LibreChat/LobeChat |
+| **Multi-platform coverage** | Each platform researched separately | Automatic detection across 15 platforms: OpenClaw/Dify/FastGPT/NextChat/AnythingLLM/Flowise/RagFlow/LibreChat/LobeChat/Langflow/LiteLLM/Ollama/vLLM |
 
 ---
 
@@ -122,8 +122,8 @@ Built on the Tokio async runtime, the DAG engine executes level by level in para
 
 ### Attack Engine
 
-- **78 Exploit modules** — covering 10 major categories, auto-registered by the `inventory` macro
-- **78 DAG attack chains** — auto-orchestrated across 9 ATT&CK stages
+- **87 Exploit modules** — covering 10 major categories, auto-registered by the `inventory` macro
+- **87 DAG attack chains** — auto-orchestrated across 9 ATT&CK stages
 - **Kahn topological sort** — level-by-level parallel execution with automatic dependency resolution
 - **Conditional/fallback nodes** — execution paths decided dynamically from earlier results
 - **Attack graph visualization** — Mermaid export, marking hit/skipped/fallback status
@@ -148,7 +148,7 @@ Built on the Tokio async runtime, the DAG engine executes level by level in para
 
 - **Multi-target scanning** — CIDR (/24), IP ranges, comma-separated lists, target files
 - **Port scanning** — TCP connect scan + custom port ranges
-- **Service discovery** — multi-platform fingerprinting (automatic detection of 9 major AI platforms)
+- **Service discovery** — multi-platform fingerprinting (automatic detection of 15 major AI platforms)
 - **200+ Payloads** — external YAML libraries for SSRF/injection/prompt/auth/XSS
 - **Scan configuration** — TOML config files + Profile presets + proxy support
 
@@ -195,17 +195,17 @@ git clone https://github.com/Coff0xc/catchclaw.git
 cd catchclaw/rust
 
 # Debug build
-cargo build
+go build .
 
 # Release build (optimized, with symbol table stripped)
-cargo build --release
+go build . --release
 
 # The binary is at target/release/catchclaw
 ```
 
 ### System Requirements
 
-- Rust Edition 2024 (rustc 1.85+)
+- Go 1.22+
 - Windows / Linux / macOS supported
 
 ---
@@ -258,7 +258,7 @@ catchclaw exploit -t TARGET_IP:PORT --chain-id 30
 ## CLI Usage
 
 ```
-CatchClaw v5.3.0 — Multi-platform AI Agent security assessment tool
+CatchClaw v6.0.0 — Multi-platform AI Agent security assessment tool
 
 Usage: catchclaw <COMMAND>
 
@@ -295,7 +295,7 @@ Exploit Flags:
 
 ---
 
-## 78 Exploit Modules
+## 87 Exploit Modules
 
 Grouped by ATT&CK stage and attack category:
 
@@ -487,39 +487,29 @@ nuclei -t nuclei-templates/ -u http://TARGET_IP:PORT -severity critical
 
 ```
 catchclaw/
-├── rust/
-│   ├── Cargo.toml                 # Project configuration
-│   └── src/
-│       ├── main.rs                # CLI entry point (clap derive)
-│       ├── config/mod.rs          # AppConfig + Profile + protocol constants
-│       ├── chain/
-│       │   ├── dag.rs             # DAG engine (topological sort + concurrency + AttackGraph)
-│       │   └── chains.rs          # Definitions of the 78 attack chain nodes
-│       ├── exploit/
-│       │   ├── registry.rs        # ExploitMeta + inventory registration system
-│       │   ├── base.rs            # ExploitCtx shared context + PayloadRegistry integration
-│       │   └── *.rs               # Implementations of the 78 exploit modules
-│       ├── platform/
-│       │   ├── mod.rs             # PlatformProfile trait + TargetPlatform
-│       │   ├── registry.rs        # PlatformRegistry (9 platform registrations)
-│       │   └── profiles/          # Implementations of the 9 platform profiles
-│       ├── scan/mod.rs            # Full scan + multi-target scan orchestration
-│       ├── report/mod.rs          # JSON / HTML / Markdown report output
-│       └── utils/
-│           ├── types.rs           # Target / Finding / Severity / multi-target parsing
-│           ├── http.rs            # HTTP client + false-positive filter
-│           ├── ws.rs              # GatewayWsClient (WS + challenge)
-│           ├── discovery.rs       # Port scanning + multi-platform service discovery
-│           ├── payload.rs         # PayloadRegistry (YAML loading + directory merging)
-│           └── mutate.rs          # Payload mutation engine
-├── payloads/                      # 200+ external Payloads (YAML)
-│   ├── ssrf.yaml                  # SSRF: AWS/GCP/Azure/IP bypass/protocol smuggling
-│   ├── injection.yaml             # Command injection/shell metacharacters/encoding bypass
-│   ├── prompt_inject.yaml         # Prompt injection/jailbreak/role override
-│   ├── auth_bypass.yaml           # Token/Header/path traversal/default credentials
-│   └── xss.yaml                   # XSS: reflected/event-based/filter bypass/polyglot
-├── nuclei-templates/              # 24 Nuclei YAML templates
-├── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
+├── go/
+│   ├── main.go                      # CLI entry point
+│   ├── go.mod                       # Go module definition
+│   └── internal/
+│       ├── cli/                     # CLI commands and flags
+│       ├── config/                  # Config loading (YAML/TOML/JSON)
+│       ├── core/                    # Target, Finding, Severity, DAG engine
+│       ├── exploit/                 # Module registry and context
+│       │   └── modules/             # 87 exploit modules implementation
+│       ├── platform/                # 15 platform profiles
+│       ├── payload/                 # YAML payload registry + mutation
+│       ├── nuclei/                  # Nuclei template runner
+│       ├── scan/                    # Scan orchestration + discovery
+│       ├── report/                  # JSON/HTML/Markdown/Mermaid export
+│       └── utils/                   # HTTP client, false-positive filters, WS
+├── payloads/                        # 200+ external Payloads (YAML)
+│   ├── ssrf.yaml                    # SSRF: AWS/GCP/Azure/IP bypass/protocol smuggling
+│   ├── injection.yaml               # Command injection/shell metacharacters/encoding bypass
+│   ├── prompt_inject.yaml           # Prompt injection/jailbreak/role override
+│   ├── auth_bypass.yaml             # Token/Header/path traversal/default credentials
+│   └── xss.yaml                     # XSS: reflected/event-based/filter bypass/polyglot
+├── nuclei-templates/                # 24 Nuclei YAML templates
+├── LICENSE                          # CatchClaw Strict Non-Commercial License v2.0
 └── README.md
 ```
 
