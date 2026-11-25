@@ -184,6 +184,18 @@ func init() {
 	global.Register(NewLiteLLMProfile())
 	global.Register(NewOllamaProfile())
 	global.Register(NewVLLMProfile())
+	global.Register(NewRayProfile())
+	global.Register(NewMLflowProfile())
+	global.Register(NewGradioProfile())
+	global.Register(NewComfyUIProfile())
+	global.Register(NewDBGPTProfile())
+	global.Register(NewChromaDBProfile())
+	global.Register(NewQdrantProfile())
+	global.Register(NewWeaviateProfile())
+	global.Register(NewMilvusProfile())
+	global.Register(NewLocalAIProfile())
+	global.Register(NewXinferenceProfile())
+	global.Register(NewJupyterProfile())
 }
 
 func Global() *Registry {

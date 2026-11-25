@@ -267,6 +267,30 @@ func parsePlatform(s string) core.Platform {
 		return core.PlatformOllama
 	case "vllm":
 		return core.PlatformVLLM
+	case "ray":
+		return core.PlatformRay
+	case "mlflow":
+		return core.PlatformMLflow
+	case "gradio":
+		return core.PlatformGradio
+	case "comfyui", "comfy":
+		return core.PlatformComfyUI
+	case "dbgpt", "db-gpt":
+		return core.PlatformDBGPT
+	case "chromadb", "chroma":
+		return core.PlatformChromaDB
+	case "qdrant":
+		return core.PlatformQdrant
+	case "weaviate":
+		return core.PlatformWeaviate
+	case "milvus":
+		return core.PlatformMilvus
+	case "localai", "local-ai":
+		return core.PlatformLocalAI
+	case "xinference":
+		return core.PlatformXinference
+	case "jupyter", "notebook":
+		return core.PlatformJupyter
 	default:
 		return core.PlatformUnknown
 	}

@@ -1,8 +1,8 @@
 <h1 align="center">🦞 CatchClaw v6.0.0</h1>
 
 <p align="center">
-  <b>Multi-platform AI Agent security assessment tool — 87 exploit modules | 15 platforms | DAG attack chains</b><br>
-  <sub>Complete Go rewrite | 87 DAG attack chains | ATT&CK stage mapping | Goroutine concurrency | 2025-2026 CVE coverage</sub>
+  <b>Multi-platform AI Agent security assessment tool — 101 exploit modules | 27 platforms | DAG attack chains</b><br>
+  <sub>Complete Go rewrite | 101 DAG attack chains | ATT&CK stage mapping | Goroutine concurrency | 2025-2026 CVE coverage</sub>
 </p>
 
 <p align="center">
@@ -24,10 +24,10 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/DAG_Chains-87-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Chains-101-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
-  <img src="https://img.shields.io/badge/Exploits-87_Modules-orange?style=flat-square" alt="Exploits">
-  <img src="https://img.shields.io/badge/Platforms-15-purple?style=flat-square" alt="Platforms">
+  <img src="https://img.shields.io/badge/Exploits-101_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Platforms-27-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
 
@@ -63,11 +63,11 @@
 ┌────────────────────────────────────────────────────────────────────────────┐
 │                          CatchClaw v6.0.0                                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  ● 87 DAG attack chains ● 87 Exploit modules ● Goroutine concurrency        │
+│  ● 101 DAG attack chains ● 101 Exploit modules ● Goroutine concurrency        │
 │  ● ATT&CK 9-stage mapping ● Mermaid graph export ● JSON/HTML/MD reports  │
 │  ● Kahn topological sort ● Semaphore control ● Conditional/fallback      │
 │  ● Multi-target scan (CIDR) ● Port scan/service discovery ● 200+ Payloads│
-│  ● 15 platforms ● Multi-platform fingerprinting ● --platform auto-detect  │
+│  ● 27 platforms ● Multi-platform fingerprinting ● --platform auto-detect  │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  Attack surface: WS API | HTTP REST | OAuth | Webhook | Node | Multi-Platform │
 │  Coverage: SSRF | RCE | key theft | hijacking | privesc | persistence | leaks │
@@ -95,7 +95,7 @@
 
 ## Project Overview
 
-**CatchClaw** is a Go-based multi-platform AI Agent security assessment tool supporting 15 major AI platforms, including [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, and LobeChat. With 87 DAG attack chains and 87 Exploit modules, it covers the full ATT&CK kill chain, from initial reconnaissance to data exfiltration.
+**CatchClaw** is a Go-based multi-platform AI Agent security assessment tool supporting 27 major AI platforms, including [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, and LobeChat. With 101 DAG attack chains and 101 Exploit modules, it covers the full ATT&CK kill chain, from initial reconnaissance to data exfiltration.
 
 Built on Go goroutines, the DAG engine executes level by level in parallel using Kahn's topological sort, with a Semaphore controlling concurrency, and supports conditional execution and fallback nodes. Attack graphs can be exported as Mermaid flowcharts.
 
@@ -103,14 +103,14 @@ Built on Go goroutines, the DAG engine executes level by level in parallel using
 
 | Scenario | Manual Testing | CatchClaw |
 |------|---------|-----------|
-| **Vulnerability validation** | Hand-written PoCs, one by one | 87 chains orchestrated and validated automatically |
+| **Vulnerability validation** | Hand-written PoCs, one by one | 101 chains orchestrated and validated automatically |
 | **Attack surface coverage** | Based on experience | Full coverage of WS + HTTP + OAuth + Webhook + Node |
 | **Dependency chain discovery** | Hard to trace | DAG automatically discovers vulnerability dependency paths |
 | **Result visualization** | Organized by hand | Mermaid attack graphs + JSON/HTML/Markdown reports |
 | **CI/CD integration** | None | 24 Nuclei templates, plug and play |
 | **Multi-target scanning** | Tested manually, one by one | Batch scanning of CIDR blocks, IP ranges, and target files |
 | **Service discovery** | Requires nmap | Built-in port scanning + multi-platform fingerprinting |
-| **Multi-platform coverage** | Each platform researched separately | Automatic detection across 15 platforms: OpenClaw/Dify/FastGPT/NextChat/AnythingLLM/Flowise/RagFlow/LibreChat/LobeChat/Langflow/LiteLLM/Ollama/vLLM |
+| **Multi-platform coverage** | Each platform researched separately | Automatic detection across 27 platforms: OpenClaw/Dify/FastGPT/NextChat/AnythingLLM/Flowise/RagFlow/LibreChat/LobeChat/Langflow/LiteLLM/Ollama/vLLM |
 
 ---
 
@@ -122,8 +122,8 @@ Built on Go goroutines, the DAG engine executes level by level in parallel using
 
 ### Attack Engine
 
-- **87 Exploit modules** — covering 10 major categories, auto-registered by the `inventory` macro
-- **87 DAG attack chains** — auto-orchestrated across 9 ATT&CK stages
+- **101 Exploit modules** — covering 10 major categories, auto-registered by the `inventory` macro
+- **101 DAG attack chains** — auto-orchestrated across 9 ATT&CK stages
 - **Kahn topological sort** — level-by-level parallel execution with automatic dependency resolution
 - **Conditional/fallback nodes** — execution paths decided dynamically from earlier results
 - **Attack graph visualization** — Mermaid export, marking hit/skipped/fallback status
@@ -148,7 +148,7 @@ Built on Go goroutines, the DAG engine executes level by level in parallel using
 
 - **Multi-target scanning** — CIDR (/24), IP ranges, comma-separated lists, target files
 - **Port scanning** — TCP connect scan + custom port ranges
-- **Service discovery** — multi-platform fingerprinting (automatic detection of 15 major AI platforms)
+- **Service discovery** — multi-platform fingerprinting (automatic detection of 27 major AI platforms)
 - **200+ Payloads** — external YAML libraries for SSRF/injection/prompt/auth/XSS
 - **Scan configuration** — TOML config files + Profile presets + proxy support
 
@@ -175,7 +175,7 @@ Built on Go goroutines, the DAG engine executes level by level in parallel using
 | Platform | Version | Fingerprinting | CVE Coverage | Probe Module |
 |------|------|---------|---------|---------|
 | **OpenClaw / Open-WebUI** | — | Auto | 72 dedicated modules | Built-in |
-| **Dify** | v1.5+ | Auto | CVE-2025-56157, CVE-2025-55182 | `dify_probe` |
+| **Dify** | v1.5+ | Auto | CVE-2025-56157, CVE-2025-55182, DifyTap | `dify_probe` |
 | **FastGPT** | v4.9+ | Auto | CVE-2025-27600, CVE-2025-52552 | `fastgpt_probe` |
 | **NextChat** | v2.12+ | Auto | CVE-2023-49785 | `nextchat_probe` |
 | **AnythingLLM** | v1.3+ | Auto | CVE-2024-13059, CVE-2024-0455 | `anythingllm_probe` |
@@ -183,6 +183,22 @@ Built on Go goroutines, the DAG engine executes level by level in parallel using
 | **RagFlow** | v0.14+ | Auto | CVE-2024-12433, CVE-2024-12450 | `ragflow_probe` |
 | **LibreChat** | — | Auto | CVE-2025-69222, CVE-2025-69220 | `librechat_probe` |
 | **LobeChat** | — | Auto | CVE-2026-23733 | `lobechat_probe` |
+| **Langflow** | — | Auto | CVE-2026-21445/33017/55255 | `langflow_probe` |
+| **LiteLLM** | — | Auto | CVE-2026-42271/49468/42208 | `litellm_probe` |
+| **Ollama** | — | Auto | CVE-2024-37032 (Probllama) | `ollama_probe` |
+| **vLLM** | — | Auto | Exposed API | `vllm_probe` |
+| **Ray Dashboard** | — | Auto | CVE-2023-6019/6020/6021 (ShadowRay) | `ray_probe` |
+| **MLflow** | — | Auto | CVE-2024-1483, CVE-2024-27132 | `mlflow_probe` |
+| **Gradio** | — | Auto | CVE-2024-1561, CVE-2024-47084 | `gradio_probe` |
+| **ComfyUI** | — | Auto | CVE-2024-10099, CVE-2025-6730 | `comfyui_probe` |
+| **DB-GPT** | — | Auto | CVE-2024-6502, CVE-2024-5451 | `dbgpt_probe` |
+| **ChromaDB** | — | Auto | Unauth vector DB | `chromadb_probe` |
+| **Qdrant** | — | Auto | CVE-2024-2221, Unauth API | `qdrant_probe` |
+| **Weaviate** | — | Auto | Unauth schema exposure | `weaviate_probe` |
+| **Milvus** | — | Auto | Unauth vector DB API | `milvus_probe` |
+| **LocalAI** | — | Auto | CVE-2024-6983 (Gallery RCE) | `localai_probe` |
+| **Xinference** | — | Auto | CVE-2024-45857 | `xinference_probe` |
+| **Jupyter** | — | Auto | Unauth kernel RCE | `jupyter_probe` |
 
 ---
 
@@ -495,7 +511,7 @@ catchclaw/
 │       ├── config/                  # Config loading (YAML/TOML/JSON)
 │       ├── core/                    # Target, Finding, Severity, DAG engine
 │       ├── exploit/                 # Module registry and context
-│       │   └── modules/             # 87 exploit modules implementation
+│       │   └── modules/             # 101 exploit modules implementation
 │       ├── platform/                # 15 platform profiles
 │       ├── payload/                 # YAML payload registry + mutation
 │       ├── nuclei/                  # Nuclei template runner

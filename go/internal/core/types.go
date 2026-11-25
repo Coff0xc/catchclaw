@@ -57,6 +57,18 @@ const (
 	PlatformVLLM        Platform = "vllm"
 	PlatformCrewAI      Platform = "crewai"
 	PlatformLangChain   Platform = "langchain"
+	PlatformRay         Platform = "ray"
+	PlatformMLflow      Platform = "mlflow"
+	PlatformGradio      Platform = "gradio"
+	PlatformComfyUI     Platform = "comfyui"
+	PlatformDBGPT       Platform = "dbgpt"
+	PlatformChromaDB    Platform = "chromadb"
+	PlatformQdrant      Platform = "qdrant"
+	PlatformWeaviate    Platform = "weaviate"
+	PlatformMilvus      Platform = "milvus"
+	PlatformLocalAI     Platform = "localai"
+	PlatformXinference  Platform = "xinference"
+	PlatformJupyter     Platform = "jupyter"
 )
 
 func (t *Target) BaseURL() string {

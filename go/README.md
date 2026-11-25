@@ -1,16 +1,16 @@
 <h1 align="center">🦞 CatchClaw v6.0.0 (Go)</h1>
 
 <p align="center">
-  <b>Multi-platform AI Agent security assessment tool — 87 exploit modules | 15 platforms | DAG attack chains</b><br>
+  <b>Multi-platform AI Agent security assessment tool — 101 exploit modules | 27 platforms | DAG attack chains</b><br>
   <sub>Complete Go rewrite of CatchClaw Rust v5.3.0 | ATT&CK mapping | Concurrent execution | 2025-2026 CVE coverage</sub>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/Modules-87-FF6B6B?style=flat-square" alt="Modules">
-  <img src="https://img.shields.io/badge/Platforms-15-purple?style=flat-square" alt="Platforms">
-  <img src="https://img.shields.io/badge/DAG_Chains-87-4CAF50?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/Modules-101-FF6B6B?style=flat-square" alt="Modules">
+  <img src="https://img.shields.io/badge/Platforms-27-purple?style=flat-square" alt="Platforms">
+  <img src="https://img.shields.io/badge/DAG_Chains-101-4CAF50?style=flat-square" alt="Chains">
 </p>
 
 ---
@@ -74,7 +74,7 @@ GOOS=windows GOARCH=amd64 go build -o catchclaw.exe .
 ## Quick Start
 
 ```bash
-# List all 87 exploit modules
+# List all 101 exploit modules
 catchclaw list
 
 # Scan a target (auto-detect platform)
@@ -125,8 +125,20 @@ catchclaw nuclei -t http://192.168.1.100:8080
 | **RagFlow** | Auto | CVE-2024-12433, CVE-2024-12450 | `ragflow_probe` |
 | **Langflow** | Auto | CVE-2026-21445/33017/55255/105740/93680/110186 | `langflow_probe` |
 | **LiteLLM** | Auto | CVE-2026-42271, CVE-2026-49468, CVE-2026-42208 | `litellm_probe` |
-| **Ollama** | Auto | Exposed API detection | `ollama_probe` |
+| **Ollama** | Auto | CVE-2024-37032 (Probllama), Exposed API | `ollama_probe`, `ollama_probllama` |
 | **vLLM** | Auto | Exposed API detection | `vllm_probe` |
+| **Ray Dashboard** | Auto | CVE-2023-6019/6020/6021 (ShadowRay) | `ray_probe` |
+| **MLflow** | Auto | CVE-2024-1483, CVE-2024-27132 | `mlflow_probe` |
+| **Gradio** | Auto | CVE-2024-1561, CVE-2024-47084 | `gradio_probe` |
+| **ComfyUI** | Auto | CVE-2024-10099, CVE-2025-6730 | `comfyui_probe` |
+| **DB-GPT** | Auto | CVE-2024-6502, CVE-2024-5451 | `dbgpt_probe` |
+| **ChromaDB** | Auto | Unauthenticated vector DB exposure | `chromadb_probe` |
+| **Qdrant** | Auto | CVE-2024-2221, Unauth API | `qdrant_probe` |
+| **Weaviate** | Auto | Unauthenticated schema exposure | `weaviate_probe` |
+| **Milvus** | Auto | Unauthenticated vector DB API | `milvus_probe` |
+| **LocalAI** | Auto | CVE-2024-6983 (Gallery RCE) | `localai_probe` |
+| **Xinference** | Auto | CVE-2024-45857 (Unauth Model Launch) | `xinference_probe` |
+| **Jupyter** | Auto | Unauthenticated kernel RCE | `jupyter_probe` |
 
 ---
 
@@ -458,7 +470,7 @@ go/
     ├── exploit/
     │   ├── registry.go              # Module registry
     │   ├── context.go               # Exploit execution context
-    │   └── modules/                 # 87 exploit modules
+    │   └── modules/                 # 101 exploit modules
     │       ├── core.go              # SSRF, RCE, eval, prompt injection, etc.
     │       ├── auth.go              # CORS, WS hijack, OAuth, pairing, etc.
     │       ├── dataleak.go          # API key, secrets, sessions, etc.

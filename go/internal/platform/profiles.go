@@ -500,3 +500,310 @@ func NewVLLMProfile() Profile {
 		},
 	}
 }
+
+func NewRayProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformRay,
+		name:     "Ray Dashboard",
+		caps: Capabilities{
+			Sandbox: true, AdminPanel: true,
+		},
+		defaultPorts: []int{8265, 10001},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion: EP("/api/version", MethodGET),
+			EPSystemHealth:  EP("/api/healthz", MethodGET),
+			EPExecRun:       EP("/api/jobs/", MethodPOST),
+			EPNodeList:      EP("/api/nodes/", MethodGET),
+			EPLogsQuery:     EP("/api/logs", MethodGET),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"ray", "ray dashboard"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/api/version", Method: "GET", AcceptStatus: []int{200}, BodyContains: "ray"},
+				{Path: "/api/healthz", Method: "GET", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
+
+func NewMLflowProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformMLflow,
+		name:     "MLflow",
+		caps: Capabilities{
+			AdminPanel: true, FileUpload: true,
+		},
+		defaultPorts: []int{5000, 5001},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion:  EP("/version", MethodGET),
+			EPSystemHealth:   EP("/health", MethodGET),
+			EPModelList:      EP("/api/2.0/mlflow/registered-models/list", MethodGET),
+			EPFileUpload:     EP("/api/2.0/mlflow-artifacts/artifacts", MethodPOST),
+			EPFileDownload:   EP("/get-artifact", MethodGET),
+			EPConversationList: EP("/api/2.0/mlflow/experiments/search", MethodPOST),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"mlflow"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/health", Method: "GET", AcceptStatus: []int{200}},
+				{Path: "/version", Method: "GET", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
+
+func NewGradioProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformGradio,
+		name:     "Gradio",
+		caps: Capabilities{
+			FileUpload: true, ChatCompletion: true,
+		},
+		defaultPorts: []int{7860, 7861},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion: EP("/info", MethodGET),
+			EPSystemHealth:  EP("/health", MethodGET),
+			EPFileUpload:    EP("/upload", MethodPOST),
+			EPFileDownload:  EP("/file", MethodGET),
+			EPChatCompletion: EP("/api/predict", MethodPOST, "/run/predict", MethodPOST),
+			EPConfigGet:     EP("/config", MethodGET),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"gradio", "gradio-app"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/info", Method: "GET", AcceptStatus: []int{200}},
+				{Path: "/config", Method: "GET", AcceptStatus: []int{200}, BodyContains: "gradio"},
+			},
+		},
+	}
+}
+
+func NewComfyUIProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformComfyUI,
+		name:     "ComfyUI",
+		caps: Capabilities{
+			FileUpload: true, WorkflowEngine: true, WebSocket: true,
+		},
+		defaultPorts: []int{8188},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion: EP("/system_stats", MethodGET),
+			EPFlowRun:       EP("/prompt", MethodPOST),
+			EPFlowList:      EP("/history", MethodGET),
+			EPFileUpload:    EP("/upload/image", MethodPOST),
+			EPFileDownload:  EP("/view", MethodGET),
+			EPNodeList:      EP("/object_info", MethodGET),
+			EPModelList:     EP("/models/checkpoints", MethodGET),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"comfyui", "comfy"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/system_stats", Method: "GET", AcceptStatus: []int{200}, BodyContains: "comfyui"},
+				{Path: "/object_info", Method: "GET", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
+
+func NewDBGPTProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformDBGPT,
+		name:     "DB-GPT",
+		caps: Capabilities{
+			ChatCompletion: true, RAGPipeline: true, Sandbox: true,
+		},
+		defaultPorts: []int{5670},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion:  EP("/api/v1/version", MethodGET),
+			EPChatCompletion: EP("/api/v1/chat/completions", MethodPOST),
+			EPModelList:      EP("/api/v1/models", MethodGET),
+			EPFileUpload:     EP("/api/v1/knowledge/upload", MethodPOST),
+			EPKnowledgeBase:  EP("/api/v1/knowledge/list", MethodGET),
+			EPSandboxExec:    EP("/api/v1/editor/sql/run", MethodPOST),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"dbgpt", "db-gpt"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/api/v1/version", Method: "GET", AcceptStatus: []int{200}},
+				{Path: "/", Method: "GET", AcceptStatus: []int{200}, BodyContains: "DB-GPT"},
+			},
+		},
+	}
+}
+
+func NewChromaDBProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformChromaDB,
+		name:     "ChromaDB",
+		caps: Capabilities{
+			RAGPipeline: true,
+		},
+		defaultPorts: []int{8000, 8001},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion:  EP("/api/v1/version", MethodGET),
+			EPSystemHealth:   EP("/api/v1/heartbeat", MethodGET),
+			EPDatasetList:    EP("/api/v1/collections", MethodGET),
+			EPDatasetCreate:  EP("/api/v1/collections", MethodPOST),
+			EPVectorSearch:   EP("/api/v1/collections", MethodGET),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"chroma"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/api/v1/version", Method: "GET", AcceptStatus: []int{200}},
+				{Path: "/api/v1/heartbeat", Method: "GET", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
+
+func NewQdrantProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformQdrant,
+		name:     "Qdrant",
+		caps: Capabilities{
+			RAGPipeline: true,
+		},
+		defaultPorts: []int{6333, 6334},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion:  EP("/", MethodGET),
+			EPSystemHealth:   EP("/healthz", MethodGET),
+			EPDatasetList:    EP("/collections", MethodGET),
+			EPDatasetCreate:  EP("/collections", MethodPUT),
+			EPVectorSearch:   EP("/collections", MethodGET),
+			EPConfigGet:      EP("/cluster", MethodGET),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"qdrant"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/", Method: "GET", AcceptStatus: []int{200}, BodyContains: "qdrant"},
+				{Path: "/collections", Method: "GET", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
+
+func NewWeaviateProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformWeaviate,
+		name:     "Weaviate",
+		caps: Capabilities{
+			RAGPipeline: true,
+		},
+		defaultPorts: []int{8080, 50051},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion:  EP("/v1/meta", MethodGET),
+			EPSystemHealth:   EP("/v1/.well-known/live", MethodGET),
+			EPDatasetList:    EP("/v1/schema", MethodGET),
+			EPVectorSearch:   EP("/v1/graphql", MethodPOST),
+			EPAuthConfig:     EP("/v1/authz/users", MethodGET),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"weaviate"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/v1/meta", Method: "GET", AcceptStatus: []int{200}, BodyContains: "weaviate"},
+				{Path: "/v1/.well-known/live", Method: "GET", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
+
+func NewMilvusProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformMilvus,
+		name:     "Milvus",
+		caps: Capabilities{
+			RAGPipeline: true,
+		},
+		defaultPorts: []int{19530, 9091},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion:  EP("/v1/vector/collections", MethodGET),
+			EPSystemHealth:   EP("/healthz", MethodGET),
+			EPDatasetList:    EP("/v2/vectordb/collections/list", MethodPOST),
+			EPVectorSearch:   EP("/v2/vectordb/entities/search", MethodPOST),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"milvus"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/healthz", Method: "GET", AcceptStatus: []int{200}},
+				{Path: "/v2/vectordb/collections/list", Method: "POST", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
+
+func NewLocalAIProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformLocalAI,
+		name:     "LocalAI",
+		caps: Capabilities{
+			ChatCompletion: true, Audio: true, FileUpload: true,
+		},
+		defaultPorts: []int{8080},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion:  EP("/api/version", MethodGET),
+			EPChatCompletion: EP("/v1/chat/completions", MethodPOST),
+			EPModelList:      EP("/v1/models", MethodGET),
+			EPModelConfig:    EP("/models/apply", MethodPOST),
+			EPAudioSpeech:    EP("/v1/audio/speech", MethodPOST),
+			EPFileUpload:     EP("/v1/audio/transcriptions", MethodPOST),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"localai", "local-ai"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/v1/models", Method: "GET", AcceptStatus: []int{200}},
+				{Path: "/api/version", Method: "GET", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
+
+func NewXinferenceProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformXinference,
+		name:     "Xinference",
+		caps: Capabilities{
+			ChatCompletion: true, AdminPanel: true, Audio: true,
+		},
+		defaultPorts: []int{9997},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion:  EP("/v1/version", MethodGET),
+			EPChatCompletion: EP("/v1/chat/completions", MethodPOST),
+			EPModelList:      EP("/v1/models", MethodGET),
+			EPModelConfig:    EP("/v1/models", MethodPOST),
+			EPAdminPanel:     EP("/v1/cluster/info", MethodGET),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"xinference"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/v1/version", Method: "GET", AcceptStatus: []int{200}},
+				{Path: "/v1/models", Method: "GET", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
+
+func NewJupyterProfile() Profile {
+	return &baseProfile{
+		platform: core.PlatformJupyter,
+		name:     "Jupyter",
+		caps: Capabilities{
+			Sandbox: true, FileUpload: true, AdminPanel: true,
+		},
+		defaultPorts: []int{8888, 8889},
+		endpoints: map[EndpointKind]*Endpoint{
+			EPSystemVersion: EP("/api", MethodGET),
+			EPSystemHealth:  EP("/api/status", MethodGET),
+			EPSessionList:   EP("/api/sessions", MethodGET),
+			EPFileList:      EP("/api/contents", MethodGET),
+			EPSandboxExec:   EP("/api/kernels", MethodPOST),
+			EPConfigGet:     EP("/api/config", MethodGET),
+		},
+		fingerprint: FingerprintSpec{
+			BodyKeywords: []string{"jupyter", "notebook"},
+			ProbeEndpoints: []ProbeEndpoint{
+				{Path: "/api", Method: "GET", AcceptStatus: []int{200}, BodyContains: "jupyter"},
+				{Path: "/api/status", Method: "GET", AcceptStatus: []int{200}},
+			},
+		},
+	}
+}
