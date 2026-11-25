@@ -24,9 +24,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/DAG_Chains-370-FF6B6B?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Nodes-412-FF6B6B?style=flat-square" alt="Chains">
   <img src="https://img.shields.io/badge/Concurrency-Goroutines-4CAF50?style=flat-square" alt="Goroutines">
-  <img src="https://img.shields.io/badge/Exploits-370_Modules-orange?style=flat-square" alt="Exploits">
+  <img src="https://img.shields.io/badge/Modules-412-orange?style=flat-square" alt="Exploits">
   <img src="https://img.shields.io/badge/Platforms-27-purple?style=flat-square" alt="Platforms">
   <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
@@ -91,7 +91,7 @@
 
 ## Overview
 
-**CatchClaw** is a Go-based multi-platform AI Agent security assessment tool supporting [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, LobeChat, and 27 major AI platforms. It executes 370 exploit modules orchestrated through a DAG (Directed Acyclic Graph) attack chain, covering the full ATT&CK lifecycle from reconnaissance to data exfiltration.
+**CatchClaw** is a Go-based multi-platform AI Agent security assessment tool supporting [OpenClaw](https://github.com/anthropics/open-claw) / Open-WebUI, Dify, FastGPT, LobeChat, and 27 major AI platforms. It executes 412 modules (370 checks + 42 attack chains) orchestrated through a DAG (Directed Acyclic Graph) attack chain, covering the full ATT&CK lifecycle from reconnaissance to data exfiltration.
 
 Built on Go goroutines, the DAG engine uses Kahn's topological sort for level-by-level concurrent execution with Semaphore-bounded concurrency, conditional execution, and fallback nodes. Attack results are visualized as Mermaid flowcharts.
 
@@ -99,7 +99,7 @@ Built on Go goroutines, the DAG engine uses Kahn's topological sort for level-by
 
 | Scenario | Manual Testing | CatchClaw |
 |----------|---------------|-----------|
-| **Vulnerability Validation** | Write PoCs one by one | 370 chains with automated orchestration |
+| **Vulnerability Validation** | Write PoCs one by one | 412 modules with automated orchestration |
 | **Attack Surface Coverage** | Experience-dependent | WS + HTTP + OAuth + Webhook + Node full coverage |
 | **Dependency Chain Discovery** | Hard to track | DAG auto-discovers vulnerability dependency paths |
 | **Result Visualization** | Manual compilation | Mermaid attack graph + JSON/HTML/Markdown report |
@@ -491,7 +491,7 @@ catchclaw/
 │       ├── config/                  # Config loading (YAML/TOML/JSON)
 │       ├── core/                    # Target, Finding, Severity, DAG engine
 │       ├── exploit/                 # Module registry and context
-│       │   └── modules/             # 370 exploit modules
+│       │   └── modules/             # 412 modules (370 checks + 42 attack chains)
 │       ├── platform/                # 15 platform profiles
 │       ├── payload/                 # YAML payload registry + mutation
 │       ├── nuclei/                  # Nuclei template runner

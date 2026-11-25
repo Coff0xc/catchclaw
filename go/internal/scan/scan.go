@@ -35,6 +35,7 @@ func (s *Scanner) BuildDAGForDryRun() *core.DAG {
 
 func (s *Scanner) Scan(target core.Target) *core.ScanResult {
 	result := core.NewScanResult(target)
+	exploit.ResetTraces()
 
 	fmt.Printf("\n\033[36m[*]\033[0m Starting full scan on %s ...\n", target)
 	fmt.Printf("\033[32m[+]\033[0m Modules loaded: %d\n", s.registry.Len())
@@ -255,6 +256,22 @@ func (s *Scanner) printSummary(result *core.ScanResult) {
 		result.CountBySeverity(core.Medium),
 		result.CountBySeverity(core.Low),
 		result.CountBySeverity(core.Info))
+
+	traces := exploit.Traces()
+	if len(traces) > 0 {
+		complete := 0
+		var completeNames []string
+		for _, t := range traces {
+			if t.Complete {
+				complete++
+				completeNames = append(completeNames, t.ChainName)
+			}
+		}
+		fmt.Printf("  Chains: %d attempted, \033[31m%d fully compromised\033[0m\n", len(traces), complete)
+		for _, name := range completeNames {
+			fmt.Printf("    \033[31;1m⛓\033[0m %s\n", name)
+		}
+	}
 	fmt.Printf("%s\n", strings.Repeat("═", 60))
 }
 

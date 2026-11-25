@@ -1,16 +1,16 @@
 <h1 align="center">🦞 CatchClaw v6.0.0 (Go)</h1>
 
 <p align="center">
-  <b>Multi-platform AI Agent security assessment tool — 370 exploit modules | 27 platforms | DAG attack chains</b><br>
+  <b>Multi-platform AI Agent security assessment tool — 412 modules (370 checks + 42 attack chains) | 27 platforms | DAG attack chains</b><br>
   <sub>Complete Go rewrite of CatchClaw Rust v5.3.0 | ATT&CK mapping | Concurrent execution | 2025-2026 CVE coverage</sub>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/Modules-370-FF6B6B?style=flat-square" alt="Modules">
+  <img src="https://img.shields.io/badge/Modules-412-FF6B6B?style=flat-square" alt="Modules">
   <img src="https://img.shields.io/badge/Platforms-27-purple?style=flat-square" alt="Platforms">
-  <img src="https://img.shields.io/badge/DAG_Chains-370-4CAF50?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/DAG_Nodes-412-4CAF50?style=flat-square" alt="Chains">
 </p>
 
 ---
@@ -74,7 +74,7 @@ GOOS=windows GOARCH=amd64 go build -o catchclaw.exe .
 ## Quick Start
 
 ```bash
-# List all 370 exploit modules
+# List all 412 modules (370 checks + 42 attack chains)
 catchclaw list
 
 # Scan a target (auto-detect platform)
@@ -275,6 +275,82 @@ catchclaw nuclei -t http://192.168.1.100:8080
 
 ---
 
+## 42 Multi-Stage Attack Chains
+
+State-passing chains where each stage's output (tokens, IDs, credentials) feeds the next stage via `{key}` placeholders and regex extraction. A chain only reports **FULL COMPROMISE** when every stage succeeds end-to-end.
+
+```bash
+# Run all 42 chains with live stage visualization
+catchclaw chain -t 192.168.1.100:8080
+
+# Run a single chain
+catchclaw chain -t target:8080 --id chain_ray_shadow
+
+# Export HTML report with interactive chain graph
+catchclaw chain -t target:8080 -o chains.html --format html
+```
+
+**Live terminal output:**
+```
+[chain] Langflow Auto-Login → Token → Code Execution (CVE-2024-37014 + auto-login)
+  ✓ stage 1: Auto-login token theft  → token=eyJhbGciOiJIUzI1...
+  ✓ stage 2: Enumerate flows
+  ✓ stage 3: Execute code via custom component
+[CHAIN COMPLETE] Langflow Auto-Login → Token → Code Execution — full 3-stage compromise
+```
+
+| Chain | Stages | CVEs Combined |
+|------|------|------|
+| chain_ssrf_cloud_takeover | SSRF → IAM role enum → credential theft | SSRF + IMDS |
+| chain_langflow_token_rce | auto_login → token → custom component exec | CVE-2024-37014 |
+| chain_ray_shadow | dashboard → job submit → log read | CVE-2023-48022/6020 |
+| chain_flowise_cred_pivot | auth bypass → cred dump → flow hijack | CVE-2024-8181 |
+| chain_dify_workspace_takeover | console → apps enum → API key theft | DifyTap |
+| chain_jupyter_kernel_rce | kernelspecs → spawn → exec channel | unauth-kernel |
+| chain_mcp_fs_escape | tools/list → /etc/passwd → ~/.aws/credentials | MCP-escape |
+| chain_minio_model_poison | minioadmin → buckets → model overwrite | default-creds |
+| chain_mlflow_artifact_theft | experiments → runs → path traversal | CVE-2024-1483 |
+| chain_comfyui_workflow_pwn | stats → node enum → workflow inject | CVE-2025-6730 |
+| chain_gradio_file_keys | config → /file=/etc/passwd → .env keys | CVE-2024-47084 |
+| chain_openwebui_signup_rce | open signup → register → function RCE | CVE-2024-6707/7807 |
+| chain_ollama_model_theft | tags → modelfile theft → free inference | unauth-api |
+| chain_es_data_heist | cluster → indices → document dump | unauth-es |
+| chain_elasticsearch_snapshot_heist | health → snapshot repo → bulk exfil | unauth-es |
+| chain_git_source_secrets | .git/config → HEAD → refs → source theft | git-leak |
+| chain_env_llm_takeover | .env → sk- key extract → key validation | info-leak |
+| chain_anythingllm_pwn | workspaces → prompt leak → SSRF pivot | CVE-2024-6386 |
+| chain_qdrant_snapshot_theft | collections → snapshot → vector dump | unauth-qdrant |
+| chain_chroma_rag_dump | collections → metadata → corpus theft | unauth-chroma |
+| chain_kubeflow_notebook_rce | notebooks → create → pod execution | unauth-kubeflow |
+| chain_airflow_dag_exec | DAGs → details → trigger run | unauth-airflow |
+| chain_prefect_flow_exec | flows → deployments → flow run | unauth-prefect |
+| chain_torchserve_evil_model | ping → models → remote .mar register | CVE-2023-43654 |
+| chain_xinference_evil_model | version → launch → invoke | CVE-2024-45857 |
+| chain_localai_gallery_rce | models → malicious gallery → load | CVE-2024-6983 |
+| chain_dbgpt_editor_pwn | version → SQL editor → Python escape | CVE-2024-6502 |
+| chain_actuator_heapdump_creds | env → configprops → heapdump | actuator |
+| chain_grafana_pivot | default login → datasources → LFI | CVE-2021-43798 |
+| chain_oneapi_channel_heist | root:123456 → channels → upstream keys | default-creds |
+| chain_a1111_model_theft | options → cmdline → GPU abuse | unauth-sd |
+| chain_tgi_free_llm | info → probe → bulk generation | unauth-tgi |
+| chain_jupyter_file_plant | contents → write notebook → persistence | unauth-jupyter |
+| chain_marimo_terminal_rce | status → session → execute | CVE-2025-29728 |
+| chain_gradio_queue_sniff | config → queue join → cross-user sniff | queue-abuse |
+| chain_openapi_admin_abuse | openapi.json → users → bulk PII | spec-leak |
+| chain_mindsdb_ai_sqli | projects → models → AI SQL exfil | unauth-mindsdb |
+| chain_ragflow_admin_kb | default admin → KB → documents | default-creds |
+| chain_fastgpt_dataset_heist | datasets → collections → chunks | unauth-api |
+| chain_litellm_key_theft | /key/list → model info → free usage | default-creds |
+| chain_tensorboard_recon | runs → plugins → training intel | unauth-tb |
+| chain_websocket_hijack_exec | version → approvals → exec trigger | ws-abuse |
+
+**Visualization** — three layers:
+- **Terminal**: live ✓/✗ per stage with acquired state (`→ token=eyJ...`)
+- **HTML report**: interactive chain cards — green stages (hit), red (broken), arrows labeled with stolen state
+- **Markdown report**: embedded Mermaid flowchart, stage nodes colored by outcome, edges labeled with extracted keys
+
+---
+
 ## DAG Attack Chain Architecture
 
 ```
@@ -470,7 +546,7 @@ go/
     ├── exploit/
     │   ├── registry.go              # Module registry
     │   ├── context.go               # Exploit execution context
-    │   └── modules/                 # 370 exploit modules
+    │   └── modules/                 # 412 modules (370 checks + 42 attack chains)
     │       ├── core.go              # SSRF, RCE, eval, prompt injection, etc.
     │       ├── auth.go              # CORS, WS hijack, OAuth, pairing, etc.
     │       ├── dataleak.go          # API key, secrets, sessions, etc.

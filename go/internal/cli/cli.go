@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/Coff0xc/catchclaw/go/internal/config"
@@ -40,6 +41,8 @@ func Run() {
 		runScan(os.Args[2:])
 	case "exploit":
 		runExploit(os.Args[2:])
+	case "chain":
+		runChain(os.Args[2:])
 	case "list":
 		exploit.PrintModules()
 	case "config":
@@ -65,7 +68,9 @@ func printUsage() {
 Commands:
   scan       Full security scan (DAG orchestrated)
   exploit    Run specific exploit chains
+  chain      Run multi-stage attack chains only (state-passing)
   discover   Port scan and platform fingerprinting
+  nuclei     Run Nuclei templates
   list       List all registered exploit modules
   config     Show current configuration
   version    Show version
@@ -425,6 +430,88 @@ func runExploit(args []string) {
 		f.Print()
 	}
 	fmt.Printf("\n\033[32m[✓]\033[0m Exploit complete: %d findings\n", len(findings))
+}
+
+func runChain(args []string) {
+	f := &exploitFlags{}
+	fs := flag.NewFlagSet("chain", flag.ExitOnError)
+	fs.StringVar(&f.target, "t", "", "Target host:port")
+	fs.StringVar(&f.target, "target", "", "Target host:port")
+	fs.StringVar(&f.token, "token", "", "Auth token")
+	fs.IntVar(&f.timeout, "timeout", 0, "Timeout seconds")
+	fs.BoolVar(&f.tls, "tls", false, "Use TLS")
+	var chainFilter string
+	var output, format string
+	fs.StringVar(&chainFilter, "id", "", "Run single chain by ID")
+	fs.StringVar(&output, "o", "", "Output file")
+	fs.StringVar(&output, "output", "", "Output file")
+	fs.StringVar(&format, "format", "html", "Output format: html|markdown|json")
+	fs.Parse(args)
+
+	if f.target == "" {
+		fmt.Println("\033[31m[!]\033[0m Target required: -t HOST:PORT")
+		os.Exit(1)
+	}
+
+	fileCfg := config.LoadDefault()
+	cfg := fileCfg.Merge(f.token, 0, 10, f.tls, "", config.LogInfo)
+	targets := core.ParseTargets(f.target, f.tls)
+	if len(targets) == 0 {
+		fmt.Println("\033[31m[!]\033[0m Invalid target")
+		os.Exit(1)
+	}
+	t := targets[0]
+
+	exploit.ResetTraces()
+
+	var chainMods []exploit.Module
+	for _, m := range exploit.GlobalRegistry().All() {
+		id := m.Meta().ID
+		if !strings.HasPrefix(id, "chain_") {
+			continue
+		}
+		if chainFilter != "" && id != chainFilter {
+			continue
+		}
+		chainMods = append(chainMods, m)
+	}
+
+	fmt.Printf("\033[36m[*]\033[0m Running %d attack chains against %s\n\n", len(chainMods), t)
+
+	result := core.NewScanResult(t)
+	var wg sync.WaitGroup
+	sem := make(chan struct{}, 5)
+	var mu sync.Mutex
+
+	for _, m := range chainMods {
+		wg.Add(1)
+		go func(mod exploit.Module) {
+			defer wg.Done()
+			sem <- struct{}{}
+			defer func() { <-sem }()
+			findings, _ := mod.Run(t, cfg)
+			mu.Lock()
+			for _, f := range findings {
+				result.Add(f)
+			}
+			mu.Unlock()
+		}(m)
+	}
+	wg.Wait()
+	result.Done()
+
+	complete := 0
+	for _, tr := range exploit.Traces() {
+		if tr.Complete {
+			complete++
+		}
+	}
+	fmt.Printf("\n\033[32m[✓]\033[0m Chains complete: %d findings, %d/%d full compromises\n",
+		len(result.Findings), complete, len(chainMods))
+
+	if output != "" {
+		writeReport(result, output, format)
+	}
 }
 
 type discoverFlags struct {
