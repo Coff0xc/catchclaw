@@ -539,6 +539,7 @@ catchclaw mcp --allow-file scope.txt
 | `catchclaw_nuclei` | Nuclei template execution |
 | `catchclaw_list_modules` | Module catalog with prefix filter |
 | `catchclaw_list_chains` | Chain catalog |
+| `catchclaw_osint` | Shodan / FOFA / Hunter cyberspace search (keys from server env only) |
 
 ### MCP Security Design
 
@@ -553,6 +554,34 @@ catchclaw mcp --allow-file scope.txt
 | **Output truncation** | Max 100 findings/response, evidence capped at 300 chars |
 | **Audit log** | Every tool call + duration logged to stderr (`[mcp-audit ...]`) |
 | **Protocol hygiene** | stdout carries JSON-RPC only; all diagnostics on stderr |
+| **OSINT key isolation** | Shodan/FOFA/Hunter API keys read from server environment only — never accepted as tool arguments, so keys can't leak into audit logs or LLM context |
+
+---
+
+## OSINT: Shodan / FOFA / Hunter
+
+Search cyberspace mapping engines for exposed AI platforms, using 20 built-in platform dorks (Ollama, Open WebUI, Ray, MLflow, Gradio, ComfyUI, Dify, Flowise, Langflow, vLLM, LiteLLM, Qdrant, Weaviate, Milvus, ChromaDB, Jupyter, LocalAI, Xinference, TorchServe, Triton).
+
+```bash
+# API keys via environment (never on the command line)
+export SHODAN_API_KEY=...            # shodan
+export FOFA_EMAIL=... FOFA_KEY=...   # fofa
+export HUNTER_API_KEY=...            # hunter (奇安信鹰图)
+
+catchclaw osint --list-dorks                       # show all built-in dorks
+catchclaw osint --engine shodan --platform ollama  # built-in dork
+catchclaw osint --engine fofa --query 'app="Dify"' # raw query
+catchclaw osint --engine hunter --platform ray --size 50 --json
+```
+
+| Flag | Description |
+|------|-------------|
+| `--engine` | `shodan` \| `fofa` \| `hunter` |
+| `--query` | Raw engine dork (max 256 chars) |
+| `--platform` | Use built-in dork for an AI platform |
+| `--size` | Max results (default/max 100) |
+| `--json` | JSON output |
+| `--list-dorks` | List all built-in platform dorks |
 
 ---
 
@@ -579,6 +608,7 @@ catchclaw scan -t TARGET [FLAGS]
 catchclaw exploit -t TARGET [--chain-id N]
 catchclaw discover -t HOST [--ports P1,P2] [--timeout N]
 catchclaw nuclei -t URL [--templates DIR] [--list]
+catchclaw osint --engine E [--query Q | --platform P] [--size N] [--json]
 catchclaw list
 catchclaw config
 catchclaw version
@@ -616,7 +646,11 @@ go/
     │   ├── payload.go               # YAML payload registry
     │   └── mutate.go                # Payload mutation/obfuscation engine
     ├── nuclei/
-    │   └── nuclei.go                # Nuclei template runner
+    │   └── nuclei.go                # Nuclei template runner (pure net/http)
+    ├── osint/
+    │   └── osint.go                 # Shodan / FOFA / Hunter clients + 20 platform dorks
+    ├── mcpserver/
+    │   └── server.go                # MCP stdio server, allowlist, audit log
     ├── scan/
     │   ├── scan.go                  # Scan orchestration, DAG builder
     │   └── discovery.go             # Port scan, service fingerprinting

@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -13,6 +14,7 @@ import (
 	"github.com/Coff0xc/catchclaw/go/internal/exploit"
 	"github.com/Coff0xc/catchclaw/go/internal/mcpserver"
 	"github.com/Coff0xc/catchclaw/go/internal/nuclei"
+	"github.com/Coff0xc/catchclaw/go/internal/osint"
 	"github.com/Coff0xc/catchclaw/go/internal/report"
 	"github.com/Coff0xc/catchclaw/go/internal/scan"
 )
@@ -60,6 +62,8 @@ func Run() {
 		runDiscover(os.Args[2:])
 	case "nuclei":
 		runNuclei(os.Args[2:])
+	case "osint":
+		runOsint(os.Args[2:])
 	case "version", "-v", "--version":
 		fmt.Printf("CatchClaw v%s (Go)\n", Version)
 	case "help", "-h", "--help":
@@ -80,6 +84,7 @@ Commands:
   chain      Run multi-stage attack chains only (state-passing)
   discover   Port scan and platform fingerprinting
   nuclei     Run Nuclei templates
+  osint      Search Shodan / FOFA / Hunter for exposed AI platforms
   list       List all registered exploit modules
   config     Show current configuration
   version    Show version
@@ -117,6 +122,15 @@ Nuclei Flags:
   -t, --target <URL>           Target URL
       --templates <DIR>        Templates directory (default: ./nuclei-templates)
       --list                   List loaded templates
+
+OSINT Flags:
+      --engine <NAME>          shodan | fofa | hunter
+      --query <DORK>           Raw engine query
+      --platform <NAME>        Use built-in dork for an AI platform
+      --size <N>               Max results (default/max 100)
+      --json                   JSON output
+      --list-dorks             List built-in platform dorks
+  Env keys: SHODAN_API_KEY, FOFA_EMAIL + FOFA_KEY, HUNTER_API_KEY
 `)
 }
 
@@ -662,6 +676,69 @@ func runNuclei(args []string) {
 		}
 		fmt.Println()
 	}
+}
+
+func runOsint(args []string) {
+	fs := flag.NewFlagSet("osint", flag.ExitOnError)
+	engine := fs.String("engine", "", "shodan | fofa | hunter")
+	query := fs.String("query", "", "Raw engine query")
+	platform := fs.String("platform", "", "Built-in dork for AI platform")
+	size := fs.Int("size", 100, "Max results")
+	jsonOut := fs.Bool("json", false, "JSON output")
+	listDorks := fs.Bool("list-dorks", false, "List built-in platform dorks")
+	fs.Parse(args)
+
+	if *listDorks {
+		fmt.Printf("\033[36m[*]\033[0m Built-in dorks (%d platforms):\n\n", len(osint.Dorks))
+		for _, p := range osint.Platforms() {
+			fmt.Printf("  %s\n", p)
+			for _, e := range osint.Engines {
+				if q, ok := osint.DorkFor(p, e); ok {
+					fmt.Printf("    %-8s %s\n", e+":", q)
+				}
+			}
+		}
+		return
+	}
+
+	if *engine == "" {
+		fmt.Println("\033[31m[!]\033[0m --engine required (shodan|fofa|hunter)")
+		os.Exit(1)
+	}
+
+	q := *query
+	if q == "" && *platform != "" {
+		dork, ok := osint.DorkFor(*platform, *engine)
+		if !ok {
+			fmt.Printf("\033[31m[!]\033[0m No dork for platform %q on %s (see --list-dorks)\n", *platform, *engine)
+			os.Exit(1)
+		}
+		q = dork
+		fmt.Printf("\033[36m[*]\033[0m Using dork: %s\n", q)
+	}
+	if q == "" {
+		fmt.Println("\033[31m[!]\033[0m --query or --platform required")
+		os.Exit(1)
+	}
+
+	fmt.Printf("\033[36m[*]\033[0m Querying %s ...\n\n", *engine)
+	hosts, err := osint.Query(*engine, q, *size)
+	if err != nil {
+		fmt.Printf("\033[31m[!]\033[0m %v\n", err)
+		os.Exit(1)
+	}
+	if len(hosts) == 0 {
+		fmt.Println("\033[32m[✓]\033[0m No results")
+		return
+	}
+
+	fmt.Printf("\033[31m[!]\033[0m %d hosts:\n\n", len(hosts))
+	if *jsonOut {
+		data, _ := json.MarshalIndent(hosts, "", "  ")
+		fmt.Println(string(data))
+		return
+	}
+	fmt.Print(osint.Format(hosts))
 }
 
 func runMCPWithOutput(args []string, protoOut *os.File) {

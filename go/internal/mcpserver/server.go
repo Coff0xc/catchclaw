@@ -2,12 +2,14 @@ package mcpserver
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net"
 	"net/netip"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -16,6 +18,7 @@ import (
 	"github.com/Coff0xc/catchclaw/go/internal/core"
 	"github.com/Coff0xc/catchclaw/go/internal/exploit"
 	"github.com/Coff0xc/catchclaw/go/internal/nuclei"
+	"github.com/Coff0xc/catchclaw/go/internal/osint"
 	"github.com/Coff0xc/catchclaw/go/internal/scan"
 )
 
@@ -128,9 +131,8 @@ func (s *Server) validateTarget(raw string) (*core.Target, error) {
 	if err != nil {
 		return nil, fmt.Errorf("target must be host:port — %v", err)
 	}
-	var port int
-	fmt.Sscanf(portStr, "%d", &port)
-	if port < 1 || port > 65535 {
+	port, err := strconv.Atoi(portStr)
+	if err != nil || port < 1 || port > 65535 {
 		return nil, fmt.Errorf("port out of range")
 	}
 
@@ -144,7 +146,9 @@ func (s *Server) validateTarget(raw string) (*core.Target, error) {
 	if addr, err := netip.ParseAddr(host); err == nil {
 		ips = append(ips, addr)
 	} else {
-		resolved, err := net.LookupHost(host)
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		resolved, err := net.DefaultResolver.LookupHost(ctx, host)
+		cancel()
 		if err != nil {
 			return nil, fmt.Errorf("cannot resolve host: %v", err)
 		}
@@ -246,6 +250,13 @@ func (s *Server) tools() []toolDef {
 				"prefix": strProp("optional ID prefix filter, e.g. chain_ or ollama"),
 			}, nil)},
 		{"catchclaw_list_chains", "List multi-stage attack chain definitions with their stages.", schema(map[string]interface{}{}, nil)},
+		{"catchclaw_osint", "Search Shodan / FOFA / Hunter cyberspace engines for exposed AI platforms. API keys come from server env (SHODAN_API_KEY, FOFA_EMAIL+FOFA_KEY, HUNTER_API_KEY) — never pass keys as arguments.",
+			schema(map[string]interface{}{
+				"engine":   strProp("shodan | fofa | hunter"),
+				"query":    strProp("raw engine dork, max 256 chars"),
+				"platform": strProp("alternative: built-in dork name, e.g. ollama, ray, dify"),
+				"size":     numProp("max results, cap 100"),
+			}, []string{"engine"})},
 	}
 }
 
@@ -374,7 +385,7 @@ func (s *Server) callTool(name string, argsRaw json.RawMessage) map[string]inter
 		if host == "" {
 			return textResult("host required", true)
 		}
-		if _, err := s.validateTarget(host + ":80"); err != nil {
+		if _, err := s.validateTarget(net.JoinHostPort(host, "80")); err != nil {
 			return textResult("host rejected: "+err.Error(), true)
 		}
 		results := scan.DiscoverServices(host, 5*time.Second, 50)
@@ -387,6 +398,10 @@ func (s *Server) callTool(name string, argsRaw json.RawMessage) map[string]inter
 
 	case "catchclaw_nuclei":
 		raw := strArg("target")
+		scheme := "http"
+		if strings.HasPrefix(raw, "https://") {
+			scheme = "https"
+		}
 		raw = strings.TrimPrefix(strings.TrimPrefix(raw, "http://"), "https://")
 		t, err := s.validateTarget(raw)
 		if err != nil {
@@ -400,7 +415,6 @@ func (s *Server) callTool(name string, argsRaw json.RawMessage) map[string]inter
 		if err := runner.LoadTemplates(); err != nil {
 			return textResult("template load failed: "+err.Error(), true)
 		}
-		scheme := "http"
 		if t.Port == 443 {
 			scheme = "https"
 		}
@@ -411,6 +425,40 @@ func (s *Server) callTool(name string, argsRaw json.RawMessage) map[string]inter
 			fmt.Fprintf(&sb, "  [%s] %s (%s)\n    %s\n", f.Severity, f.Name, f.TemplateID, f.URL)
 		}
 		return textResult(sb.String(), false)
+
+	case "catchclaw_osint":
+		engine := strArg("engine")
+		q := strArg("query")
+		if q == "" {
+			if p := strArg("platform"); p != "" {
+				dork, ok := osint.DorkFor(p, engine)
+				if !ok {
+					return textResult(fmt.Sprintf("no built-in dork for platform %q on %s", p, engine), true)
+				}
+				q = dork
+			}
+		}
+		hosts, err := osint.Query(engine, q, int(numArg("size")))
+		if err != nil {
+			return textResult("osint query failed: "+err.Error(), true)
+		}
+		if len(hosts) > maxFindingsOut {
+			hosts = hosts[:maxFindingsOut]
+		}
+		type slimHost struct {
+			IP    string `json:"ip"`
+			Port  int    `json:"port"`
+			Host  string `json:"host,omitempty"`
+			Org   string `json:"org,omitempty"`
+			Title string `json:"title,omitempty"`
+		}
+		out := make([]slimHost, 0, len(hosts))
+		for _, h := range hosts {
+			out = append(out, slimHost{h.IP, h.Port,
+				core.TruncateStr(h.Host, 100), core.TruncateStr(h.Org, 100), core.TruncateStr(h.Title, maxEvidenceLen)})
+		}
+		data, _ := json.MarshalIndent(out, "", "  ")
+		return textResult(fmt.Sprintf("%d hosts from %s (query: %s)\n\n%s", len(hosts), engine, q, data), false)
 
 	case "catchclaw_list_modules":
 		prefix := strArg("prefix")
@@ -453,17 +501,35 @@ func (s *Server) respond(id json.RawMessage, result interface{}, rpcErr *rpcErro
 	s.out.Encode(resp)
 }
 
+func readLine(r *bufio.Reader) ([]byte, bool, error) {
+	var buf []byte
+	tooLong := false
+	for {
+		frag, err := r.ReadSlice('\n')
+		if !tooLong {
+			buf = append(buf, frag...)
+			if len(buf) > maxRequestBytes {
+				tooLong = true
+				buf = nil
+			}
+		}
+		if err == bufio.ErrBufferFull {
+			continue
+		}
+		return buf, tooLong, err
+	}
+}
+
 func (s *Server) Serve(in io.Reader, out io.Writer) error {
 	s.out = json.NewEncoder(out)
-	reader := bufio.NewReaderSize(in, maxRequestBytes)
+	reader := bufio.NewReaderSize(in, 64*1024)
 
 	for {
-		line, err := reader.ReadBytes('\n')
-		if len(line) > maxRequestBytes {
-			s.audit("oversized request dropped (%d bytes)", len(line))
-			line = nil
-		}
-		if len(strings.TrimSpace(string(line))) > 0 {
+		line, tooLong, err := readLine(reader)
+		if tooLong {
+			s.audit("oversized request dropped (>%d bytes)", maxRequestBytes)
+			s.respond(nil, nil, &rpcError{Code: -32600, Message: "request too large"})
+		} else if len(strings.TrimSpace(string(line))) > 0 {
 			var req rpcRequest
 			if jerr := json.Unmarshal(line, &req); jerr != nil {
 				s.respond(nil, nil, &rpcError{Code: -32700, Message: "parse error"})

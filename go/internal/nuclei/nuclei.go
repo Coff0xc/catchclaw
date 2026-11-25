@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -104,6 +105,11 @@ func (r *Runner) RunTemplate(tpl *Template, targetURL string) (*Finding, error) 
 		requests = tpl.Requests
 	}
 
+	targetHost := ""
+	if u, err := url.Parse(targetURL); err == nil {
+		targetHost = u.Host
+	}
+
 	for _, req := range requests {
 		method := strings.ToUpper(req.Method)
 		if method == "" {
@@ -114,8 +120,11 @@ func (r *Runner) RunTemplate(tpl *Template, targetURL string) (*Finding, error) 
 		}
 
 		for _, path := range req.Path {
-			url := strings.ReplaceAll(path, "{{BaseURL}}", targetURL)
-			if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
+			fullURL := strings.ReplaceAll(path, "{{BaseURL}}", targetURL)
+			if !strings.HasPrefix(fullURL, "http://") && !strings.HasPrefix(fullURL, "https://") {
+				continue
+			}
+			if u, err := url.Parse(fullURL); err != nil || u.Host != targetHost {
 				continue
 			}
 
@@ -124,7 +133,7 @@ func (r *Runner) RunTemplate(tpl *Template, targetURL string) (*Finding, error) 
 			if body != "" {
 				reader = strings.NewReader(body)
 			}
-			httpReq, err := http.NewRequest(method, url, reader)
+			httpReq, err := http.NewRequest(method, fullURL, reader)
 			if err != nil {
 				continue
 			}
@@ -149,7 +158,7 @@ func (r *Runner) RunTemplate(tpl *Template, targetURL string) (*Finding, error) 
 						TemplateID: tpl.ID,
 						Name:       tpl.Info.Name,
 						Severity:   tpl.Info.Severity,
-						URL:        url,
+						URL:        fullURL,
 						Evidence:   truncateStr(bodyStr, 200),
 					}, nil
 				}
@@ -164,9 +173,11 @@ func matchMatcher(m Matcher, body string, status int) bool {
 	if condition == "" {
 		condition = "or"
 	}
+	checkWords := len(m.Words) > 0 && (m.Type == "" || m.Type == "word")
+	checkStatus := len(m.Status) > 0 && (m.Type == "" || m.Type == "status")
 
 	matched := false
-	if len(m.Words) > 0 {
+	if checkWords {
 		for _, word := range m.Words {
 			if strings.Contains(body, word) {
 				matched = true
@@ -179,7 +190,7 @@ func matchMatcher(m Matcher, body string, status int) bool {
 		}
 	}
 
-	if len(m.Status) > 0 {
+	if checkStatus {
 		for _, s := range m.Status {
 			if status == s {
 				matched = true
