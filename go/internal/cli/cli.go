@@ -11,6 +11,7 @@ import (
 	"github.com/Coff0xc/catchclaw/go/internal/config"
 	"github.com/Coff0xc/catchclaw/go/internal/core"
 	"github.com/Coff0xc/catchclaw/go/internal/exploit"
+	"github.com/Coff0xc/catchclaw/go/internal/mcpserver"
 	"github.com/Coff0xc/catchclaw/go/internal/nuclei"
 	"github.com/Coff0xc/catchclaw/go/internal/report"
 	"github.com/Coff0xc/catchclaw/go/internal/scan"
@@ -29,12 +30,20 @@ func Banner() {
 }
 
 func Run() {
-	Banner()
-
 	if len(os.Args) < 2 {
+		Banner()
 		printUsage()
 		os.Exit(1)
 	}
+
+	if os.Args[1] == "mcp" {
+		protoOut := os.Stdout
+		os.Stdout = os.Stderr
+		runMCPWithOutput(os.Args[2:], protoOut)
+		return
+	}
+
+	Banner()
 
 	switch os.Args[1] {
 	case "scan":
@@ -652,5 +661,44 @@ func runNuclei(args []string) {
 			fmt.Printf("    Evidence: %s\n", f.Evidence)
 		}
 		fmt.Println()
+	}
+}
+
+func runMCPWithOutput(args []string, protoOut *os.File) {
+	fs := flag.NewFlagSet("mcp", flag.ExitOnError)
+	allow := fs.String("allow", "", "Comma-separated extra allowed targets (CIDR/host)")
+	allowFile := fs.String("allow-file", "", "File with one allowed target per line")
+	nucleiDir := fs.String("nuclei-templates", "../nuclei-templates", "Nuclei templates directory")
+	fs.Parse(args)
+
+	var allowed []string
+	if *allow != "" {
+		for _, t := range strings.Split(*allow, ",") {
+			allowed = append(allowed, strings.TrimSpace(t))
+		}
+	}
+	if *allowFile != "" {
+		data, err := os.ReadFile(*allowFile)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "\033[31m[!]\033[0m cannot read allow-file: %v\n", err)
+			os.Exit(1)
+		}
+		for _, line := range strings.Split(string(data), "\n") {
+			line = strings.TrimSpace(line)
+			if line != "" && !strings.HasPrefix(line, "#") {
+				allowed = append(allowed, line)
+			}
+		}
+	}
+
+	fmt.Fprintf(os.Stderr, "[catchclaw-mcp] v%s starting on stdio (allowlist: private ranges + %d extra)\n", Version, len(allowed))
+
+	srv := mcpserver.New(mcpserver.Options{
+		AllowedTargets: allowed,
+		NucleiDir:      *nucleiDir,
+		AuditLog:       os.Stderr,
+	})
+	if err := srv.Serve(os.Stdin, protoOut); err != nil && err.Error() != "EOF" {
+		fmt.Fprintf(os.Stderr, "[catchclaw-mcp] exited: %v\n", err)
 	}
 }

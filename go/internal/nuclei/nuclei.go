@@ -2,19 +2,21 @@ package nuclei
 
 import (
 	"fmt"
+	"io"
+	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
 
 type Template struct {
-	ID       string                 `yaml:"id"`
-	Info     TemplateInfo           `yaml:"info"`
-	HTTP     []HTTPRequest          `yaml:"http"`
-	Requests []HTTPRequest          `yaml:"requests"`
+	ID       string        `yaml:"id"`
+	Info     TemplateInfo  `yaml:"info"`
+	HTTP     []HTTPRequest `yaml:"http"`
+	Requests []HTTPRequest `yaml:"requests"`
 }
 
 type TemplateInfo struct {
@@ -26,11 +28,11 @@ type TemplateInfo struct {
 }
 
 type HTTPRequest struct {
-	Method  string   `yaml:"method"`
-	Path    []string `yaml:"path"`
-	Body    string   `yaml:"body"`
-	Headers map[string]string `yaml:"headers"`
-	Matchers []Matcher `yaml:"matchers"`
+	Method   string            `yaml:"method"`
+	Path     []string          `yaml:"path"`
+	Body     string            `yaml:"body"`
+	Headers  map[string]string `yaml:"headers"`
+	Matchers []Matcher         `yaml:"matchers"`
 }
 
 type Matcher struct {
@@ -43,11 +45,18 @@ type Matcher struct {
 type Runner struct {
 	TemplatesDir string
 	Templates    []*Template
+	client       *http.Client
 }
 
 func NewRunner(templatesDir string) *Runner {
 	return &Runner{
 		TemplatesDir: templatesDir,
+		client: &http.Client{
+			Timeout: 10 * time.Second,
+			CheckRedirect: func(req *http.Request, via []*http.Request) error {
+				return http.ErrUseLastResponse
+			},
+		},
 	}
 }
 
@@ -64,19 +73,15 @@ func (r *Runner) LoadTemplates() error {
 		if err != nil {
 			continue
 		}
-
 		var tpl Template
 		if err := yaml.Unmarshal(data, &tpl); err != nil {
 			continue
 		}
-
 		if tpl.ID == "" {
 			continue
 		}
-
 		r.Templates = append(r.Templates, &tpl)
 	}
-
 	return nil
 }
 
@@ -100,45 +105,57 @@ func (r *Runner) RunTemplate(tpl *Template, targetURL string) (*Finding, error) 
 	}
 
 	for _, req := range requests {
-		method := req.Method
+		method := strings.ToUpper(req.Method)
 		if method == "" {
 			method = "GET"
+		}
+		if method != "GET" && method != "POST" && method != "PUT" && method != "DELETE" && method != "HEAD" {
+			continue
 		}
 
 		for _, path := range req.Path {
 			url := strings.ReplaceAll(path, "{{BaseURL}}", targetURL)
-			if !strings.HasPrefix(url, "http") {
-				url = targetURL + path
-			}
-
-			var cmd *exec.Cmd
-			if method == "POST" && req.Body != "" {
-				body := strings.ReplaceAll(req.Body, "{{BaseURL}}", targetURL)
-				cmd = exec.Command("curl", "-s", "-X", "POST", "-H", "Content-Type: application/json", "-d", body, url)
-			} else {
-				cmd = exec.Command("curl", "-s", "-X", method, url)
-			}
-
-			output, err := cmd.CombinedOutput()
-			if err != nil {
+			if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
 				continue
 			}
 
-			body := string(output)
+			body := strings.ReplaceAll(req.Body, "{{BaseURL}}", targetURL)
+			var reader io.Reader
+			if body != "" {
+				reader = strings.NewReader(body)
+			}
+			httpReq, err := http.NewRequest(method, url, reader)
+			if err != nil {
+				continue
+			}
+			for k, v := range req.Headers {
+				httpReq.Header.Set(k, v)
+			}
+			if body != "" && httpReq.Header.Get("Content-Type") == "" {
+				httpReq.Header.Set("Content-Type", "application/json")
+			}
+
+			resp, err := r.client.Do(httpReq)
+			if err != nil {
+				continue
+			}
+			respBody, _ := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+			resp.Body.Close()
+			bodyStr := string(respBody)
+
 			for _, matcher := range req.Matchers {
-				if matchMatcher(matcher, body, 200) {
+				if matchMatcher(matcher, bodyStr, resp.StatusCode) {
 					return &Finding{
 						TemplateID: tpl.ID,
 						Name:       tpl.Info.Name,
 						Severity:   tpl.Info.Severity,
 						URL:        url,
-						Evidence:   truncateStr(body, 200),
+						Evidence:   truncateStr(bodyStr, 200),
 					}, nil
 				}
 			}
 		}
 	}
-
 	return nil, nil
 }
 

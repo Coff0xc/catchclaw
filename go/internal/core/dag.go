@@ -231,36 +231,40 @@ func (d *DAG) Execute(target Target, cfg interface{}, onProgress func(int, strin
 		for _, idx := range level {
 			node := d.nodes[idx]
 
-			depsMet := true
-			for _, dep := range node.DependsOn {
-				if !completed[dep] {
-					depsMet = false
-					break
-				}
-			}
-			if !depsMet {
-				graph.RecordSkip(node.ID)
-				completed[node.ID] = true
-				continue
-			}
-
-			if node.FallbackFor != nil {
-				if res, ok := nodeResults[*node.FallbackFor]; ok && len(res.Findings) > 0 {
-					completed[node.ID] = true
-					graph.RecordSkip(node.ID)
-					continue
-				}
-			}
-
-			if node.Condition != nil && !node.Condition(nodeResults) {
-				completed[node.ID] = true
-				graph.RecordSkip(node.ID)
-				continue
-			}
-
 			wg.Add(1)
 			go func(n Node) {
 				defer wg.Done()
+
+				mu.Lock()
+				skip := false
+				depsMet := true
+				for _, dep := range n.DependsOn {
+					if !completed[dep] {
+						depsMet = false
+						break
+					}
+				}
+				if !depsMet {
+					graph.RecordSkip(n.ID)
+					completed[n.ID] = true
+					skip = true
+				} else if n.FallbackFor != nil {
+					if res, ok := nodeResults[*n.FallbackFor]; ok && len(res.Findings) > 0 {
+						completed[n.ID] = true
+						graph.RecordSkip(n.ID)
+						skip = true
+					}
+				}
+				if !skip && n.Condition != nil && !n.Condition(nodeResults) {
+					completed[n.ID] = true
+					graph.RecordSkip(n.ID)
+					skip = true
+				}
+				mu.Unlock()
+				if skip {
+					return
+				}
+
 				sem <- struct{}{}
 				defer func() { <-sem }()
 

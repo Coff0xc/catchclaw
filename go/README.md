@@ -501,6 +501,61 @@ Register in `register.go` — done. The module is automatically:
 
 ---
 
+## MCP Server (AI Assistant Integration)
+
+CatchClaw runs as an MCP (Model Context Protocol) server over stdio, letting AI assistants (Claude Desktop, Cursor, etc.) drive security assessments through structured tool calls.
+
+```bash
+# Start MCP server (stdio transport)
+catchclaw mcp
+
+# Extend the target allowlist
+catchclaw mcp --allow "203.0.113.0/24,scanme.example.com"
+
+# From file (one target per line, # comments)
+catchclaw mcp --allow-file scope.txt
+```
+
+**Claude Desktop config** (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "catchclaw": {
+      "command": "/path/to/catchclaw",
+      "args": ["mcp", "--allow", "10.0.0.0/8"]
+    }
+  }
+}
+```
+
+**Exposed tools:**
+
+| Tool | Description |
+|------|-------------|
+| `catchclaw_scan` | Full 412-module DAG scan, returns structured findings |
+| `catchclaw_chain` | Multi-stage attack chains with per-stage results |
+| `catchclaw_discover` | Port scan + platform fingerprinting |
+| `catchclaw_nuclei` | Nuclei template execution |
+| `catchclaw_list_modules` | Module catalog with prefix filter |
+| `catchclaw_list_chains` | Chain catalog |
+
+### MCP Security Design
+
+| Control | Implementation |
+|---------|----------------|
+| **Target allowlist** | Default: private ranges only (127/8, 10/8, 172.16/12, 192.168/16, ::1, fc00::/7, localhost). Public targets require explicit `--allow` |
+| **DNS resolution check** | Hostnames are resolved and **every** resolved IP must be in the allowlist (anti-rebinding) |
+| **Input validation** | Character whitelist on targets, port range 1-65535, request size cap 1MB |
+| **No shell execution** | All tools take structured params; nuclei runner uses net/http (no exec) |
+| **Scan serialization** | Single-scan mutex + 2s cooldown between scans |
+| **Timeout cap** | All timeouts clamped to ≤300s |
+| **Output truncation** | Max 100 findings/response, evidence capped at 300 chars |
+| **Audit log** | Every tool call + duration logged to stderr (`[mcp-audit ...]`) |
+| **Protocol hygiene** | stdout carries JSON-RPC only; all diagnostics on stderr |
+
+---
+
 ## CLI Reference
 
 ```
