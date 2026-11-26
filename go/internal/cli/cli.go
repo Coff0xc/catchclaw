@@ -2,8 +2,10 @@ package cli
 
 import (
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"sync"
@@ -780,7 +782,7 @@ func runMCPWithOutput(args []string, protoOut *os.File) {
 		NucleiDir:      *nucleiDir,
 		AuditLog:       os.Stderr,
 	})
-	if err := srv.Serve(os.Stdin, protoOut); err != nil && err.Error() != "EOF" {
+	if err := srv.Serve(os.Stdin, protoOut); !errors.Is(err, io.EOF) {
 		fmt.Fprintf(os.Stderr, "[catchclaw-mcp] exited: %v\n", err)
 	}
 }
