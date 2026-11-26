@@ -76,4 +76,26 @@ refactor: share IMDS payload list
 - `go vet ./...` and `go test ./...` pass.
 - `gofmt` clean.
 - CHANGELOG updated for user-visible changes.
+- GitHub Actions workflow **CI** is green (`go` + `govulncheck`).
 - Checklist in `.github/PULL_REQUEST_TEMPLATE.md`.
+
+## Continuous integration
+
+Workflows live in `.github/workflows/`. Required gate for `master` is **CI**.
+
+| Workflow | File | When | What |
+|---|---|---|---|
+| CI | `ci.yml` | push / PR to `master` | `gofmt -l`, `go vet`, `go test`, `go build`, `go mod verify`, `go mod tidy` diff, cross-compile, `govulncheck` |
+| Rust archive | `rust-archive.yml` | changes under `rust/` only | `cargo fmt`, `cargo check --locked`, `clippy -D warnings`, `cargo test --locked` |
+| Release | `release.yml` | tag `vX.Y.Z` on this repository | `CGO_ENABLED=0` cross-build, LICENSE + LEGAL.md in archives, SHA-256 sums, GitHub Release |
+
+Local equivalent of the Go gate:
+
+```bash
+cd go
+make ci
+```
+
+Do not add secrets, tokens, or engagement data to workflows or artifacts. OSINT keys stay in the operator environment. Release archives include LICENSE and LEGAL.md; keep it that way.
+
+Dependabot: `gomod` (`/go`) weekly, `github-actions` weekly, `cargo` (`/rust`) monthly.

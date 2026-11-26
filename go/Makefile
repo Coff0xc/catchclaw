@@ -1,4 +1,4 @@
-.PHONY: build release clean install test vet fmt
+.PHONY: build release clean install test vet fmt fmt-check ci
 
 BINARY=catchclaw
 VERSION=6.0.0
@@ -24,6 +24,13 @@ vet:
 
 fmt:
 	go fmt ./...
+
+fmt-check:
+	@files="$$(gofmt -l .)"; if [ -n "$$files" ]; then echo "$$files"; exit 1; fi
+
+ci: vet test fmt-check
+	go mod verify
+	go build -o $(BINARY) .
 
 clean:
 	rm -f $(BINARY) $(BINARY)-*

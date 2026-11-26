@@ -1,4 +1,4 @@
-.PHONY: build release test vet fmt clean install rust-build rust-test rust-clippy rust-fmt rust-clean
+.PHONY: build release test vet fmt fmt-check ci clean install rust-build rust-test rust-clippy rust-fmt rust-clean
 
 build:
 	cd go && go build -o catchclaw .
@@ -14,6 +14,12 @@ vet:
 
 fmt:
 	cd go && go fmt ./...
+
+fmt-check:
+	cd go && files="$$(gofmt -l .)" && if [ -n "$$files" ]; then echo "$$files"; exit 1; fi
+
+ci:
+	cd go && $(MAKE) ci
 
 install:
 	cd go && go install .

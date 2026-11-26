@@ -4,6 +4,12 @@ All notable changes to CatchClaw will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Changed
+- GitHub Actions: Go CI gate (`gofmt`, `vet`, `test`, `build`, `mod verify`/`tidy`, cross-compile, `govulncheck`); Rust checks path-filtered to `rust/`; release archives include LICENSE, LEGAL.md, and SHA-256 sums
+- Dependabot: `gomod` for `/go` (weekly), GitHub Actions (weekly), Cargo for archived `/rust` (monthly)
+
 ## [6.0.0] - 2026-11-26
 
 ### Added

@@ -5,22 +5,52 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+    working-directory: go
 
 jobs:
   go:
+    name: go
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: go
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version-file: go/go.mod
           cache-dependency-path: go/go.sum
+
+      - name: Verify modules
+        run: go mod verify
+
+      - name: Check go.mod tidy
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
+
+      - name: Format
+        run: |
+          files="$(gofmt -l .)"
+          if [ -n "$files" ]; then
+            echo "gofmt needed on:"
+            echo "$files"
+            exit 1
+          fi
 
       - name: Vet
         run: go vet ./...
@@ -29,47 +59,25 @@ jobs:
         run: go test ./...
 
       - name: Build
-        run: go build -o catchclaw .
+        run: go build -trimpath -ldflags="-s -w" -o catchclaw .
 
-  rust-archive:
+      - name: Cross-compile
+        run: |
+          set -euo pipefail
+          CGO_ENABLED=0 GOOS=linux   GOARCH=amd64 go build -o /tmp/catchclaw-linux-amd64 .
+          CGO_ENABLED=0 GOOS=linux   GOARCH=arm64 go build -o /tmp/catchclaw-linux-arm64 .
+          CGO_ENABLED=0 GOOS=darwin  GOARCH=amd64 go build -o /tmp/catchclaw-darwin-amd64 .
+          CGO_ENABLED=0 GOOS=darwin  GOARCH=arm64 go build -o /tmp/catchclaw-darwin-arm64 .
+          CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o /tmp/catchclaw-windows-amd64.exe .
+
+  govulncheck:
+    name: govulncheck
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: rust
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Remove local cargo config
-        shell: bash
-        run: rm -f .cargo/config.toml
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Scan
+        uses: golang/govulncheck-action@v1
         with:
-          components: clippy, rustfmt
-
-      - name: Cache cargo
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            rust/target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('rust/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-
-
-      - name: Format check
-        run: cargo fmt -- --check
-
-      - name: Check
-        run: cargo check --all-targets
-
-      - name: Clippy
-        run: cargo clippy -- -D warnings
-
-      - name: Test
-        run: cargo test --all-targets -- --nocapture
+          go-version-file: go/go.mod
+          cache-dependency-path: go/go.sum
+          work-dir: go
+          go-package: ./...

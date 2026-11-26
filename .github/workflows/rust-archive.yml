@@ -1,0 +1,71 @@
+name: Rust archive
+
+# Archived v5.x tree. Does not gate Go changes.
+on:
+  push:
+    branches: [master]
+    paths:
+      - "rust/**"
+      - ".github/workflows/rust-archive.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "rust/**"
+      - ".github/workflows/rust-archive.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: rust-archive-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+    working-directory: rust
+
+jobs:
+  rust:
+    name: rust
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Remove local cargo config
+        run: rm -f .cargo/config.toml
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.85.0"
+          components: clippy, rustfmt
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            rust/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('rust/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Format
+        run: cargo fmt -- --check
+
+      - name: Check
+        run: cargo check --all-targets --locked
+
+      - name: Clippy
+        run: cargo clippy --all-targets --locked -- -D warnings
+
+      - name: Test
+        run: cargo test --all-targets --locked -- --nocapture

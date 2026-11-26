@@ -1,2 +1,7 @@
 # Primary implementation is Go (v6.0). The rust/ tree is the archived v5.x reference.
 rust/** linguist-vendored
+
+*.go text eol=lf
+go.mod text eol=lf
+go.sum text eol=lf
+.github/workflows/*.yml text eol=lf
