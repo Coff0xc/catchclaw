@@ -573,7 +573,7 @@ func runDiscover(args []string) {
 	}
 
 	timeout := time.Duration(f.timeout) * time.Second
-	results := scan.DiscoverServices(f.target, timeout, 50)
+	results := scan.DiscoverServices(f.target, ports, timeout, 50)
 
 	if len(results) == 0 {
 		fmt.Println("\033[33m[!]\033[0m No open ports or services found")

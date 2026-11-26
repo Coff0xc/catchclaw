@@ -388,7 +388,7 @@ func (s *Server) callTool(name string, argsRaw json.RawMessage) map[string]inter
 		if _, err := s.validateTarget(net.JoinHostPort(host, "80")); err != nil {
 			return textResult("host rejected: "+err.Error(), true)
 		}
-		results := scan.DiscoverServices(host, 5*time.Second, 50)
+		results := scan.DiscoverServices(host, nil, 5*time.Second, 50)
 		var sb strings.Builder
 		fmt.Fprintf(&sb, "Discovery on %s: %d open services\n", host, len(results))
 		for _, r := range results {

@@ -212,8 +212,8 @@ func DetectPlatform(host string, port int, tls bool, timeout time.Duration) (cor
 	return core.PlatformUnknown, ""
 }
 
-func DiscoverServices(host string, timeout time.Duration, concurrency int) []DiscoveryResult {
-	openPorts := PortScan(host, nil, timeout, concurrency)
+func DiscoverServices(host string, ports []int, timeout time.Duration, concurrency int) []DiscoveryResult {
+	openPorts := PortScan(host, ports, timeout, concurrency)
 	var results []DiscoveryResult
 
 	client := utils.BuildClient(timeout, nil)
