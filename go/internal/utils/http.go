@@ -22,9 +22,9 @@ var userAgents = []string{
 	"Mozilla/5.0 (Apple) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15",
 }
 
-func BuildClient(timeout time.Duration, proxyCfg *config.ProxyConfig) *http.Client {
+func BuildClient(timeout time.Duration, proxyCfg *config.ProxyConfig, skipTLSVerify bool) *http.Client {
 	transport := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		TLSClientConfig: &tls.Config{MinVersion: tls.VersionTLS12, InsecureSkipVerify: skipTLSVerify},
 		DialContext: (&netDialer{
 			timeout: timeout,
 		}).DialContext,

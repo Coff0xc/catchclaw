@@ -20,7 +20,7 @@ type WSClient struct {
 	timeout time.Duration
 }
 
-func WSConnect(wsURL, token string, timeout time.Duration) (*WSClient, error) {
+func WSConnect(wsURL, token string, timeout time.Duration, skipTLSVerify bool) (*WSClient, error) {
 	if token != "" {
 		sep := "?"
 		if strings.Contains(wsURL, "?") {
@@ -34,7 +34,7 @@ func WSConnect(wsURL, token string, timeout time.Duration) (*WSClient, error) {
 	conn, _, err := websocket.Dial(ctx, wsURL, &websocket.DialOptions{
 		HTTPClient: &http.Client{
 			Transport: &http.Transport{
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+				TLSClientConfig: &tls.Config{MinVersion: tls.VersionTLS12, InsecureSkipVerify: skipTLSVerify},
 				DialContext:     (&net.Dialer{Timeout: timeout}).DialContext,
 			},
 		},

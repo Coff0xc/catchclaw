@@ -40,7 +40,7 @@ It does **not** cover vulnerabilities in platforms CatchClaw assesses (Open-WebU
 
 These are current behaviors, not invitations to disable controls in production scanners you run against yourself without understanding them:
 
-- The Go HTTP client skips TLS certificate verification and does not follow redirects. That is assessment-oriented. Intercepted traffic can be MITM’d; treat reports as sensitive.
+- The Go HTTP/WS client skips TLS certificate verification by default (`scanner.tls_skip_verify: true`) so lab hosts with self-signed certs scan. Pass `--tls-verify` or set `tls_skip_verify: false` to enforce validation. Redirects are disabled. Treat reports as sensitive.
 - MCP listens on stdio. Default target allowlist is private address space. Public targets require explicit `--allow` / `--allow-file`. Every resolved IP must stay in the allowlist.
 - OSINT API keys are read from the environment only and must never be passed as MCP tool arguments.
 - Scan modules can be intrusive (brute force, race, RCE probes). Use `--dry-run` to preview; use `--profile stealth` and a defined window on fragile systems.

@@ -201,6 +201,7 @@ catchclaw mcp --allow 10.0.0.0/8
 | `--format` | `json` (default) · `html` · `markdown` |
 | `--concurrency` | Max parallel modules (default 10) |
 | `--tls` | HTTPS / WSS |
+| `--tls-verify` | Verify TLS certificates (default: skip, for lab certs) |
 | `--callback` | Out-of-band SSRF callback URL |
 | `--profile` | `quick` · `stealth` · `full` |
 | `--severity-filter` | `critical,high,medium,low,info` |
@@ -209,6 +210,33 @@ catchclaw mcp --allow 10.0.0.0/8
 | `--platform` | `auto` or a profile name |
 
 OSINT keys (environment only): `SHODAN_API_KEY`, `FOFA_EMAIL` + `FOFA_KEY`, `HUNTER_API_KEY`.
+
+### Config file
+
+`--config` loads YAML, TOML, or JSON. Flags override the file. `--profile` overlays `profile.<name>` onto `scanner` / `proxy` / `graph` / `payload`.
+
+Example: [`go/catchclaw.example.yaml`](go/catchclaw.example.yaml). Copy it, then:
+
+```bash
+catchclaw scan -t 192.168.1.10:8080 --config catchclaw.yaml --profile stealth
+```
+
+| Key | Meaning |
+|-----|---------|
+| `target.host` / `port` / `tls` / `token` | Default target (CLI `-t` still required today) |
+| `scanner.timeout` | Seconds (default 10) |
+| `scanner.concurrency` | Max parallel modules (default 10) |
+| `scanner.log_level` | `info` `debug` `trace` `warn` `error` `quiet` |
+| `scanner.aggressive` | Noisier / obfuscated payloads |
+| `scanner.tls_skip_verify` | Default `true`. Set `false` or pass `--tls-verify` |
+| `scanner.callback_url` | Out-of-band SSRF callback |
+| `proxy.http` / `https` | HTTP(S) forward proxy. `socks5` is accepted as a URL but the client is `net/http` (HTTP proxy only) |
+| `payload.file` | Extra YAML payload library |
+| `payload.enable_mutation` | Mutate payloads |
+| `graph.export_json` / `export_mermaid` / `output_dir` | Attack-graph export |
+| `profile.quick` / `stealth` / `full` | Named overlays |
+
+Not in the file (CLI only): `--targets`, `--targets-file`, `--format`, `--severity-filter`, `--dry-run`, `--platform`, MCP `--allow`, OSINT engines.
 
 ---
 

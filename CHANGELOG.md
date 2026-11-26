@@ -12,6 +12,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 - Relicensed from CatchClaw Strict Non-Commercial v2.0 to **MIT**. Commercial use, sale, and derivative works are allowed. Unauthorized access to systems remains illegal (LEGAL.md).
+- TLS skip-verify is configurable (`scanner.tls_skip_verify`, `--tls-verify`). CodeQL query `go/disabled-certificate-check` excluded as assessment-by-design; CodeQL Action v4.
+- Example config documents every file key; `payloads.yaml` header no longer claims it is untracked.
 - CI: GitHub Actions majors (checkout v7, setup-go v7, artifacts v7/v8, golangci-lint-action v9, gitleaks v3). golangci-lint v2.15.0 with v2 config.
 - Architecture figures (SVG): layered system, assessment methodology, DAG/ATT&amp;CK execution (`docs/figures/`)
 - LEGAL.md, LICENSE, README, and SECURITY.md: legal-risk language is worldwide (operator, target, nationality, transit, export).

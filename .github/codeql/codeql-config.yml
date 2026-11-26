@@ -1,0 +1,10 @@
+name: CatchClaw
+
+paths:
+  - go
+
+# Assessment HTTP/WS clients skip TLS verify unless scanner.tls_skip_verify is false
+# or --tls-verify is set. The query flags that by design. See SECURITY.md.
+query-filters:
+  - exclude:
+      id: go/disabled-certificate-check

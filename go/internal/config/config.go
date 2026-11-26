@@ -68,11 +68,12 @@ type TargetConfig struct {
 }
 
 type ScannerConfig struct {
-	Timeout     int    `json:"timeout,omitempty" yaml:"timeout"`
-	Concurrency int    `json:"concurrency,omitempty" yaml:"concurrency"`
-	LogLevel    string `json:"log_level,omitempty" yaml:"log_level"`
-	Aggressive  bool   `json:"aggressive,omitempty" yaml:"aggressive"`
-	CallbackURL string `json:"callback_url,omitempty" yaml:"callback_url"`
+	Timeout       int    `json:"timeout,omitempty" yaml:"timeout"`
+	Concurrency   int    `json:"concurrency,omitempty" yaml:"concurrency"`
+	LogLevel      string `json:"log_level,omitempty" yaml:"log_level"`
+	Aggressive    bool   `json:"aggressive,omitempty" yaml:"aggressive"`
+	CallbackURL   string `json:"callback_url,omitempty" yaml:"callback_url"`
+	TLSSkipVerify *bool  `json:"tls_skip_verify,omitempty" yaml:"tls_skip_verify"`
 }
 
 type ProfileConfig struct {
@@ -92,23 +93,25 @@ type FileConfig struct {
 }
 
 type Config struct {
-	Token       string
-	Timeout     time.Duration
-	CallbackURL string
-	Concurrency int
-	Aggressive  bool
-	Quiet       bool
-	LogLevel    LogLevel
-	Proxy       ProxyConfig
-	Graph       GraphConfig
-	Payload     PayloadConfig
+	Token         string
+	Timeout       time.Duration
+	CallbackURL   string
+	Concurrency   int
+	Aggressive    bool
+	Quiet         bool
+	LogLevel      LogLevel
+	TLSSkipVerify bool
+	Proxy         ProxyConfig
+	Graph         GraphConfig
+	Payload       PayloadConfig
 }
 
 func Default() *Config {
 	return &Config{
-		Timeout:     10 * time.Second,
-		Concurrency: 10,
-		LogLevel:    LogInfo,
+		Timeout:       10 * time.Second,
+		Concurrency:   10,
+		LogLevel:      LogInfo,
+		TLSSkipVerify: true,
 	}
 }
 
@@ -195,6 +198,9 @@ func (fc *FileConfig) Merge(token string, timeout time.Duration, concurrency int
 		}
 		cfg.Aggressive = fc.Scanner.Aggressive
 		cfg.CallbackURL = fc.Scanner.CallbackURL
+		if fc.Scanner.TLSSkipVerify != nil {
+			cfg.TLSSkipVerify = *fc.Scanner.TLSSkipVerify
+		}
 		if level == LogInfo && fc.Scanner.LogLevel != "" {
 			cfg.LogLevel = ParseLogLevel(fc.Scanner.LogLevel)
 		} else {

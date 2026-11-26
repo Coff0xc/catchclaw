@@ -20,6 +20,13 @@ Thumbs.db
 scan_*.json
 scan_results*.json
 targets*.txt
+coverage.out
+*.coverprofile
+
+# Local config copies
+catchclaw.yaml
+catchclaw.toml
+catchclaw.json
 
 # Internal audit/planning docs
 .audit/

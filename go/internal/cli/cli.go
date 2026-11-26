@@ -106,6 +106,7 @@ Scan Flags:
       --format <FMT>           Output: json | html | markdown (default json)
       --concurrency <N>        Max concurrency (default 10)
       --tls                    Use HTTPS/WSS
+      --tls-verify             Verify TLS certificates (default: skip)
       --callback <URL>         SSRF callback URL
       --profile <NAME>         Scan profile from config
       --severity-filter <SEV>  Filter: critical,high,medium,low,info
@@ -151,6 +152,7 @@ type scanFlags struct {
 	format         string
 	concurrency    int
 	tls            bool
+	tlsVerify      bool
 	callback       string
 	profile        string
 	severityFilter string
@@ -174,6 +176,7 @@ func parseScanFlags(args []string) *scanFlags {
 	fs.StringVar(&f.format, "format", "json", "Output format")
 	fs.IntVar(&f.concurrency, "concurrency", 0, "Concurrency")
 	fs.BoolVar(&f.tls, "tls", false, "Use TLS")
+	fs.BoolVar(&f.tlsVerify, "tls-verify", false, "Verify TLS certificates")
 	fs.StringVar(&f.callback, "callback", "", "SSRF callback URL")
 	fs.StringVar(&f.profile, "profile", "", "Scan profile")
 	fs.StringVar(&f.severityFilter, "severity-filter", "", "Severity filter")
@@ -211,6 +214,9 @@ func runScan(args []string) {
 	}
 	if f.concurrency > 0 {
 		cfg.Concurrency = f.concurrency
+	}
+	if f.tlsVerify {
+		cfg.TLSSkipVerify = false
 	}
 
 	var allTargets []core.Target
@@ -337,6 +343,7 @@ func printScanConfig(cfg *config.Config, targets []core.Target) {
 	fmt.Printf("\033[36m│\033[0m %-43s \033[36m│\033[0m\n", fmt.Sprintf("Timeout: %v", cfg.Timeout))
 	fmt.Printf("\033[36m│\033[0m %-43s \033[36m│\033[0m\n", fmt.Sprintf("Concurrency: %d", cfg.Concurrency))
 	fmt.Printf("\033[36m│\033[0m %-43s \033[36m│\033[0m\n", fmt.Sprintf("Aggressive: %v", cfg.Aggressive))
+	fmt.Printf("\033[36m│\033[0m %-43s \033[36m│\033[0m\n", fmt.Sprintf("TLS skip verify: %v", cfg.TLSSkipVerify))
 	if cfg.HasProxy() {
 		fmt.Printf("\033[36m│\033[0m %-43s \033[36m│\033[0m\n", fmt.Sprintf("Proxy: %s", cfg.PrimaryProxy()))
 	}

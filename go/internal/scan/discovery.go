@@ -89,7 +89,7 @@ func DetectPlatform(host string, port int, tls bool, timeout time.Duration) (cor
 		baseURL = fmt.Sprintf("https://%s:%d", host, port)
 	}
 
-	client := utils.BuildClient(timeout, nil)
+	client := utils.BuildClient(timeout, nil, true)
 
 	for platform, paths := range platformFingerprints {
 		for _, path := range paths {
@@ -216,7 +216,7 @@ func DiscoverServices(host string, ports []int, timeout time.Duration, concurren
 	openPorts := PortScan(host, ports, timeout, concurrency)
 	var results []DiscoveryResult
 
-	client := utils.BuildClient(timeout, nil)
+	client := utils.BuildClient(timeout, nil, true)
 	for _, port := range openPorts {
 		platform, banner := DetectPlatform(host, port, false, timeout)
 		if platform == core.PlatformUnknown {
