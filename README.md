@@ -31,7 +31,11 @@
 
 ---
 
-> **Legal risk.** CatchClaw is dual-use. Run it only on systems you own or have **prior written authorization** to test. Unauthorized scanning or access is a crime (PRC Criminal Law Arts. 285 / 286, and computer-misuse laws elsewhere). You bear all legal risk. Commercial use is prohibited without written authorization from Coff0xc.
+> **Legal risk / 法律风险（worldwide）**
+>
+> CatchClaw is dual-use. Run it only on systems you own or for which you already have **prior written authorization**. Unauthorized scanning or access is a crime or civil wrong **under the law of every applicable jurisdiction** — the place you act from, the place the target and its data sit, your nationality, and any country of transit or export. No country is exempt. You bear all legal risk. Commercial use is prohibited without written authorization from Coff0xc.
+>
+> 仅可在你拥有或已事先取得权利人**明确书面授权**的系统上运行。未经授权的扫描或访问，在**任何适用法域**均可构成犯罪或侵权（行为地、目标地、国籍地、过境地与出口管制地的法律可同时适用）。你承担全部法律风险。未经 Coff0xc 书面授权禁止商业使用。本仓库的版权许可准据法**不限制**任何国家刑法或监管法对你行为的适用。
 >
 > **[LEGAL.md](LEGAL.md)** · **[LICENSE](LICENSE)** · **[SECURITY.md](SECURITY.md)**
 
@@ -334,19 +338,20 @@ cd go && make ci
 
 ## Legal
 
-CatchClaw sends exploit payloads, guesses credentials, and can expand one flag into many hosts. That is the legal exposure.
+CatchClaw sends exploit payloads, guesses credentials, and can expand one flag into many hosts. That exposure is **worldwide**. The copyright license’s choice of forum does not pick your criminal law.
 
-Before every run:
+Before every run, in **every** jurisdiction that may apply:
 
 1. Hold written authorization covering hosts, time, and methods.
 2. Keep CIDR / files / OSINT / MCP `--allow` inside that writing.
 3. Treat reports as confidential engagement data.
 4. Independently verify findings.
 5. Stay non-commercial unless Coff0xc licensed you in writing.
+6. Confirm the act is lawful where you are, where the target is, and anywhere in between.
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND. Authors and copyright holders are not liable for claims, damages, fines, or criminal consequences arising from use.
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND. Authors and copyright holders are not liable for claims, damages, fines, or criminal consequences arising from use in any country.
 
-Full text: **[LEGAL.md](LEGAL.md)**. License: **[CatchClaw Strict Non-Commercial License v2.0](LICENSE)**.
+This README is not legal advice. Full text: **[LEGAL.md](LEGAL.md)**. License: **[CatchClaw Strict Non-Commercial License v2.0](LICENSE)**.
 
 ## Author
 

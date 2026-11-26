@@ -47,6 +47,17 @@ ALL RIGHTS RESERVED.
    research, educational use, non-profit security research), subject to ALL
    conditions in this license.
 
+   This copyright grant is worldwide in territorial scope as a license to
+   the Software. It is NOT permission to access, scan, or interfere with
+   any computer system. You must independently have the legal right to test
+   each target under EVERY law that applies to you and to the target,
+   including the law of the place you act from, the place the target and
+   its data are located, your nationality or residence, and any country of
+   transit, hosting, or export. Unauthorized access, scanning,
+   interception, data acquisition, or system interference is a crime or
+   civil wrong in jurisdictions around the world. This license creates no
+   safe harbor in any country. See LEGAL.md.
+
 3. ABSOLUTE PROHIBITION OF COMMERCIAL USE
 
    ANY AND ALL COMMERCIAL USE OF THE SOFTWARE IS STRICTLY PROHIBITED WITHOUT
@@ -134,11 +145,16 @@ ALL RIGHTS RESERVED.
 
 10. GOVERNING LAW AND JURISDICTION
 
-    This license shall be governed by and construed in accordance with the
-    laws of the People Republic of China. Any disputes arising from this
-    license shall be submitted to the exclusive jurisdiction of the courts
-    in Beijing, China. The prevailing party in any legal action shall be
-    entitled to recover reasonable attorney fees and costs.
+    Disputes arising from THIS LICENSE as a copyright instrument shall be
+    governed by the laws of the People's Republic of China and submitted
+    to the exclusive jurisdiction of the courts in Beijing, China. The
+    prevailing party in any such action shall be entitled to recover
+    reasonable attorney fees and costs.
+
+    That choice of law and forum does NOT elect, waive, or limit the
+    criminal, regulatory, or tort law of any other country that applies to
+    your possession or use of the Software. You remain fully subject to
+    the law of every applicable jurisdiction.
 
 11. ENTIRE AGREEMENT
 

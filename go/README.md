@@ -15,7 +15,7 @@
 
 ---
 
-> **LEGAL RISK.** Authorized testing only. Prior written authorization required for every target. Unauthorized access can be a crime (PRC Criminal Law Arts. 285/286 and equivalent laws). You bear all legal risk. Commercial use prohibited without written authorization. **[LEGAL.md](../LEGAL.md)** · **[LICENSE](../LICENSE)**
+> **LEGAL RISK (worldwide).** Authorized testing only. Prior written authorization required for every target. Unauthorized access is a crime or civil wrong under **every applicable jurisdiction** (where you act, where the target sits, your nationality, transit, export). No country is exempt. You bear all legal risk. Commercial use prohibited without written authorization. **[LEGAL.md](../LEGAL.md)** · **[LICENSE](../LICENSE)** · **[SECURITY.md](../SECURITY.md)**
 
 ---
 
@@ -683,7 +683,7 @@ go/
 
 ## Legal risk
 
-Unauthorized scanning or access is a crime (PRC Criminal Law Arts. 285/286 and equivalent laws elsewhere). You need **prior written authorization** for every target, including CIDR expansions, OSINT-derived hosts, and MCP `--allow`. You bear all legal risk. Findings can be false positives.
+Unauthorized scanning or access is a crime or civil wrong **worldwide** under every law that applies (operator location, target location, nationality, transit, export). You need **prior written authorization** for every target, including CIDR expansions, OSINT-derived hosts, and MCP `--allow`. You bear all legal risk in every applicable jurisdiction. Findings can be false positives. This file is not legal advice.
 
 Commercial use is prohibited without written authorization from the copyright holder.
 

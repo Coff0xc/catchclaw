@@ -11,6 +11,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Rust archive CI workflow and Cargo Dependabot.
 
 ### Changed
+- LEGAL.md, LICENSE (lawful-use + §10), README, and SECURITY.md: legal-risk language is worldwide (operator, target, nationality, transit, export). LICENSE choice of law governs copyright disputes only.
 - GitHub Actions CI split into quality (gofmt, mod verify/tidy, vet, golangci-lint), test (`-race`, coverage), build/smoke/cross-compile, govulncheck, Gitleaks, YAML + actionlint
 - Added CodeQL workflow on `go/` (push/PR + weekly)
 - Release: SPDX SBOM, SHA-256 sums, and build-provenance attestation; archives still include LICENSE and LEGAL.md
