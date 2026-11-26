@@ -29,7 +29,7 @@ func Banner() {
 `
 	fmt.Print("\033[31;1m" + art + "\033[0m")
 	fmt.Printf("    \033[31;1mCatchClaw\033[0m v%s — Authorized AI/LLM platform security assessment (Go)\n", Version)
-	fmt.Printf("    Written authorization required. Unauthorized use is illegal. See LEGAL.md\n\n")
+	fmt.Printf("    Written authorization required worldwide. Unauthorized use is illegal. See LEGAL.md\n\n")
 }
 
 func Run() {
@@ -80,7 +80,8 @@ func printUsage() {
 	fmt.Printf(`Usage: catchclaw <COMMAND> [FLAGS]
 
 Authorized testing only. Prior written authorization required for every target.
-Unauthorized access is illegal. You assume all legal risk. See LEGAL.md and LICENSE.
+Unauthorized access is illegal in every applicable jurisdiction. You assume all legal risk.
+See LEGAL.md and LICENSE. This is not legal advice.
 
 Commands:
   scan       Full security scan (DAG orchestrated)

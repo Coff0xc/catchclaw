@@ -4,7 +4,7 @@ Thank you for your interest in contributing.
 
 ## License and legal
 
-By contributing you agree that your contribution is licensed under the [CatchClaw Strict Non-Commercial License v2.0](LICENSE). Commercial use is prohibited without written authorization from the copyright holder.
+By contributing you agree that your contribution is licensed under the [MIT License](LICENSE). Commercial use and derivative works are allowed. Unauthorized testing of systems you do not have written authorization to test remains illegal.
 
 Read [LEGAL.md](LEGAL.md) and [SECURITY.md](SECURITY.md) before you send a patch.
 

@@ -10,12 +10,12 @@
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/Modules-412-FF6B6B?style=flat-square" alt="Modules">
   <img src="https://img.shields.io/badge/Profiles-25-purple?style=flat-square" alt="Platforms">
-  <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License">
 </p>
 
 ---
 
-> **LEGAL RISK.** Authorized testing only. Prior written authorization required for every target. Unauthorized access can be a crime (PRC Criminal Law Arts. 285/286 and equivalent laws). You bear all legal risk. Commercial use prohibited without written authorization. **[LEGAL.md](../LEGAL.md)** · **[LICENSE](../LICENSE)**
+> **LEGAL RISK (worldwide).** MIT license: commercial use and derivatives allowed. Authorized testing only. Prior written authorization required for every target. Unauthorized access is a crime or civil wrong under **every applicable jurisdiction**. You bear all legal risk. **[LEGAL.md](../LEGAL.md)** · **[LICENSE](../LICENSE)** · **[SECURITY.md](../SECURITY.md)**
 
 ---
 
@@ -570,7 +570,7 @@ Search cyberspace mapping engines for exposed AI platforms, using 20 built-in pl
 # API keys via environment (never on the command line)
 export SHODAN_API_KEY=...            # shodan
 export FOFA_EMAIL=... FOFA_KEY=...   # fofa
-export HUNTER_API_KEY=...            # hunter (奇安信鹰图)
+export HUNTER_API_KEY=...            # hunter
 
 catchclaw osint --list-dorks                       # show all built-in dorks
 catchclaw osint --engine shodan --platform ollama  # built-in dork
@@ -683,9 +683,9 @@ go/
 
 ## Legal risk
 
-Unauthorized scanning or access is a crime (PRC Criminal Law Arts. 285/286 and equivalent laws elsewhere). You need **prior written authorization** for every target, including CIDR expansions, OSINT-derived hosts, and MCP `--allow`. You bear all legal risk. Findings can be false positives.
+Unauthorized scanning or access is a crime or civil wrong **worldwide** under every law that applies (operator location, target location, nationality, transit, export). You need **prior written authorization** for every target, including CIDR expansions, OSINT-derived hosts, and MCP `--allow`. You bear all legal risk in every applicable jurisdiction. Findings can be false positives. This file is not legal advice.
 
-Commercial use is prohibited without written authorization from the copyright holder.
+The code is MIT-licensed: commercial use and derivatives are allowed. MIT does not legalize unauthorized access.
 
 **[LEGAL.md](../LEGAL.md)** · **[LICENSE](../LICENSE)** · **[SECURITY.md](../SECURITY.md)**
 
@@ -701,4 +701,4 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND. Authors and 
 
 ## License
 
-[CatchClaw Strict Non-Commercial License v2.0](../LICENSE) — commercial use prohibited without written authorization.
+[MIT License](../LICENSE) — commercial use and derivative works allowed. Keep the copyright notice. Unauthorized access to computer systems remains illegal; see [LEGAL.md](../LEGAL.md).

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 480" role="img" aria-labelledby="t2">
+  <title id="t2">Figure 2. Assessment methodology</title>
+  <defs>
+    <filter id="lift" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1A1A1A" flood-opacity="0.06"/>
+    </filter>
+    <style>
+      text { font-family: ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif; }
+      .k { font-size: 11px; letter-spacing: 0.22em; fill: #8B1E3F; font-weight: 600; }
+      .t { font-size: 22px; fill: #1A1A1A; font-weight: 600; }
+      .d { font-size: 13px; fill: #6B6560; }
+      .n { font-size: 12px; fill: #8B1E3F; font-weight: 700; letter-spacing: 0.08em; }
+      .h { font-size: 15px; fill: #1A1A1A; font-weight: 600; }
+      .s { font-size: 12px; fill: #6B6560; }
+      .g { font-size: 12.5px; fill: #F7F5F0; font-weight: 600; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+  <rect width="1080" height="480" fill="#F7F5F0"/>
+  <text x="56" y="42" class="k">METHODOLOGY</text>
+  <text x="56" y="74" class="t">How a run is supposed to happen</text>
+  <text x="56" y="98" class="d">Authorization is not a disclaimer. It is stage zero of the pipeline.</text>
+  <line x1="56" y1="114" x2="1024" y2="114" stroke="#E4DFD6" stroke-width="1"/>
+
+  <rect x="56" y="136" width="968" height="44" rx="22" fill="#1A1A1A"/>
+  <text x="540" y="164" text-anchor="middle" class="g">0   written authorization   ·   hosts, window, techniques named</text>
+
+  <!-- spine -->
+  <line x1="140" y1="228" x2="940" y2="228" stroke="#E4DFD6" stroke-width="2"/>
+
+  <!-- 1 -->
+  <circle cx="140" cy="228" r="18" fill="#8B1E3F"/>
+  <text x="140" y="233" text-anchor="middle" fill="#F7F5F0" style="font-size:13px;font-weight:700;fill:#F7F5F0">1</text>
+  <rect x="72" y="268" width="136" height="96" rx="12" fill="#FFFcf8" filter="url(#lift)"/>
+  <text x="140" y="298" text-anchor="middle" class="h">Acquire</text>
+  <text x="140" y="320" text-anchor="middle" class="s">host · CIDR · file</text>
+  <text x="140" y="338" text-anchor="middle" class="s">OSINT optional</text>
+
+  <!-- 2 -->
+  <circle cx="300" cy="228" r="18" fill="#8B1E3F"/>
+  <text x="300" y="233" text-anchor="middle" fill="#F7F5F0" style="font-size:13px;font-weight:700;fill:#F7F5F0">2</text>
+  <rect x="232" y="268" width="136" height="96" rx="12" fill="#FFFcf8" filter="url(#lift)"/>
+  <text x="300" y="298" text-anchor="middle" class="h">Fingerprint</text>
+  <text x="300" y="320" text-anchor="middle" class="s">25 profiles</text>
+  <text x="300" y="338" text-anchor="middle" class="s">or --platform</text>
+
+  <!-- 3 -->
+  <circle cx="460" cy="228" r="18" fill="#8B1E3F"/>
+  <text x="460" y="233" text-anchor="middle" fill="#F7F5F0" style="font-size:13px;font-weight:700;fill:#F7F5F0">3</text>
+  <rect x="392" y="268" width="136" height="96" rx="12" fill="#FFFcf8" filter="url(#lift)"/>
+  <text x="460" y="298" text-anchor="middle" class="h">Construct</text>
+  <text x="460" y="320" text-anchor="middle" class="s">DAG from registry</text>
+  <text x="460" y="338" text-anchor="middle" class="s">ATT&amp;CK phases</text>
+
+  <!-- 4 -->
+  <circle cx="620" cy="228" r="18" fill="#8B1E3F"/>
+  <text x="620" y="233" text-anchor="middle" fill="#F7F5F0" style="font-size:13px;font-weight:700;fill:#F7F5F0">4</text>
+  <rect x="552" y="268" width="136" height="96" rx="12" fill="#FFFcf8" filter="url(#lift)"/>
+  <text x="620" y="298" text-anchor="middle" class="h">Execute</text>
+  <text x="620" y="320" text-anchor="middle" class="s">level-parallel</text>
+  <text x="620" y="338" text-anchor="middle" class="s">HTTP / WS · filters</text>
+
+  <!-- 5 -->
+  <circle cx="780" cy="228" r="18" fill="#8B1E3F"/>
+  <text x="780" y="233" text-anchor="middle" fill="#F7F5F0" style="font-size:13px;font-weight:700;fill:#F7F5F0">5</text>
+  <rect x="712" y="268" width="136" height="96" rx="12" fill="#FFFcf8" filter="url(#lift)"/>
+  <text x="780" y="298" text-anchor="middle" class="h">Record</text>
+  <text x="780" y="320" text-anchor="middle" class="s">Finding objects</text>
+  <text x="780" y="338" text-anchor="middle" class="s">chain traces</text>
+
+  <!-- 6 -->
+  <circle cx="940" cy="228" r="18" fill="#1A1A1A"/>
+  <text x="940" y="233" text-anchor="middle" fill="#F7F5F0" style="font-size:13px;font-weight:700;fill:#F7F5F0">6</text>
+  <rect x="872" y="268" width="136" height="96" rx="12" fill="#1A1A1A" filter="url(#lift)"/>
+  <text x="940" y="298" text-anchor="middle" fill="#F7F5F0" style="font-size:15px;font-weight:650;fill:#F7F5F0">Report</text>
+  <text x="940" y="320" text-anchor="middle" fill="#C8C2B8" style="font-size:12px;fill:#C8C2B8">JSON · HTML · MD</text>
+  <text x="940" y="338" text-anchor="middle" fill="#C8C2B8" style="font-size:12px;fill:#C8C2B8">then verify</text>
+
+  <text x="540" y="420" text-anchor="middle" class="s">A hit is an observation, not a verdict. Reproduce before disclosure.</text>
+  <text x="540" y="444" text-anchor="middle" class="s">Commercial use of the code is allowed under MIT. Unauthorized access is not.</text>
+</svg>

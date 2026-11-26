@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="README.md">简体中文</a> ·
+  <a href="README.md">English</a> ·
   <a href="README_EN.md">English</a> ·
   <a href="README_JA.md"><b>日本語</b></a> ·
   <a href="README_RU.md">Русский</a> ·
@@ -36,23 +36,9 @@
 
 ---
 
-> **⚠️ 商用利用は厳禁**
+> **MIT** ライセンスです。商用利用と二次開発を許可します。著作権表示を残してください。
 >
-> 本プロジェクトは **CatchClaw Strict Non-Commercial License v2.0** に基づいています。
->
-> **著作権者 (Coff0xc) の書面による事前承認なしに、いかなる商用利用も厳禁です。** 違反者は法的責任を追及されます。
->
-> 禁止行為には以下が含まれますが、これに限定されません：
-> - ソフトウェアまたは派生物の販売、サブライセンス、リース
-> - SaaS、ペネトレーションテストサービス、コンサルティング等での利用
-> - 商用製品、プラットフォーム、ツールへの統合
-> - 商用AI/MLモデルのトレーニング
-> - リブランド、リパッケージ、ホワイトラベル配布
-> - 直接的・間接的に収益を生むあらゆる行為
->
-> **著作権者は、利益の全額回収、法的費用、懲罰的損害賠償を含む、時効なしの遡及的執行権を保持します。**
->
-> 詳細は [LICENSE](LICENSE) を参照してください。
+> 無断スキャン・アクセスは違法のままです。[LICENSE](LICENSE) と [LEGAL.md](LEGAL.md) を参照。
 
 ---
 
@@ -364,7 +350,7 @@ catchclaw/
 │       └── utils/                   # HTTPクライアント、誤検知フィルタ、WS
 ├── payloads/                        # 200+外部ペイロード (YAML)
 ├── nuclei-templates/                # 24のNuclei YAMLテンプレート
-├── LICENSE                          # CatchClaw Strict Non-Commercial License v2.0
+├── LICENSE                          # MIT
 └── README.md
 ```
 
@@ -380,4 +366,4 @@ catchclaw/
 
 ## ライセンス
 
-[CatchClaw Strict Non-Commercial License v2.0](LICENSE) — 商用利用厳禁。
+[MIT License](LICENSE) — 商用利用・二次開発を許可。無断アクセスは違法のままです。

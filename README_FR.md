@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="README.md">简体中文</a> ·
+  <a href="README.md">English</a> ·
   <a href="README_EN.md">English</a> ·
   <a href="README_JA.md">日本語</a> ·
   <a href="README_RU.md">Русский</a> ·
@@ -36,23 +36,9 @@
 
 ---
 
-> **⚠️ UTILISATION COMMERCIALE STRICTEMENT INTERDITE**
+> Sous licence **MIT**. Usage commercial et œuvres dérivées autorisés. Conservez l'avis de copyright.
 >
-> Sous licence **CatchClaw Strict Non-Commercial License v2.0**.
->
-> **TOUTE utilisation commerciale est STRICTEMENT INTERDITE sans autorisation écrite préalable du détenteur des droits d'auteur (Coff0xc).** Les contrevenants seront poursuivis.
->
-> Les activités interdites incluent, sans s'y limiter :
-> - Vente, sous-licence ou location du Logiciel ou de ses œuvres dérivées
-> - Utilisation du Logiciel pour SaaS, services de pentest, conseil ou tout service payant
-> - Intégration dans des produits, plateformes ou outils commerciaux
-> - Entraînement de modèles AI/ML commerciaux
-> - Rebranding, reconditionnement ou distribution en marque blanche
-> - Toute activité générant directement ou indirectement des revenus
->
-> **Le détenteur des droits d'auteur se réserve le droit d'application rétroactive SANS limitation de temps, y compris le recouvrement de tous les bénéfices, frais juridiques et dommages punitifs.**
->
-> Voir [LICENSE](LICENSE).
+> L'analyse ou l'accès non autorisé reste illégal. Voir [LICENSE](LICENSE) et [LEGAL.md](LEGAL.md).
 
 ---
 
@@ -364,7 +350,7 @@ catchclaw/
 │       └── utils/                   # Client HTTP, filtres de faux positifs, WS
 ├── payloads/                        # 200+ payloads externes (YAML)
 ├── nuclei-templates/                # 24 modèles YAML Nuclei
-├── LICENSE                          # CatchClaw Strict Non-Commercial License v2.0
+├── LICENSE                          # MIT
 └── README.md
 ```
 
@@ -380,4 +366,4 @@ Cet outil est destiné **exclusivement aux tests de sécurité autorisés**. Ne 
 
 ## Licence
 
-[CatchClaw Strict Non-Commercial License v2.0](LICENSE) — Utilisation commerciale strictement interdite.
+[Licence MIT](LICENSE) — usage commercial et dérivés autorisés. L'accès non autorisé reste illégal.

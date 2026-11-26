@@ -18,7 +18,7 @@
   <a href="https://github.com/Coff0xc/catchclaw/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/Coff0xc/catchclaw/ci.yml?branch=master&style=flat-square&label=CI" alt="CI"></a>
   <a href="https://github.com/Coff0xc/catchclaw/stargazers"><img src="https://img.shields.io/github/stars/Coff0xc/catchclaw?style=flat-square&logo=github&color=gold" alt="Stars"></a>
   <a href="https://github.com/Coff0xc/catchclaw/issues"><img src="https://img.shields.io/github/issues/Coff0xc/catchclaw?style=flat-square" alt="Issues"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Non--Commercial%20v2.0-green?style=flat-square" alt="License"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License"></a>
 </p>
 
 <p align="center">
@@ -31,7 +31,7 @@
 
 ---
 
-> **Legal risk.** CatchClaw is dual-use. Run it only on systems you own or have **prior written authorization** to test. Unauthorized scanning or access is a crime (PRC Criminal Law Arts. 285 / 286, and computer-misuse laws elsewhere). You bear all legal risk. Commercial use is prohibited without written authorization from Coff0xc.
+> **Legal risk (worldwide).** CatchClaw is dual-use. The code is **MIT-licensed** (commercial use and derivatives allowed). That copyright grant does **not** authorize scanning or accessing systems without the owner’s **prior written authorization**. Unauthorized access is a crime or civil wrong under **every applicable jurisdiction** — where you act, where the target and its data sit, your nationality, and any country of transit or export. You bear all legal risk.
 >
 > **[LEGAL.md](LEGAL.md)** · **[LICENSE](LICENSE)** · **[SECURITY.md](SECURITY.md)**
 
@@ -53,19 +53,26 @@ On an authorized target it can:
 
 Hits are **unverified signals** (status codes and body keywords). Reproduce before you treat them as confirmed vulnerabilities.
 
-```
-  discover / OSINT                 scan / exploit / chain
-  ┌──────────────┐                 ┌──────────────────────────┐
-  │ ports +      │  authorized     │  DAG (Kahn + semaphore)  │
-  │ fingerprint  │  target  ───►   │  101 exploits            │
-  └──────────────┘                 │  269 HTTP checks         │
-                                   │  42 state-passing chains │
-  nuclei  /  mcp                   └────────────┬─────────────┘
-  ┌──────────────┐                              ▼
-  │ templates /  │                     JSON · HTML · Markdown
-  │ AI assistant │                     Mermaid graph
-  └──────────────┘
-```
+---
+
+## Architecture
+
+A module registry is compiled into a DAG, executed by topological level under a semaphore, and reduced to scored findings. Operator surface, control plane, knowledge, transport, and evidence are separate layers: adding a check does not change the runtime.
+
+<p align="center">
+  <img src="docs/figures/fig1-architecture.svg" alt="Figure 1. CatchClaw system architecture" width="100%">
+</p>
+<p align="center"><sub><b>Figure 1.</b> Layered architecture of the v6.0 Go binary.</sub></p>
+
+<p align="center">
+  <img src="docs/figures/fig2-methodology.svg" alt="Figure 2. Assessment methodology" width="100%">
+</p>
+<p align="center"><sub><b>Figure 2.</b> Authorized assessment pipeline. Stage 0 is written authorization.</sub></p>
+
+<p align="center">
+  <img src="docs/figures/fig3-dag.svg" alt="Figure 3. DAG execution model" width="100%">
+</p>
+<p align="center"><sub><b>Figure 3.</b> ATT&amp;CK-shaped DAG. 82 explicit edges; remaining modules run unconstrained.</sub></p>
 
 ---
 
@@ -334,19 +341,21 @@ cd go && make ci
 
 ## Legal
 
-CatchClaw sends exploit payloads, guesses credentials, and can expand one flag into many hosts. That is the legal exposure.
+CatchClaw sends exploit payloads, guesses credentials, and can expand one flag into many hosts. That exposure is **worldwide**. The copyright license’s choice of forum does not pick your criminal law.
 
-Before every run:
+Before every run, in **every** jurisdiction that may apply:
 
 1. Hold written authorization covering hosts, time, and methods.
 2. Keep CIDR / files / OSINT / MCP `--allow` inside that writing.
 3. Treat reports as confidential engagement data.
 4. Independently verify findings.
-5. Stay non-commercial unless Coff0xc licensed you in writing.
+5. Confirm the act is lawful where you are, where the target is, and anywhere in between.
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND. Authors and copyright holders are not liable for claims, damages, fines, or criminal consequences arising from use.
+Commercial use and derivative works are allowed under MIT. MIT does not legalize unauthorized access.
 
-Full text: **[LEGAL.md](LEGAL.md)**. License: **[CatchClaw Strict Non-Commercial License v2.0](LICENSE)**.
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND. Authors and copyright holders are not liable for claims, damages, fines, or criminal consequences arising from use in any country.
+
+This README is not legal advice. Full text: **[LEGAL.md](LEGAL.md)**. License: **[MIT](LICENSE)**.
 
 ## Author
 

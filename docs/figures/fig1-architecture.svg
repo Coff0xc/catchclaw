@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 720" role="img" aria-labelledby="t1">
+  <title id="t1">Figure 1. CatchClaw system architecture</title>
+  <defs>
+    <filter id="lift" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1A1A1A" flood-opacity="0.06"/>
+    </filter>
+    <style>
+      text { font-family: ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif; }
+      .k { font-size: 11px; letter-spacing: 0.22em; fill: #8B1E3F; font-weight: 600; }
+      .t { font-size: 22px; fill: #1A1A1A; font-weight: 600; }
+      .d { font-size: 13px; fill: #6B6560; }
+      .ln { font-size: 10px; letter-spacing: 0.18em; fill: #8B1E3F; font-weight: 700; }
+      .h { font-size: 13.5px; fill: #1A1A1A; font-weight: 600; }
+      .s { font-size: 11.5px; fill: #6B6560; }
+    </style>
+  </defs>
+  <rect width="1080" height="720" fill="#F7F5F0"/>
+  <text x="56" y="42" class="k">CATCHCLAW  v6.0  ·  GO  ·  MIT</text>
+  <text x="56" y="74" class="t">System architecture</text>
+  <text x="56" y="98" class="d">Five layers, one binary. Knowledge is data; the runtime does not change when a check is added.</text>
+  <line x1="56" y1="114" x2="1024" y2="114" stroke="#E4DFD6" stroke-width="1"/>
+
+  <!-- L5 -->
+  <rect x="56" y="136" width="968" height="86" rx="14" fill="#FFFcf8" filter="url(#lift)"/>
+  <rect x="56" y="136" width="5" height="86" rx="2" fill="#8B1E3F"/>
+  <text x="80" y="160" class="ln">01  OPERATOR</text>
+  <g>
+    <rect x="80" y="174" width="284" height="32" rx="8" fill="#F7F5F0"/>
+    <text x="222" y="195" text-anchor="middle" class="h">CLI</text>
+    <text x="258" y="195" class="s">  scan · chain · discover · nuclei</text>
+  </g>
+  <g>
+    <rect x="380" y="174" width="300" height="32" rx="8" fill="#F7F5F0"/>
+    <text x="530" y="195" text-anchor="middle" class="h">MCP  ·  allowlisted stdio tools</text>
+  </g>
+  <g>
+    <rect x="696" y="174" width="300" height="32" rx="8" fill="#F7F5F0"/>
+    <text x="846" y="195" text-anchor="middle" class="h">Config  ·  YAML / TOML / JSON</text>
+  </g>
+
+  <line x1="540" y1="222" x2="540" y2="244" stroke="#C8C2B8" stroke-width="1.25"/>
+
+  <!-- L4 -->
+  <rect x="56" y="244" width="968" height="100" rx="14" fill="#FFFcf8" filter="url(#lift)"/>
+  <rect x="56" y="244" width="5" height="100" rx="2" fill="#8B1E3F"/>
+  <text x="80" y="268" class="ln">02  CONTROL PLANE</text>
+  <rect x="80" y="282" width="456" height="44" rx="10" fill="#F7F5F0"/>
+  <text x="100" y="302" class="h">DAG engine</text>
+  <text x="100" y="318" class="s">Kahn levels  ·  goroutine workers  ·  concurrency semaphore</text>
+  <rect x="552" y="282" width="444" height="44" rx="10" fill="#F7F5F0"/>
+  <text x="572" y="302" class="h">Platform registry</text>
+  <text x="572" y="318" class="s">25 profiles  ·  fingerprint markers  ·  endpoint map</text>
+
+  <line x1="540" y1="344" x2="540" y2="366" stroke="#C8C2B8" stroke-width="1.25"/>
+
+  <!-- L3 -->
+  <rect x="56" y="366" width="968" height="118" rx="14" fill="#FFFcf8" filter="url(#lift)"/>
+  <rect x="56" y="366" width="5" height="118" rx="2" fill="#8B1E3F"/>
+  <text x="80" y="390" class="ln">03  KNOWLEDGE  ·  412 MODULES</text>
+  <rect x="80" y="404" width="220" height="58" rx="10" fill="#F7F5F0"/>
+  <text x="100" y="428" class="h">101  exploits</text>
+  <text x="100" y="446" class="s">handwritten  Module.Run</text>
+  <rect x="316" y="404" width="220" height="58" rx="10" fill="#F7F5F0"/>
+  <text x="336" y="428" class="h">269  HTTP checks</text>
+  <text x="336" y="446" class="s">path · status · keyword</text>
+  <rect x="552" y="404" width="220" height="58" rx="10" fill="#F7F5F0"/>
+  <text x="572" y="428" class="h">42  chains</text>
+  <text x="572" y="446" class="s">in-memory state  {token}</text>
+  <rect x="788" y="404" width="208" height="58" rx="10" fill="#F7F5F0"/>
+  <text x="808" y="428" class="h">YAML + Nuclei</text>
+  <text x="808" y="446" class="s">payloads  ·  45 templates</text>
+
+  <line x1="540" y1="484" x2="540" y2="506" stroke="#C8C2B8" stroke-width="1.25"/>
+
+  <!-- L2 -->
+  <rect x="56" y="506" width="968" height="86" rx="14" fill="#FFFcf8" filter="url(#lift)"/>
+  <rect x="56" y="506" width="5" height="86" rx="2" fill="#8B1E3F"/>
+  <text x="80" y="530" class="ln">04  TRANSPORT</text>
+  <rect x="80" y="544" width="292" height="30" rx="8" fill="#F7F5F0"/>
+  <text x="226" y="564" text-anchor="middle" class="h">HTTP  ·  no redirect</text>
+  <rect x="388" y="544" width="292" height="30" rx="8" fill="#F7F5F0"/>
+  <text x="534" y="564" text-anchor="middle" class="h">WebSocket  JSON-RPC</text>
+  <rect x="696" y="544" width="300" height="30" rx="8" fill="#F7F5F0"/>
+  <text x="846" y="564" text-anchor="middle" class="h">OSINT  ·  Shodan / FOFA / Hunter</text>
+
+  <line x1="540" y1="592" x2="540" y2="614" stroke="#C8C2B8" stroke-width="1.25"/>
+
+  <!-- L1 -->
+  <rect x="56" y="614" width="968" height="72" rx="14" fill="#1A1A1A" filter="url(#lift)"/>
+  <text x="80" y="642" class="ln" fill="#E8C4C8" style="fill:#E8C4C8">05  EVIDENCE</text>
+  <text x="80" y="666" class="h" fill="#F7F5F0" style="fill:#F7F5F0">Finding  ·  severity  ·  JSON / HTML / Markdown  ·  Mermaid graph</text>
+  <text x="980" y="666" text-anchor="end" class="s" fill="#C8C2B8" style="fill:#C8C2B8">unverified until reproduced</text>
+</svg>

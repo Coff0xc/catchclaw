@@ -11,6 +11,9 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Rust archive CI workflow and Cargo Dependabot.
 
 ### Changed
+- Relicensed from CatchClaw Strict Non-Commercial v2.0 to **MIT**. Commercial use, sale, and derivative works are allowed. Unauthorized access to systems remains illegal (LEGAL.md).
+- Architecture figures (SVG): layered system, assessment methodology, DAG/ATT&amp;CK execution (`docs/figures/`)
+- LEGAL.md, LICENSE, README, and SECURITY.md: legal-risk language is worldwide (operator, target, nationality, transit, export).
 - GitHub Actions CI split into quality (gofmt, mod verify/tidy, vet, golangci-lint), test (`-race`, coverage), build/smoke/cross-compile, govulncheck, Gitleaks, YAML + actionlint
 - Added CodeQL workflow on `go/` (push/PR + weekly)
 - Release: SPDX SBOM, SHA-256 sums, and build-provenance attestation; archives still include LICENSE and LEGAL.md
@@ -26,7 +29,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - CLI commands: `scan`, `exploit`, `chain`, `discover`, `nuclei`, `osint`, `mcp`, `list`, `config`
 - MCP stdio server with private-range default allowlist, DNS allowlist check, scan cooldown, audit log
 - OSINT engines: Shodan, FOFA, Hunter (API keys from environment only)
-- [LEGAL.md](LEGAL.md) — binding legal-risk notice (authorized use, PRC Criminal Law Arts. 285/286, user-borne liability)
+- [LEGAL.md](LEGAL.md) — binding legal-risk notice (authorized use, user-borne liability)
 - Root Makefile, CONTRIBUTING, CI, and release workflow target `go/` as the supported tree
 
 ### Changed
@@ -39,7 +42,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Security
 - MCP: default deny for public targets; hostname resolution must land entirely in the allowlist
 - Documented assessment HTTP client behavior: TLS verification skipped, redirects disabled
-- Legal and acceptable-use requirements recorded in LEGAL.md and LICENSE (non-commercial)
+- Legal and acceptable-use requirements recorded in LEGAL.md and LICENSE
 
 ## [5.3.0] - 2026-03-24
 

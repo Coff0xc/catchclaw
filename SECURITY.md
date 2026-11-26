@@ -48,6 +48,8 @@ These are current behaviors, not invitations to disable controls in production s
 
 ## Responsible use (mandatory)
 
-CatchClaw may be used only for **authorized** security testing. Written authorization is required for every target. Unauthorized access is illegal.
+CatchClaw may be used only for **authorized** security testing. Prior written authorization is required for every target.
 
-You assume all legal risk. The authors are not liable for misuse. Full terms: [LEGAL.md](LEGAL.md) and [LICENSE](LICENSE).
+Unauthorized scanning or access is unlawful **worldwide** wherever computer-misuse, unauthorized-access, interception, data-protection, export-control, or similar rules apply — including the law of the place you act from, the place the target and its data are located, your nationality, and any country of transit or export. The LICENSE choice of law governs copyright disputes about the license text; it does not limit any country’s criminal or regulatory law.
+
+You assume all legal risk in every applicable jurisdiction. The authors are not liable for misuse. This file is not legal advice. Full terms: [LEGAL.md](LEGAL.md) and [LICENSE](LICENSE).
