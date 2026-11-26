@@ -35,7 +35,7 @@
 >
 > **[LEGAL.md](LEGAL.md)** · **[LICENSE](LICENSE)** · **[SECURITY.md](SECURITY.md)**
 
-Supported tree is [`go/`](go/) (v6.0.0). `rust/` is the archived v5.x reference. Localized READMEs may lag; this file is authoritative.
+Source lives in [`go/`](go/) (v6.0.0). Localized READMEs may lag; this file is authoritative. The v5 Rust tree is not on `master` (git history / tag `v5.2.0`).
 
 ---
 
@@ -306,7 +306,6 @@ catchclaw/
 │       ├── mcpserver/       # allowlist + audit
 │       ├── report/          # JSON / HTML / Markdown / Mermaid
 │       └── utils/           # HTTP (no redirect), WebSocket
-├── rust/                    # archived v5.x
 ├── payloads/                # SSRF, injection, prompt, auth, XSS, CVE
 ├── nuclei-templates/
 ├── .github/workflows/       # CI, CodeQL, release
@@ -325,7 +324,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). PRs must keep **CI** green.
 |----------|------|--------|
 | [CI](.github/workflows/ci.yml) | push / PR | `gofmt`, `go mod verify`/`tidy`, `vet`, golangci-lint, `-race` tests, coverage, host build + `list` smoke (412), cross-compile, govulncheck, Gitleaks, YAML parse, actionlint |
 | [CodeQL](.github/workflows/codeql.yml) | Go changes + weekly | CodeQL on `go/` |
-| [Rust archive](.github/workflows/rust-archive.yml) | `rust/**` only | fmt, check, clippy, test |
 | [Release](.github/workflows/release.yml) | tag `vX.Y.Z` | Cross-build, LICENSE+LEGAL.md, SPDX SBOM, SHA-256, provenance attestation |
 
 ```bash

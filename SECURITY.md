@@ -2,13 +2,12 @@
 
 ## Supported versions
 
-| Version | Tree | Status |
-| ------- | ---- | ------ |
-| 6.0.x   | `go/` | Supported |
-| 5.3.x   | `rust/` | Archived reference — security fixes best-effort only |
-| < 5.3   | — | Unsupported |
+| Version | Status |
+| ------- | ------ |
+| 6.0.x   | Supported (`go/`) |
+| < 6.0   | Unsupported (v5 Rust tree was removed from `master`; retrieve it from git history or tag `v5.2.0`) |
 
-The supported product is the Go implementation in `go/`. The Rust tree is kept for history and is not the release target.
+The supported product is the Go implementation in `go/`.
 
 ## Reporting a vulnerability in CatchClaw
 

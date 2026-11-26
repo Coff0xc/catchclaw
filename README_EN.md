@@ -1,4 +1,4 @@
-> **This translation lags v6.0.0.** Authoritative docs: [README.md](README.md) · legal risk: [LEGAL.md](LEGAL.md) · license: [LICENSE](LICENSE). Build from `go/`, not `rust/`. Authorized testing only.
+> **This translation lags v6.0.0.** Authoritative docs: [README.md](README.md) · legal risk: [LEGAL.md](LEGAL.md) · license: [LICENSE](LICENSE). Build from `go/`. Authorized testing only.
 
 <h1 align="center">🦞 CatchClaw v6.0.0</h1>
 

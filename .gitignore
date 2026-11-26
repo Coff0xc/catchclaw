@@ -3,9 +3,6 @@
 /lobster-guard
 /catchclaw
 
-# Rust build output
-rust/target/
-
 # Release dist
 dist/
 

@@ -23,12 +23,3 @@ updates:
       github-actions:
         patterns:
           - "*"
-
-  - package-ecosystem: "cargo"
-    directory: "/rust"
-    schedule:
-      interval: "monthly"
-    open-pull-requests-limit: 3
-    labels:
-      - "dependencies"
-      - "rust-archive"

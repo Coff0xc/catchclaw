@@ -2,6 +2,8 @@
 
 > CatchClaw v6.0 — Multi-Platform Security Assessment Architecture
 > Date: 2026-03-24
+>
+> Historical note: sample paths below point at the v5 Rust tree, which was removed from `master`. Current code is `go/internal/platform/`.
 
 ---
 

@@ -1,4 +1,4 @@
-.PHONY: build release test vet fmt fmt-check ci clean install rust-build rust-test rust-clippy rust-fmt rust-clean
+.PHONY: build release test vet fmt fmt-check ci clean install
 
 build:
 	cd go && go build -o catchclaw .
@@ -26,19 +26,3 @@ install:
 
 clean:
 	cd go && rm -f catchclaw catchclaw.exe catchclaw-*
-
-# Archived v5.x (Rust). Not the release target.
-rust-build:
-	cd rust && cargo build
-
-rust-test:
-	cd rust && cargo test
-
-rust-clippy:
-	cd rust && cargo clippy -- -D warnings
-
-rust-fmt:
-	cd rust && cargo fmt -- --check
-
-rust-clean:
-	cd rust && cargo clean

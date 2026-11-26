@@ -13,11 +13,9 @@ Read [LEGAL.md](LEGAL.md) and [SECURITY.md](SECURITY.md) before you send a patch
 - Do not file public issues that include live 0-days against third-party products; use their disclosure channel.
 - Vulnerabilities **in CatchClaw** go through SECURITY.md, not a public issue.
 
-## Primary tree
+## Tree
 
-Supported implementation: **`go/`** (v6.0.0, Go 1.22+).
-
-`rust/` is the archived v5.x tree. Do not add features there unless you are fixing a historical bug and say so in the PR.
+Supported implementation: **`go/`** (v6.0.0, Go 1.22+). The v5 Rust tree is not on `master`.
 
 ## Development setup
 
@@ -39,8 +37,6 @@ make vet
 make test
 make fmt
 ```
-
-Archived Rust checks: `make rust-test` (Rust toolchain required).
 
 ## Adding a module (Go)
 
@@ -87,7 +83,6 @@ Workflows live in `.github/workflows/`. Required gate for `master` is **CI**.
 |---|---|---|---|
 | CI | `ci.yml` | push / PR to `master` | `gofmt`, `go mod verify`/`tidy`, `vet`, golangci-lint, `go test -race` + coverage, host build, `catchclaw list` smoke (412), 5-way cross-compile, govulncheck, Gitleaks, YAML parse, actionlint |
 | CodeQL | `codeql.yml` | `go/**` + weekly | CodeQL on `go/` |
-| Rust archive | `rust-archive.yml` | changes under `rust/` only | `cargo fmt`, `cargo check --locked`, `clippy -D warnings`, `cargo test --locked` |
 | Release | `release.yml` | tag `vX.Y.Z` on this repository | `CGO_ENABLED=0` cross-build, LICENSE + LEGAL.md, SPDX SBOM, SHA-256, provenance attestation |
 
 Local equivalent of the Go gate:
@@ -99,4 +94,4 @@ make ci
 
 Do not add secrets, tokens, or engagement data to workflows or artifacts. OSINT keys stay in the operator environment. Release archives include LICENSE and LEGAL.md; keep it that way.
 
-Dependabot: `gomod` (`/go`) weekly, `github-actions` weekly, `cargo` (`/rust`) monthly.
+Dependabot: `gomod` (`/go`) weekly, `github-actions` weekly.

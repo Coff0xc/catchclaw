@@ -1,4 +1,0 @@
-# Redirect build output to a path without CJK/bracket characters
-# to avoid MinGW linker failures on the parent directory name
-[build]
-target-dir = "C:/tmp/catchclaw-target"
