@@ -8,21 +8,6 @@ This notice is a **worldwide** risk disclosure. It is not legal advice. It does 
 
 ---
 
-## 中文摘要（全球适用，具有约束力）
-
-1. **CatchClaw 是双用途（民用/可能被滥用于入侵）安全评估工具。** 下载、持有、编译、分发或运行，在任何国家或地区都可能受管制。
-2. **仅允许对你拥有的系统，或已事先取得权利人明确书面授权的系统使用。** 授权必须写明目标、时间窗口与方法。口头许可、默示许可、端口开放、默认口令、未报名的漏洞赏金、第三方口头请托，均不构成授权。
-3. **未经授权的扫描、探测、侵入、拦截、凭据使用、数据获取或系统干扰，在全球范围内均可构成刑事犯罪、民事侵权和/或行政违法。** 可能同时适用的法律包括但不限于：你实施行为所在地、目标及其数据所在地、你的国籍/居所地、通信或数据过境地、出口与制裁相关国家的全部法律。任何国家的计算机滥用、非法访问、非法拦截、数据干扰、诈骗、商业秘密、隐私与数据保护、出口管制与制裁规则均可能适用。本工具不因在某一国家开发或许可而在其他国家获得豁免。
-4. **你对在任何司法辖区产生的全部法律后果独立承担责任**（刑事侦查与刑罚、罚款、没收、禁令、民事赔偿、行政处罚、雇主或客户索赔）。作者与版权人不辩护、不补偿、不承担。
-5. **未经 Coff0xc 事先书面授权，禁止任何商业使用**（付费渗透、咨询交付、SaaS、二次销售、用产出作为商业交付物、用本软件训练商业模型等）。详见 LICENSE。
-6. **结果可能误报或漏报，不构成漏洞鉴定、合规结论或法律意见。** 对外披露须独立复核，并遵守各适用地的披露与保密规则。
-7. **OSINT 与 MCP 会扩大目标范围。** 你须自行保证不违反搜索引擎条款、数据保护法，且每一个被扫到的地址仍在书面授权内。
-8. **软件按“现状”提供，不作任何担保。** 你须在使用前自行就每一个相关国家咨询有资格的律师。
-
-英文正文与 [LICENSE](LICENSE) 为完整条款。中文摘要与英文不一致时，以更能保护版权人、且不缩小你在各国法下义务的解读为准。
-
----
-
 ## 1. Nature of the Software
 
 CatchClaw is **dual-use**. It can fingerprint services, send exploit payloads, guess credentials, chain multi-stage attacks, query cyberspace search engines, and expose those functions to an AI assistant via MCP.
@@ -57,7 +42,7 @@ No statute list is complete or safe to rely on. The same pattern exists under ma
 
 Penalties can include imprisonment, fines, confiscation, injunctions, and damages in more than one country at once. **The copyright holder will not defend, indemnify, or reimburse you.**
 
-LICENSE §10 (choice of law and Beijing courts) governs **disputes about the copyright license**. It does **not** choose, waive, or cap the criminal, regulatory, or tort law of any other state that applies to your conduct.
+LICENSE §10 governs **disputes about the copyright license as a contract**. It does **not** choose, waive, or cap the criminal, regulatory, or tort law of any state that applies to your conduct.
 
 ## 4. Assumption of risk; not legal advice
 
@@ -89,7 +74,7 @@ Keep LICENSE and attribution in every copy. Do not strip origin or train commerc
 
 ## 8. Export, sanctions, dual-use
 
-You must not export, re-export, or furnish the Software or its output in violation of **any** export-control, sanctions, or dual-use regime that applies to you (including, without limitation, those of your country, the destination, the United States, the European Union, the United Kingdom, the People’s Republic of China, and any other competent authority). You must not use the Software for or on behalf of a sanctioned party.
+You must not export, re-export, or furnish the Software or its output in violation of **any** export-control, sanctions, or dual-use regime that applies to you — including those of your country, the destination, and any other competent authority. You must not use the Software for or on behalf of a sanctioned party.
 
 ## 9. No warranty; limitation of liability
 

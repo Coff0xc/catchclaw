@@ -31,11 +31,7 @@
 
 ---
 
-> **Legal risk / 法律风险（worldwide）**
->
-> CatchClaw is dual-use. Run it only on systems you own or for which you already have **prior written authorization**. Unauthorized scanning or access is a crime or civil wrong **under the law of every applicable jurisdiction** — the place you act from, the place the target and its data sit, your nationality, and any country of transit or export. No country is exempt. You bear all legal risk. Commercial use is prohibited without written authorization from Coff0xc.
->
-> 仅可在你拥有或已事先取得权利人**明确书面授权**的系统上运行。未经授权的扫描或访问，在**任何适用法域**均可构成犯罪或侵权（行为地、目标地、国籍地、过境地与出口管制地的法律可同时适用）。你承担全部法律风险。未经 Coff0xc 书面授权禁止商业使用。本仓库的版权许可准据法**不限制**任何国家刑法或监管法对你行为的适用。
+> **Legal risk (worldwide).** CatchClaw is dual-use. Run it only on systems you own or for which you already have **prior written authorization**. Unauthorized scanning or access is a crime or civil wrong under **every applicable jurisdiction** — where you act, where the target and its data sit, your nationality, and any country of transit or export. No country is exempt. You bear all legal risk. Commercial use is prohibited without written authorization from Coff0xc.
 >
 > **[LEGAL.md](LEGAL.md)** · **[LICENSE](LICENSE)** · **[SECURITY.md](SECURITY.md)**
 

@@ -570,7 +570,7 @@ Search cyberspace mapping engines for exposed AI platforms, using 20 built-in pl
 # API keys via environment (never on the command line)
 export SHODAN_API_KEY=...            # shodan
 export FOFA_EMAIL=... FOFA_KEY=...   # fofa
-export HUNTER_API_KEY=...            # hunter (奇安信鹰图)
+export HUNTER_API_KEY=...            # hunter
 
 catchclaw osint --list-dorks                       # show all built-in dorks
 catchclaw osint --engine shodan --platform ollama  # built-in dork
