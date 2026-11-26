@@ -1,3 +1,5 @@
+> **この翻訳は v6.0.0 に追いついていません。** 正文: [README.md](README.md) · 法的リスク: [LEGAL.md](LEGAL.md) · ライセンス: [LICENSE](LICENSE)。ビルドは `go/`（`rust/` ではない）。許可されたテストのみ。
+
 <h1 align="center">🦞 CatchClaw v6.0.0</h1>
 
 <p align="center">

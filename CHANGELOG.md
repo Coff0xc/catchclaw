@@ -4,6 +4,30 @@ All notable changes to CatchClaw will be documented in this file.
 
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [6.0.0] - 2026-11-26
+
+### Added
+- Go rewrite of the assessment engine (`go/`, module `github.com/Coff0xc/catchclaw/go`)
+- Registered module set: 101 handwritten exploits + 269 HTTP checks + 42 state-passing chains (412 total)
+- 25 platform profiles (OpenClaw/Open-WebUI through Jupyter); CrewAI and LangChain as identifiers/CVE modules
+- CLI commands: `scan`, `exploit`, `chain`, `discover`, `nuclei`, `osint`, `mcp`, `list`, `config`
+- MCP stdio server with private-range default allowlist, DNS allowlist check, scan cooldown, audit log
+- OSINT engines: Shodan, FOFA, Hunter (API keys from environment only)
+- [LEGAL.md](LEGAL.md) — binding legal-risk notice (authorized use, PRC Criminal Law Arts. 285/286, user-borne liability)
+- Root Makefile, CONTRIBUTING, CI, and release workflow target `go/` as the supported tree
+
+### Changed
+- Supported product is Go v6.0.0. `rust/` is archived v5.x (best-effort security fixes only)
+- README module/platform/DAG numbers aligned with source (82 DAG nodes with explicit `DependsOn`; remaining modules run as independent nodes)
+- Nuclei inventory documented as 45 template IDs
+- SECURITY.md supported versions: 6.0.x
+- GitHub Linguist: `rust/**` marked vendored so the primary language is Go
+
+### Security
+- MCP: default deny for public targets; hostname resolution must land entirely in the allowlist
+- Documented assessment HTTP client behavior: TLS verification skipped, redirects disabled
+- Legal and acceptable-use requirements recorded in LEGAL.md and LICENSE (non-commercial)
+
 ## [5.3.0] - 2026-03-24
 
 ### Added

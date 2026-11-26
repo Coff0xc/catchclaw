@@ -1,3 +1,5 @@
+> **Этот перевод отстаёт от v6.0.0.** Эталон: [README.md](README.md) · юридические риски: [LEGAL.md](LEGAL.md) · лицензия: [LICENSE](LICENSE). Сборка из `go/`, не `rust/`. Только уполномоченное тестирование.
+
 <h1 align="center">🦞 CatchClaw v6.0.0</h1>
 
 <p align="center">

@@ -1,3 +1,5 @@
+> **Cette traduction n'est pas à jour pour v6.0.0.** Référence : [README.md](README.md) · risque juridique : [LEGAL.md](LEGAL.md) · licence : [LICENSE](LICENSE). Compiler depuis `go/`, pas `rust/`. Tests autorisés uniquement.
+
 <h1 align="center">🦞 CatchClaw v6.0.0</h1>
 
 <p align="center">

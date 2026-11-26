@@ -1,35 +1,54 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.0.x   | :white_check_mark: |
-| < 5.0   | :x:                |
+| Version | Tree | Status |
+| ------- | ---- | ------ |
+| 6.0.x   | `go/` | Supported |
+| 5.3.x   | `rust/` | Archived reference — security fixes best-effort only |
+| < 5.3   | — | Unsupported |
 
-## Reporting a Vulnerability
+The supported product is the Go implementation in `go/`. The Rust tree is kept for history and is not the release target.
 
-**Do NOT open a public GitHub issue for security vulnerabilities.**
+## Reporting a vulnerability in CatchClaw
 
-If you discover a security vulnerability in CatchClaw, please report it responsibly:
+**Do not open a public GitHub issue for security vulnerabilities in this tool.**
 
-1. **Email:** Send details to the maintainer via GitHub private message to [@Coff0xc](https://github.com/Coff0xc)
-2. **Include:**
-   - Description of the vulnerability
-   - Steps to reproduce
-   - Potential impact
-   - Suggested fix (if any)
+Report privately to the maintainer: GitHub [@Coff0xc](https://github.com/Coff0xc)
 
-## Response Timeline
+Include:
 
-- **Acknowledgment:** Within 48 hours
-- **Initial assessment:** Within 7 days
-- **Fix release:** Within 30 days for critical issues
+- description and impact;
+- steps to reproduce;
+- affected version / commit;
+- suggested fix if you have one.
+
+Do not attach live target data, customer reports, or credentials.
+
+### Response timeline
+
+- Acknowledgment: within 48 hours
+- Initial assessment: within 7 days
+- Fix for a critical issue in a supported version: within 30 days when feasible
 
 ## Scope
 
-This policy covers the CatchClaw tool itself, NOT the targets it is designed to assess. CatchClaw is a security testing tool — vulnerabilities in target platforms (OpenClaw/Open-WebUI) should be reported to their respective maintainers.
+This policy covers **CatchClaw itself** (CLI, scan engine, MCP server, Nuclei runner, OSINT client, build and CI).
 
-## Responsible Use
+It does **not** cover vulnerabilities in platforms CatchClaw assesses (Open-WebUI, Dify, Ollama, and others). Report those to the respective maintainers.
 
-CatchClaw is designed for **authorized security testing only**. Any use against systems without explicit written permission is prohibited and may violate applicable laws.
+## Product security notes (operators)
+
+These are current behaviors, not invitations to disable controls in production scanners you run against yourself without understanding them:
+
+- The Go HTTP client skips TLS certificate verification and does not follow redirects. That is assessment-oriented. Intercepted traffic can be MITM’d; treat reports as sensitive.
+- MCP listens on stdio. Default target allowlist is private address space. Public targets require explicit `--allow` / `--allow-file`. Every resolved IP must stay in the allowlist.
+- OSINT API keys are read from the environment only and must never be passed as MCP tool arguments.
+- Scan modules can be intrusive (brute force, race, RCE probes). Use `--dry-run` to preview; use `--profile stealth` and a defined window on fragile systems.
+- Findings can be false positives. Independent verification is required before disclosure or remediation decisions.
+
+## Responsible use (mandatory)
+
+CatchClaw may be used only for **authorized** security testing. Written authorization is required for every target. Unauthorized access is illegal.
+
+You assume all legal risk. The authors are not liable for misuse. Full terms: [LEGAL.md](LEGAL.md) and [LICENSE](LICENSE).

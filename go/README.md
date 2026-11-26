@@ -1,23 +1,29 @@
 <h1 align="center">🦞 CatchClaw v6.0.0 (Go)</h1>
 
 <p align="center">
-  <b>Multi-platform AI Agent security assessment tool — 412 modules (370 checks + 42 attack chains) | 27 platforms | DAG attack chains</b><br>
-  <sub>Complete Go rewrite of CatchClaw Rust v5.3.0 | ATT&CK mapping | Concurrent execution | 2025-2026 CVE coverage</sub>
+  <b>Authorized AI / LLM platform security assessment — 412 registered modules (101 exploits + 269 HTTP checks + 42 chains) | 25 platform profiles</b><br>
+  <sub>Go rewrite of CatchClaw Rust v5.3.0 | ATT&amp;CK-mapped DAG | Concurrent execution | 2025–2026 CVE coverage</sub>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/Modules-412-FF6B6B?style=flat-square" alt="Modules">
-  <img src="https://img.shields.io/badge/Platforms-27-purple?style=flat-square" alt="Platforms">
-  <img src="https://img.shields.io/badge/DAG_Nodes-412-4CAF50?style=flat-square" alt="Chains">
+  <img src="https://img.shields.io/badge/Profiles-25-purple?style=flat-square" alt="Platforms">
+  <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
 </p>
+
+---
+
+> **LEGAL RISK.** Authorized testing only. Prior written authorization required for every target. Unauthorized access can be a crime (PRC Criminal Law Arts. 285/286 and equivalent laws). You bear all legal risk. Commercial use prohibited without written authorization. **[LEGAL.md](../LEGAL.md)** · **[LICENSE](../LICENSE)**
 
 ---
 
 ## What is CatchClaw?
 
-**CatchClaw** is a comprehensive AI Agent and LLM platform security assessment tool. It detects vulnerabilities across AI infrastructure — from exposed Ollama instances to multi-tenant Dify deployments — using 87 orchestrated exploit modules organized into DAG attack chains mapped to the MITRE ATT&CK framework.
+**CatchClaw** is an authorized AI Agent and LLM platform security assessment tool. It probes self-hosted AI infrastructure — from exposed Ollama instances to multi-tenant Dify deployments — using 412 registered modules (101 handwritten exploits, 269 HTTP checks, 42 state-passing chains) orchestrated on an ATT&CK-mapped DAG.
+
+**Unauthorized use is illegal.** You need prior written authorization for every target. You bear all legal risk. See [LEGAL.md](../LEGAL.md), [LICENSE](../LICENSE), and [SECURITY.md](../SECURITY.md).
 
 ### v6.0.0 Go Rewrite Highlights
 
@@ -25,7 +31,7 @@
 |---|---|
 | **Language** | Complete rewrite from Rust to Go — single static binary, no runtime dependencies |
 | **Performance** | Goroutine-based concurrency, connection pooling, optimized HTTP client |
-| **New Platforms** | Langflow, LiteLLM, Ollama, vLLM probes added (15 total platforms) |
+| **Platforms** | 25 profiles (Langflow, LiteLLM, Ollama, vLLM, Ray, MLflow, vector DBs, and others) |
 | **New CVEs** | DifyTap (CVE-2026-41947-50), Langflow RCEs, LiteLLM MCP injection, LobeChat RAG |
 | **2026 CVEs** | LangChain deserialization RCE (CVE-2025-68664), CrewAI flaws (CVE-2026-2275/2285/2286/2287), LangGraph pickle RCE (CVE-2026-27794), Spring AI SSRF (CVE-2026-45609), WordPress AI Engine RCE (CVE-2026-8719) |
 | **YAML Payloads** | Integrated with root `payloads/*.yaml` files for dynamic payload loading |
@@ -74,7 +80,7 @@ GOOS=windows GOARCH=amd64 go build -o catchclaw.exe .
 ## Quick Start
 
 ```bash
-# List all 412 modules (370 checks + 42 attack chains)
+# List all 412 registered modules (101 exploits + 269 HTTP checks + 42 chains)
 catchclaw list
 
 # Scan a target (auto-detect platform)
@@ -142,7 +148,9 @@ catchclaw nuclei -t http://192.168.1.100:8080
 
 ---
 
-## 87 Exploit Modules
+## Handwritten exploit modules
+
+The tables below are the **handwritten** implementations (plus platform probes). They are not the full registry. HTTP checks live in `checks.go` (269). State-passing chains are listed in the next section (42). Run `catchclaw list` for every ID.
 
 ### Recon (19 modules)
 
@@ -394,11 +402,10 @@ catchclaw chain -t target:8080 -o chains.html --format html
 
 **Execution:**
 - Kahn topological sort → level-by-level parallel goroutine execution
-- Semaphore (buffered channel) controls maximum concurrency
-- `DependsOn` — predecessor nodes must complete
-- `FallbackFor` — skip fallback if parent node has findings
-- `Condition` — conditional execution based on earlier results
-- Attack graph records each node's executed/skipped/fallback status
+- Semaphore (buffered channel) caps concurrency
+- `DependsOn` — 82 handwritten modules in `scan.go` `chainDefs` have explicit predecessor IDs; other registered modules are appended as independent nodes
+- `FallbackFor` / `Condition` exist on `core.Node` and are not populated by the current DAG builder
+- Attack graph records executed/skipped status and can export Mermaid
 
 ---
 
@@ -494,10 +501,7 @@ func (m MyModule) Run(target core.Target, cfg *config.Config) ([]core.Finding, c
 }
 ```
 
-Register in `register.go` — done. The module is automatically:
-- Listed in `catchclaw list`
-- Added to the DAG with proper dependencies
-- Executed in parallel with other modules
+Register in `register.go`. The module is listed by `catchclaw list` and appended to the DAG as an **independent** node. To wait on another module, add a `DependsOn` row in `internal/scan/scan.go` `chainDefs`.
 
 ---
 
@@ -631,7 +635,7 @@ go/
     ├── exploit/
     │   ├── registry.go              # Module registry
     │   ├── context.go               # Exploit execution context
-    │   └── modules/                 # 412 modules (370 checks + 42 attack chains)
+    │   └── modules/                 # handwritten + checks.go (269) + chains.go (42)
     │       ├── core.go              # SSRF, RCE, eval, prompt injection, etc.
     │       ├── auth.go              # CORS, WS hijack, OAuth, pairing, etc.
     │       ├── dataleak.go          # API key, secrets, sessions, etc.
@@ -641,7 +645,7 @@ go/
     │       └── register.go          # Auto-registration
     ├── platform/
     │   ├── platform.go              # Platform types, registry, endpoint kinds
-    │   └── profiles.go              # 15 platform profile implementations
+    │   └── profiles.go              # 25 platform profile implementations
     ├── payload/
     │   ├── payload.go               # YAML payload registry
     │   └── mutate.go                # Payload mutation/obfuscation engine
@@ -671,15 +675,25 @@ go/
 | Memory (idle) | ~15 MB | ~8 MB |
 | Concurrent connections | Tokio semaphore | Go channels |
 | Startup time | ~50ms | ~10ms |
-| Module count | 78 | 87 |
-| Platform count | 9 | 15 |
-| CVE coverage | 2025-2026 | 2025-2026 + 5 new CVEs |
+| Registered modules | 78 | 412 (101 + 269 + 42) |
+| Platform profiles | 9 | 25 |
+| CVE coverage | 2025-2026 | 2025-2026 (expanded) |
 
 ---
+
+## Legal risk
+
+Unauthorized scanning or access is a crime (PRC Criminal Law Arts. 285/286 and equivalent laws elsewhere). You need **prior written authorization** for every target, including CIDR expansions, OSINT-derived hosts, and MCP `--allow`. You bear all legal risk. Findings can be false positives.
+
+Commercial use is prohibited without written authorization from the copyright holder.
+
+**[LEGAL.md](../LEGAL.md)** · **[LICENSE](../LICENSE)** · **[SECURITY.md](../SECURITY.md)**
 
 ## Disclaimer
 
 This tool is intended for **authorized security testing** only. Test only systems you own or have explicit written authorization to test. Unauthorized access to computer systems is illegal.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND. Authors and copyright holders are not liable for claims, damages, fines, or criminal consequences arising from use.
 
 ## Author
 
@@ -687,4 +701,4 @@ This tool is intended for **authorized security testing** only. Test only system
 
 ## License
 
-Non-commercial use only. See [LICENSE](../LICENSE) for details.
+[CatchClaw Strict Non-Commercial License v2.0](../LICENSE) — commercial use prohibited without written authorization.
