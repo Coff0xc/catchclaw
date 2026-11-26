@@ -1,0 +1,26 @@
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  disable-all: true
+  enable:
+    - gofmt
+    - govet
+    - ineffassign
+    - misspell
+    - staticcheck
+    - unused
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  # CI uses Go 1.22 from go.mod; keep findings that would fail the quality job.
+
+linters-settings:
+  govet:
+    enable-all: false
+    disable:
+      - fieldalignment
+  misspell:
+    locale: US

@@ -14,15 +14,14 @@ concurrency:
 permissions:
   contents: read
 
-defaults:
-  run:
-    shell: bash
-    working-directory: go
-
 jobs:
-  go:
-    name: go
+  quality:
+    name: quality
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: go
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,20 +54,86 @@ jobs:
       - name: Vet
         run: go vet ./...
 
-      - name: Test
-        run: go test ./...
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.64.8
+          working-directory: go
+          args: --timeout=5m
+          skip-cache: false
 
-      - name: Build
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: go
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go/go.mod
+          cache-dependency-path: go/go.sum
+
+      - name: Test
+        env:
+          CGO_ENABLED: "1"
+        run: go test -race -count=1 -covermode=atomic -coverprofile=coverage.out ./...
+
+      - name: Coverage summary
+        run: go tool cover -func=coverage.out
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage.out
+          path: go/coverage.out
+          if-no-files-found: error
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: go
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go/go.mod
+          cache-dependency-path: go/go.sum
+
+      - name: Build host binary
         run: go build -trimpath -ldflags="-s -w" -o catchclaw .
+
+      - name: Smoke
+        run: |
+          set -euo pipefail
+          ./catchclaw version
+          ./catchclaw list | tee /tmp/catchclaw-list.txt
+          grep -q "412 exploit modules registered" /tmp/catchclaw-list.txt
 
       - name: Cross-compile
         run: |
           set -euo pipefail
-          CGO_ENABLED=0 GOOS=linux   GOARCH=amd64 go build -o /tmp/catchclaw-linux-amd64 .
-          CGO_ENABLED=0 GOOS=linux   GOARCH=arm64 go build -o /tmp/catchclaw-linux-arm64 .
-          CGO_ENABLED=0 GOOS=darwin  GOARCH=amd64 go build -o /tmp/catchclaw-darwin-amd64 .
-          CGO_ENABLED=0 GOOS=darwin  GOARCH=arm64 go build -o /tmp/catchclaw-darwin-arm64 .
-          CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o /tmp/catchclaw-windows-amd64.exe .
+          CGO_ENABLED=0 GOOS=linux   GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o /tmp/catchclaw-linux-amd64 .
+          CGO_ENABLED=0 GOOS=linux   GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o /tmp/catchclaw-linux-arm64 .
+          CGO_ENABLED=0 GOOS=darwin  GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o /tmp/catchclaw-darwin-amd64 .
+          CGO_ENABLED=0 GOOS=darwin  GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o /tmp/catchclaw-darwin-arm64 .
+          CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o /tmp/catchclaw-windows-amd64.exe .
+          ls -l /tmp/catchclaw-*
 
   govulncheck:
     name: govulncheck
@@ -81,3 +146,44 @@ jobs:
           cache-dependency-path: go/go.sum
           work-dir: go
           go-package: ./...
+
+  gitleaks:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  meta:
+    name: meta
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Validate YAML
+        run: |
+          set -euo pipefail
+          mapfile -d '' files < <(find nuclei-templates payloads -name '*.yaml' -print0)
+          for f in "${files[@]}"; do
+            ruby -ryaml -e "YAML.load_file(ARGV[0]); puts \"ok #{ARGV[0]}\"" "$f"
+          done
+
+      - name: actionlint
+        run: |
+          set -euo pipefail
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.7/scripts/download-actionlint.bash)
+          ./actionlint -color

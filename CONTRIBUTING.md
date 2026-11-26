@@ -76,7 +76,7 @@ refactor: share IMDS payload list
 - `go vet ./...` and `go test ./...` pass.
 - `gofmt` clean.
 - CHANGELOG updated for user-visible changes.
-- GitHub Actions workflow **CI** is green (`go` + `govulncheck`).
+- GitHub Actions workflow **CI** is green (quality, test, build/smoke, govulncheck, gitleaks, meta).
 - Checklist in `.github/PULL_REQUEST_TEMPLATE.md`.
 
 ## Continuous integration
@@ -85,9 +85,10 @@ Workflows live in `.github/workflows/`. Required gate for `master` is **CI**.
 
 | Workflow | File | When | What |
 |---|---|---|---|
-| CI | `ci.yml` | push / PR to `master` | `gofmt -l`, `go vet`, `go test`, `go build`, `go mod verify`, `go mod tidy` diff, cross-compile, `govulncheck` |
+| CI | `ci.yml` | push / PR to `master` | `gofmt`, `go mod verify`/`tidy`, `vet`, golangci-lint, `go test -race` + coverage, host build, `catchclaw list` smoke (412), 5-way cross-compile, govulncheck, Gitleaks, YAML parse, actionlint |
+| CodeQL | `codeql.yml` | `go/**` + weekly | CodeQL on `go/` |
 | Rust archive | `rust-archive.yml` | changes under `rust/` only | `cargo fmt`, `cargo check --locked`, `clippy -D warnings`, `cargo test --locked` |
-| Release | `release.yml` | tag `vX.Y.Z` on this repository | `CGO_ENABLED=0` cross-build, LICENSE + LEGAL.md in archives, SHA-256 sums, GitHub Release |
+| Release | `release.yml` | tag `vX.Y.Z` on this repository | `CGO_ENABLED=0` cross-build, LICENSE + LEGAL.md, SPDX SBOM, SHA-256, provenance attestation |
 
 Local equivalent of the Go gate:
 

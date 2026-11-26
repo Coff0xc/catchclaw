@@ -86,18 +86,38 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
+      attestations: write
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: dist
           merge-multiple: true
 
+      - name: SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: go
+          format: spdx-json
+          artifact-name: catchclaw-${{ github.ref_name }}.spdx.json
+          output-file: dist/catchclaw.spdx.json
+
       - name: Checksums
         run: |
           set -euo pipefail
           cd dist
-          sha256sum catchclaw-*.tar.gz catchclaw-*.zip | tee SHA256SUMS.txt
+          sha256sum catchclaw-*.tar.gz catchclaw-*.zip catchclaw.spdx.json | tee SHA256SUMS.txt
+
+      - name: Attest
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/*
 
       - name: Publish
         uses: softprops/action-gh-release@v2
@@ -107,4 +127,5 @@ jobs:
           files: |
             dist/catchclaw-*.tar.gz
             dist/catchclaw-*.zip
+            dist/catchclaw.spdx.json
             dist/SHA256SUMS.txt
