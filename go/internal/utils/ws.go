@@ -35,7 +35,7 @@ func WSConnect(wsURL, token string, timeout time.Duration) (*WSClient, error) {
 		HTTPClient: &http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-				DialContext: (&net.Dialer{Timeout: timeout}).DialContext,
+				DialContext:     (&net.Dialer{Timeout: timeout}).DialContext,
 			},
 		},
 	})

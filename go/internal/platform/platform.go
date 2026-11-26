@@ -106,33 +106,33 @@ type Endpoint struct {
 }
 
 type ProbeEndpoint struct {
-	Path          string
-	Method        string
-	AcceptStatus  []int
-	BodyContains  string
+	Path         string
+	Method       string
+	AcceptStatus []int
+	BodyContains string
 }
 
 type FingerprintSpec struct {
-	BodyKeywords  []string
-	HeaderMarkers map[string]string
+	BodyKeywords   []string
+	HeaderMarkers  map[string]string
 	ProbeEndpoints []ProbeEndpoint
 }
 
 type Capabilities struct {
-	ChatCompletion  bool
-	WebSocket       bool
-	FileUpload      bool
-	AdminPanel      bool
-	PluginSystem    bool
-	WorkflowEngine  bool
-	RAGPipeline     bool
-	OAuth           bool
-	Webhook         bool
-	Audio           bool
-	MCP             bool
-	MultiTenant     bool
-	SkillSystem     bool
-	Sandbox         bool
+	ChatCompletion bool
+	WebSocket      bool
+	FileUpload     bool
+	AdminPanel     bool
+	PluginSystem   bool
+	WorkflowEngine bool
+	RAGPipeline    bool
+	OAuth          bool
+	Webhook        bool
+	Audio          bool
+	MCP            bool
+	MultiTenant    bool
+	SkillSystem    bool
+	Sandbox        bool
 }
 
 type Profile interface {

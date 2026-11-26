@@ -40,13 +40,13 @@ type Options struct {
 }
 
 type Server struct {
-	opts      Options
-	allowNets []netip.Prefix
+	opts       Options
+	allowNets  []netip.Prefix
 	allowHosts map[string]bool
-	scanMu    sync.Mutex
-	lastScan  time.Time
-	out       *json.Encoder
-	encMu     sync.Mutex
+	scanMu     sync.Mutex
+	lastScan   time.Time
+	out        *json.Encoder
+	encMu      sync.Mutex
 }
 
 type rpcRequest struct {
@@ -57,10 +57,10 @@ type rpcRequest struct {
 }
 
 type rpcResponse struct {
-	JSONRPC string      `json:"jsonrpc"`
+	JSONRPC string          `json:"jsonrpc"`
 	ID      json.RawMessage `json:"id,omitempty"`
-	Result  interface{} `json:"result,omitempty"`
-	Error   *rpcError   `json:"error,omitempty"`
+	Result  interface{}     `json:"result,omitempty"`
+	Error   *rpcError       `json:"error,omitempty"`
 }
 
 type rpcError struct {

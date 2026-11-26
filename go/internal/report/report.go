@@ -40,11 +40,11 @@ func NewSummary(result *core.ScanResult) Summary {
 func WriteJSON(result *core.ScanResult, path string) error {
 	summary := NewSummary(result)
 	output, err := json.MarshalIndent(map[string]interface{}{
-		"target":    result.Target,
-		"findings":  result.Findings,
-		"summary":   summary,
-		"start_at":  result.StartAt,
-		"end_at":    result.EndAt,
+		"target":   result.Target,
+		"findings": result.Findings,
+		"summary":  summary,
+		"start_at": result.StartAt,
+		"end_at":   result.EndAt,
 	}, "", "  ")
 	if err != nil {
 		return err

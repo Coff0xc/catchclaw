@@ -139,21 +139,21 @@ OSINT Flags:
 }
 
 type scanFlags struct {
-	target        string
-	targets       string
-	targetsFile   string
-	token         string
-	timeout       int
-	output        string
-	format        string
-	concurrency   int
-	tls           bool
-	callback      string
-	profile       string
+	target         string
+	targets        string
+	targetsFile    string
+	token          string
+	timeout        int
+	output         string
+	format         string
+	concurrency    int
+	tls            bool
+	callback       string
+	profile        string
 	severityFilter string
-	dryRun        bool
-	configFile    string
-	platform      string
+	dryRun         bool
+	configFile     string
+	platform       string
 }
 
 func parseScanFlags(args []string) *scanFlags {

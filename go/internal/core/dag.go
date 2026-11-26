@@ -54,9 +54,9 @@ type AttackEdge struct {
 }
 
 type AttackGraph struct {
-	Edges        []AttackEdge     `json:"edges"`
-	NodeStatus   map[int]string   `json:"node_status"`
-	NodeFindings map[int]int      `json:"node_findings"`
+	Edges        []AttackEdge   `json:"edges"`
+	NodeStatus   map[int]string `json:"node_status"`
+	NodeFindings map[int]int    `json:"node_findings"`
 }
 
 func NewAttackGraph() *AttackGraph {
