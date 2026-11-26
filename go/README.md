@@ -1,4 +1,4 @@
-<h1 align="center">🦞 CatchClaw v6.0.0 (Go)</h1>
+<h1 align="center">🦞 CatchClaw v6.0.1 (Go)</h1>
 
 <p align="center">
   <b>Implementation notes for the supported Go tree</b><br>
@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Version-6.0.1-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/Modules-412-FF6B6B?style=flat-square" alt="Modules">
   <img src="https://img.shields.io/badge/Profiles-25-purple?style=flat-square" alt="Platforms">

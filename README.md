@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>Authorized security assessment for self-hosted AI / LLM platforms</b><br>
-  <sub>Go v6.0.0 · 412 modules · 25 platform profiles · ATT&amp;CK-mapped DAG · Nuclei · OSINT · MCP</sub>
+  <sub>Go v6.0.1 · 412 modules · 25 platform profiles · ATT&amp;CK-mapped DAG · Nuclei · OSINT · MCP</sub>
 </p>
 
 <p align="center">
@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-6.0.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/version-6.0.1-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/go-1.22+-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/modules-412-FF6B6B?style=flat-square" alt="Modules">
   <img src="https://img.shields.io/badge/profiles-25-9B59B6?style=flat-square" alt="Profiles">
@@ -35,7 +35,7 @@
 >
 > **[LEGAL.md](LEGAL.md)** · **[LICENSE](LICENSE)** · **[SECURITY.md](SECURITY.md)**
 
-Source lives in [`go/`](go/) (v6.0.0). Localized READMEs may lag; this file is authoritative. The v5 Rust tree is not on `master` (git history / tag `v5.2.0`).
+Source lives in [`go/`](go/) (v6.0.1). Localized READMEs may lag; this file is authoritative. The v5 Rust tree is not on `master` (git history / tag `v5.2.0`).
 
 ---
 
@@ -149,7 +149,7 @@ A module registry is compiled into a DAG, executed by topological level under a 
 | `mcp` | Expose scan/chain/discover/nuclei/osint to an AI assistant |
 | `list` | Print the 412-module catalog |
 | `config` | Show merged configuration |
-| `version` | Print `6.0.0` |
+| `version` | Print `6.0.1` |
 
 **Only against systems you own or are written-authorized to test.** CIDR expansion, target files, OSINT hosts, and MCP `--allow` must stay inside that writing.
 
@@ -258,7 +258,7 @@ Fingerprint is keyword-based. Treat `discover` output as a hint and pass `--plat
 
 ## Modules and DAG
 
-`catchclaw list` loads **412** entries (counted from source in v6.0.0):
+`catchclaw list` loads **412** entries (counted from source in v6.0.1):
 
 | Kind | Count | Role |
 |------|------:|------|
@@ -326,7 +326,7 @@ Root `make build` / `make ci` delegate to `go/`. Release tags `vX.Y.Z` publish a
 
 ```
 catchclaw/
-├── go/                      # v6.0.0 (supported)
+├── go/                      # v6.0.1 (supported)
 │   ├── main.go
 │   ├── catchclaw.example.yaml
 │   └── internal/

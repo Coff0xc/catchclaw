@@ -15,7 +15,7 @@ Read [LEGAL.md](LEGAL.md) and [SECURITY.md](SECURITY.md) before you send a patch
 
 ## Tree
 
-Supported implementation: **`go/`** (v6.0.0, Go 1.22+). The v5 Rust tree is not on `master`.
+Supported implementation: **`go/`** (v6.0.1, Go 1.22+). The v5 Rust tree is not on `master`.
 
 ## Development setup
 

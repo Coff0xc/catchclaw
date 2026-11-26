@@ -6,9 +6,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-### Removed
-- `rust/` (v5.x) from `master`. CatchClaw is Go-only on this branch. Retrieve the Rust tree from git history or tag `v5.2.0`.
-- Rust archive CI workflow and Cargo Dependabot.
+## [6.0.1] - 2026-11-26
+
+### Added
+- Offline Go tests: DAG topology/fallback, target parsing, config merge/profiles, MCP allowlist, HTTP/SPA filters, HTTP check matcher, Nuclei word/status matchers, platform fingerprint, registry count (412)
 
 ### Changed
 - Relicensed from CatchClaw Strict Non-Commercial v2.0 to **MIT**. Commercial use, sale, and derivative works are allowed. Unauthorized access to systems remains illegal (LEGAL.md).
@@ -22,6 +23,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Release: SPDX SBOM, SHA-256 sums, and build-provenance attestation; archives still include LICENSE and LEGAL.md
 - Root README rewritten as the product page (features, commands, platforms, DAG, MCP/OSINT, CI)
 - Dependabot: `gomod` for `/go` (weekly), GitHub Actions (weekly)
+
+### Removed
+- `rust/` (v5.x) from `master`. Retrieve it from git history or tag `v5.2.0`.
+- Rust archive CI workflow and Cargo Dependabot.
 
 ## [6.0.0] - 2026-11-26
 

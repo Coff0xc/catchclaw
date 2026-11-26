@@ -25,7 +25,7 @@ import (
 const (
 	protocolVersion = "2024-11-05"
 	serverName      = "catchclaw"
-	serverVersion   = "6.0.0"
+	serverVersion   = "6.0.1"
 	maxRequestBytes = 1 << 20
 	maxFindingsOut  = 100
 	maxEvidenceLen  = 300

@@ -21,7 +21,7 @@ import (
 	"github.com/Coff0xc/catchclaw/go/internal/scan"
 )
 
-const Version = "6.0.0"
+const Version = "6.0.1"
 
 func Banner() {
 	art := `

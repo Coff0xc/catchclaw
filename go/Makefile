@@ -1,7 +1,7 @@
 .PHONY: build release clean install test vet fmt fmt-check ci
 
 BINARY=catchclaw
-VERSION=6.0.0
+VERSION=6.0.1
 
 build:
 	go build -o $(BINARY) .
