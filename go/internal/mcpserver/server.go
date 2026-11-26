@@ -121,8 +121,10 @@ func (s *Server) validateTarget(raw string) (*core.Target, error) {
 		return nil, fmt.Errorf("invalid target length")
 	}
 	for _, c := range raw {
-		if !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' ||
-			c == '.' || c == '-' || c == ':' || c == '[' || c == ']') {
+		switch {
+		case c >= 'a' && c <= 'z', c >= 'A' && c <= 'Z', c >= '0' && c <= '9',
+			c == '.', c == '-', c == ':', c == '[', c == ']':
+		default:
 			return nil, fmt.Errorf("target contains invalid character %q", c)
 		}
 	}
