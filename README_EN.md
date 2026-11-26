@@ -35,23 +35,9 @@
 
 ---
 
-> **⚠️ COMMERCIAL USE STRICTLY PROHIBITED**
+> Licensed under **MIT**. Commercial use and derivatives are allowed. Keep the copyright notice.
 >
-> Licensed under **CatchClaw Strict Non-Commercial License v2.0**.
->
-> **ALL commercial use is STRICTLY PROHIBITED without prior written authorization from the copyright holder (Coff0xc).** Violators will be prosecuted.
->
-> Prohibited activities include but are not limited to:
-> - Selling, sublicensing, or renting the Software or derivative works
-> - Using the Software for SaaS, pentesting services, consulting, or any paid service
-> - Integrating into commercial products, platforms, or tools
-> - Training commercial AI/ML models
-> - Rebranding, repackaging, or white-labeling for distribution
-> - Any activity that directly or indirectly generates revenue
->
-> **The copyright holder reserves the right of retroactive enforcement with NO time limitation, including recovery of all profits, legal fees, and punitive damages.**
->
-> See [LICENSE](LICENSE).
+> Unauthorized scanning or access remains illegal. See [LICENSE](LICENSE) and [LEGAL.md](LEGAL.md).
 
 ---
 
@@ -513,7 +499,7 @@ catchclaw/
 │   ├── auth_bypass.yaml           # Token/header/path traversal/default creds
 │   └── xss.yaml                   # XSS: reflected/event/filter bypass/polyglot
 ├── nuclei-templates/              # 24 Nuclei YAML templates
-├── LICENSE                        # CatchClaw Strict Non-Commercial License v2.0
+├── LICENSE                        # MIT
 └── README.md
 ```
 
@@ -529,4 +515,4 @@ This tool is intended for **authorized security testing only**. Only test system
 
 ## License
 
-[CatchClaw Strict Non-Commercial License v2.0](LICENSE) — Commercial use strictly prohibited.
+[MIT License](LICENSE) — commercial use and derivatives allowed. Unauthorized access remains illegal.

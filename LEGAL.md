@@ -60,17 +60,15 @@ Findings are unverified technical signals. They are not a vulnerability confirma
 - MCP defaults to private address space. Widening `--allow` is a legal decision you own; every resolved IP must remain in scope.
 - Do not send engagement data to third-party models unless every applicable data-protection law and contract allows it.
 
-## 6. Commercial use
+## 6. Commercial use and derivatives
 
-Commercial use is **prohibited** without prior written authorization from Coff0xc, including paid testing, consulting, SaaS, internal revenue-supporting use, resale, white-labeling, and using outputs as a commercial deliverable. See LICENSE.
+The Software is licensed under the **MIT License**. You may use, copy, modify, merge, publish, distribute, sublicense, and sell it, including commercial products, paid services, and proprietary forks, provided you keep the copyright notice and permission notice in copies or substantial portions. See [LICENSE](LICENSE).
 
-Copyright remedies are in addition to, not instead of, computer-crime liability.
-
-Commercial license requests: https://github.com/Coff0xc
+MIT is a copyright license. **It does not authorize unauthorized access to computer systems.** A commercial pentest, SaaS scanner, or internal security program still needs the target owner’s written authorization wherever computer-misuse law applies.
 
 ## 7. Distribution and forks
 
-Keep LICENSE and attribution in every copy. Do not strip origin or train commercial models on the Software. If you publish a fork with warnings removed, you are responsible for how others use that copy.
+Keep the MIT copyright notice and permission notice in every copy or substantial portion. If you publish a fork with LEGAL.md warnings removed, you are responsible for how others use that copy.
 
 ## 8. Export, sanctions, dual-use
 
@@ -84,7 +82,7 @@ Nothing here excludes liability that a mandatory rule of a competent forum does 
 
 ## 10. Indemnity
 
-To the maximum extent permitted by applicable law, you will indemnify and hold harmless the authors and copyright holders against claims, losses, fines, and costs (including reasonable legal fees) arising from your use or distribution of the Software in any country, including unauthorized testing and unauthorized commercial use.
+To the maximum extent permitted by applicable law, you will indemnify and hold harmless the authors and copyright holders against claims, losses, fines, and costs (including reasonable legal fees) arising from your use or distribution of the Software in any country, including unauthorized testing.
 
 ## 11. Product defects vs target defects
 

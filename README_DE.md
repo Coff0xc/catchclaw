@@ -36,23 +36,9 @@
 
 ---
 
-> **⚠️ KOMMERZIELLE NUTZUNG STRENG VERBOTEN**
+> Lizenziert unter **MIT**. Kommerzielle Nutzung und Ableitungen sind erlaubt. Copyright-Hinweis beibehalten.
 >
-> Lizenziert unter **CatchClaw Strict Non-Commercial License v2.0**.
->
-> **JEDE kommerzielle Nutzung ist ohne vorherige schriftliche Genehmigung des Urhebers (Coff0xc) STRENG VERBOTEN.** Verstöße werden strafrechtlich verfolgt.
->
-> Verbotene Aktivitäten umfassen, sind aber nicht beschränkt auf:
-> - Verkauf, Unterlizenzierung oder Vermietung der Software oder abgeleiteter Werke
-> - Nutzung der Software für SaaS, Pentesting-Dienste, Beratung oder kostenpflichtige Dienste
-> - Integration in kommerzielle Produkte, Plattformen oder Tools
-> - Training kommerzieller AI/ML-Modelle
-> - Rebranding, Umverpackung oder White-Label-Distribution
-> - Jede Aktivität, die direkt oder indirekt Einnahmen generiert
->
-> **Der Urheberrechtsinhaber behält sich das Recht der rückwirkenden Durchsetzung OHNE Verjährungsfrist vor, einschließlich der Rückforderung aller Gewinne, Anwaltskosten und Strafschadensersatz.**
->
-> Siehe [LICENSE](LICENSE).
+> Unbefugtes Scannen oder Zugreifen bleibt illegal. Siehe [LICENSE](LICENSE) und [LEGAL.md](LEGAL.md).
 
 ---
 
@@ -364,7 +350,7 @@ catchclaw/
 │       └── utils/                   # HTTP-Client, False-Positive-Filter, WS
 ├── payloads/                        # 200+ externe Payloads (YAML)
 ├── nuclei-templates/                # 24 Nuclei YAML-Vorlagen
-├── LICENSE                          # CatchClaw Strict Non-Commercial License v2.0
+├── LICENSE                          # MIT
 └── README.md
 ```
 
@@ -380,4 +366,4 @@ Dieses Tool ist ausschließlich für **autorisierte Sicherheitstests** bestimmt.
 
 ## Lizenz
 
-[CatchClaw Strict Non-Commercial License v2.0](LICENSE) — Kommerzielle Nutzung streng verboten.
+[MIT-Lizenz](LICENSE) — kommerzielle Nutzung und Ableitungen erlaubt. Unbefugter Zugriff bleibt illegal.

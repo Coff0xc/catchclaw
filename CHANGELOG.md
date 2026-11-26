@@ -11,7 +11,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Rust archive CI workflow and Cargo Dependabot.
 
 ### Changed
-- LEGAL.md, LICENSE (lawful-use + §10), README, and SECURITY.md: legal-risk language is worldwide (operator, target, nationality, transit, export). LICENSE disputes go to a court of competent jurisdiction without naming a national forum.
+- Relicensed from CatchClaw Strict Non-Commercial v2.0 to **MIT**. Commercial use, sale, and derivative works are allowed. Unauthorized access to systems remains illegal (LEGAL.md).
+- LEGAL.md, LICENSE, README, and SECURITY.md: legal-risk language is worldwide (operator, target, nationality, transit, export).
 - GitHub Actions CI split into quality (gofmt, mod verify/tidy, vet, golangci-lint), test (`-race`, coverage), build/smoke/cross-compile, govulncheck, Gitleaks, YAML + actionlint
 - Added CodeQL workflow on `go/` (push/PR + weekly)
 - Release: SPDX SBOM, SHA-256 sums, and build-provenance attestation; archives still include LICENSE and LEGAL.md
@@ -40,7 +41,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Security
 - MCP: default deny for public targets; hostname resolution must land entirely in the allowlist
 - Documented assessment HTTP client behavior: TLS verification skipped, redirects disabled
-- Legal and acceptable-use requirements recorded in LEGAL.md and LICENSE (non-commercial)
+- Legal and acceptable-use requirements recorded in LEGAL.md and LICENSE
 
 ## [5.3.0] - 2026-03-24
 

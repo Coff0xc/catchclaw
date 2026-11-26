@@ -1,168 +1,21 @@
-CatchClaw Strict Non-Commercial License v2.0
+MIT License
 
-Copyright (c) 2024-2026 Coff0xc (https://github.com/Coff0xc)
-ALL RIGHTS RESERVED.
+Copyright (c) 2024-2026 Coff0xc
 
-================================================================================
-  WARNING: UNAUTHORIZED COMMERCIAL USE WILL BE PROSECUTED TO THE FULLEST
-  EXTENT OF THE LAW. THE COPYRIGHT HOLDER RESERVES THE RIGHT OF RETROACTIVE
-  ENFORCEMENT WITH NO STATUTE OF LIMITATIONS ON DISCOVERY.
-================================================================================
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-1. DEFINITIONS
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-   "Software" means the CatchClaw source code, binaries, documentation,
-   configuration files, assets, and any derivative works thereof.
-
-   "Commercial Use" means ANY activity directly or indirectly related to
-   financial gain, including but not limited to:
-   (a) Selling, reselling, licensing, sublicensing, or renting the Software;
-   (b) Offering the Software as part of a paid product, service, or platform;
-   (c) Using the Software to provide SaaS, PaaS, consulting, penetration
-       testing services, or any other paid service;
-   (d) Incorporating the Software, in whole or in part, into any commercial
-       product, tool, framework, or platform;
-   (e) Using the Software internally within a for-profit organization for
-       any purpose that supports revenue-generating activities;
-   (f) Using the Software to train, fine-tune, or augment commercial AI/ML
-       models or datasets;
-   (g) Bundling, repackaging, or white-labeling the Software under a
-       different name for distribution;
-   (h) Using the Software output, reports, or findings as part of a
-       commercial deliverable;
-   (i) Any other use that directly or indirectly generates revenue or
-       provides commercial advantage.
-
-   "Derivative Work" means any work that is based on, incorporates, adapts,
-   translates, modifies, or extends the Software in any form, including but
-   not limited to ports to other programming languages, partial code reuse,
-   and architectural reimplementations that substantially copy the Software
-   design, structure, or logic.
-
-2. GRANT OF NON-COMMERCIAL LICENSE
-
-   Permission is hereby granted, free of charge, to any individual obtaining
-   a copy of the Software, to use, copy, modify, and distribute the Software
-   for STRICTLY NON-COMMERCIAL purposes only (personal learning, academic
-   research, educational use, non-profit security research), subject to ALL
-   conditions in this license.
-
-   This copyright grant is worldwide in territorial scope as a license to
-   the Software. It is NOT permission to access, scan, or interfere with
-   any computer system. You must independently have the legal right to test
-   each target under EVERY law that applies to you and to the target,
-   including the law of the place you act from, the place the target and
-   its data are located, your nationality or residence, and any country of
-   transit, hosting, or export. Unauthorized access, scanning,
-   interception, data acquisition, or system interference is a crime or
-   civil wrong in jurisdictions around the world. This license creates no
-   safe harbor in any country. See LEGAL.md.
-
-3. ABSOLUTE PROHIBITION OF COMMERCIAL USE
-
-   ANY AND ALL COMMERCIAL USE OF THE SOFTWARE IS STRICTLY PROHIBITED WITHOUT
-   PRIOR WRITTEN AUTHORIZATION FROM THE COPYRIGHT HOLDER.
-
-   Violation of this clause constitutes copyright infringement and will be
-   subject to legal action. No implied license, estoppel, or acquiescence
-   shall be construed from the copyright holder failure to act immediately
-   upon discovery of a violation.
-
-4. RETROACTIVE ENFORCEMENT AND REMEDIES
-
-   The copyright holder EXPRESSLY RESERVES the right to:
-
-   (a) Retroactively pursue legal action against ANY unauthorized commercial
-       use, regardless of when such use occurred or when it is discovered;
-   (b) Seek and recover ALL profits, revenues, and financial gains derived
-       from unauthorized commercial use, including indirect gains;
-   (c) Seek statutory damages, punitive damages, and exemplary damages to
-       the maximum extent permitted by applicable law;
-   (d) Seek injunctive relief, including immediate cessation of all
-       unauthorized use and destruction of infringing copies;
-   (e) Recover all legal fees, court costs, and enforcement expenses from
-       the infringing party;
-   (f) Pursue criminal prosecution for willful copyright infringement
-       where applicable under local law.
-
-   THE RIGHT OF RETROACTIVE ENFORCEMENT HAS NO TIME LIMITATION. Discovery
-   of a violation at any point in time shall not diminish or waive any of
-   the copyright holder rights or remedies.
-
-5. ANTI-CIRCUMVENTION
-
-   The following actions are EXPRESSLY PROHIBITED and constitute violations:
-
-   (a) Removing, altering, or obscuring this license notice, copyright
-       notice, attribution, or any embedded identifiers;
-   (b) Claiming authorship or ownership of the Software or derivative works;
-   (c) Distributing the Software without this complete license;
-   (d) Using automated tools (including AI) to strip, modify, or obscure
-       the origin of the Software;
-   (e) Rewriting or reimplementing the Software to circumvent this license
-       while substantially copying its design, logic, or structure;
-   (f) Creating a clean-room reimplementation based on knowledge gained
-       from studying this Software without proper attribution.
-
-6. MANDATORY ATTRIBUTION
-
-   All copies, forks, derivative works, or substantial portions of the
-   Software MUST prominently retain:
-
-   (a) This complete license file, unmodified;
-   (b) The following attribution in all source files and documentation:
-       "CatchClaw by Coff0xc - https://github.com/Coff0xc/catchclaw"
-       "Licensed under CatchClaw Strict Non-Commercial License v2.0"
-   (c) A conspicuous notice in any user-facing interface or documentation
-       that the software is based on CatchClaw.
-
-7. TERMINATION
-
-   This license is automatically and immediately terminated if the licensee
-   violates ANY term of this license. Upon termination:
-
-   (a) All rights granted under this license cease immediately;
-   (b) The licensee must destroy all copies of the Software;
-   (c) The copyright holder right to seek remedies survives termination;
-   (d) Termination does not release the licensee from liability for any
-       prior violations.
-
-8. NO WARRANTY
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-   DEALINGS IN THE SOFTWARE.
-
-9. SEVERABILITY
-
-   If any provision of this license is held to be unenforceable, such
-   provision shall be reformed only to the extent necessary to make it
-   enforceable, and the remaining provisions shall continue in full force.
-
-10. GOVERNING LAW AND JURISDICTION
-
-    Disputes arising from this license as a copyright instrument shall be
-    submitted to a court of competent jurisdiction. The prevailing party
-    in any such action shall be entitled to recover reasonable attorney
-    fees and costs.
-
-    This clause does not elect, waive, or limit the criminal, regulatory,
-    or tort law of any country that applies to your possession or use of
-    the Software. You remain fully subject to the law of every applicable
-    jurisdiction.
-
-11. ENTIRE AGREEMENT
-
-    This license constitutes the entire agreement between the parties with
-    respect to the Software. No modification of this license shall be
-    effective unless in writing and signed by the copyright holder.
-
-================================================================================
-  BY USING, COPYING, MODIFYING, OR DISTRIBUTING THIS SOFTWARE, YOU
-  ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY
-  ALL TERMS AND CONDITIONS OF THIS LICENSE.
-================================================================================
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

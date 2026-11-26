@@ -21,4 +21,4 @@
 - [ ] GitHub Actions workflow **CI** is green (quality, test, build, govulncheck, gitleaks, meta)
 - [ ] CHANGELOG.md updated (if user-facing)
 - [ ] README counts updated from source (if module/platform inventory changed)
-- [ ] I agree to the [CatchClaw Strict Non-Commercial License v2.0](../LICENSE)
+- [ ] I agree to license my contribution under the [MIT License](../LICENSE)

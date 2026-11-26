@@ -18,7 +18,7 @@
   <a href="https://github.com/Coff0xc/catchclaw/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/Coff0xc/catchclaw/ci.yml?branch=master&style=flat-square&label=CI" alt="CI"></a>
   <a href="https://github.com/Coff0xc/catchclaw/stargazers"><img src="https://img.shields.io/github/stars/Coff0xc/catchclaw?style=flat-square&logo=github&color=gold" alt="Stars"></a>
   <a href="https://github.com/Coff0xc/catchclaw/issues"><img src="https://img.shields.io/github/issues/Coff0xc/catchclaw?style=flat-square" alt="Issues"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Non--Commercial%20v2.0-green?style=flat-square" alt="License"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License"></a>
 </p>
 
 <p align="center">
@@ -31,7 +31,7 @@
 
 ---
 
-> **Legal risk (worldwide).** CatchClaw is dual-use. Run it only on systems you own or for which you already have **prior written authorization**. Unauthorized scanning or access is a crime or civil wrong under **every applicable jurisdiction** — where you act, where the target and its data sit, your nationality, and any country of transit or export. No country is exempt. You bear all legal risk. Commercial use is prohibited without written authorization from Coff0xc.
+> **Legal risk (worldwide).** CatchClaw is dual-use. The code is **MIT-licensed** (commercial use and derivatives allowed). That copyright grant does **not** authorize scanning or accessing systems without the owner’s **prior written authorization**. Unauthorized access is a crime or civil wrong under **every applicable jurisdiction** — where you act, where the target and its data sit, your nationality, and any country of transit or export. You bear all legal risk.
 >
 > **[LEGAL.md](LEGAL.md)** · **[LICENSE](LICENSE)** · **[SECURITY.md](SECURITY.md)**
 
@@ -342,12 +342,13 @@ Before every run, in **every** jurisdiction that may apply:
 2. Keep CIDR / files / OSINT / MCP `--allow` inside that writing.
 3. Treat reports as confidential engagement data.
 4. Independently verify findings.
-5. Stay non-commercial unless Coff0xc licensed you in writing.
-6. Confirm the act is lawful where you are, where the target is, and anywhere in between.
+5. Confirm the act is lawful where you are, where the target is, and anywhere in between.
+
+Commercial use and derivative works are allowed under MIT. MIT does not legalize unauthorized access.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND. Authors and copyright holders are not liable for claims, damages, fines, or criminal consequences arising from use in any country.
 
-This README is not legal advice. Full text: **[LEGAL.md](LEGAL.md)**. License: **[CatchClaw Strict Non-Commercial License v2.0](LICENSE)**.
+This README is not legal advice. Full text: **[LEGAL.md](LEGAL.md)**. License: **[MIT](LICENSE)**.
 
 ## Author
 
