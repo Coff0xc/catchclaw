@@ -1,320 +1,355 @@
-<h1 align="center">🦞 CatchClaw v6.0.0</h1>
+<h1 align="center">🦞 CatchClaw</h1>
 
 <p align="center">
-  <b>Authorized AI / LLM platform security assessment — Go implementation</b><br>
-  <sub>412 registered modules (101 exploits + 269 HTTP checks + 42 chains) · 25 platform profiles · ATT&amp;CK-mapped DAG</sub>
+  <b>Authorized security assessment for self-hosted AI / LLM platforms</b><br>
+  <sub>Go v6.0.0 · 412 modules · 25 platform profiles · ATT&amp;CK-mapped DAG · Nuclei · OSINT · MCP</sub>
 </p>
 
 <p align="center">
-  <a href="README.md"><b>English</b></a> ·
-  <a href="go/README.md">Go implementation</a> ·
-  <a href="README_JA.md">Japanese</a> ·
-  <a href="README_RU.md">Русский</a> ·
-  <a href="README_DE.md">Deutsch</a> ·
-  <a href="README_FR.md">Français</a>
+  <a href="README.md"><b>English</b></a>
+  · <a href="go/README.md">Go details</a>
+  · <a href="README_JA.md">日本語</a>
+  · <a href="README_RU.md">Русский</a>
+  · <a href="README_DE.md">Deutsch</a>
+  · <a href="README_FR.md">Français</a>
 </p>
 
 <p align="center">
+  <a href="https://github.com/Coff0xc/catchclaw/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/Coff0xc/catchclaw/ci.yml?branch=master&style=flat-square&label=CI" alt="CI"></a>
   <a href="https://github.com/Coff0xc/catchclaw/stargazers"><img src="https://img.shields.io/github/stars/Coff0xc/catchclaw?style=flat-square&logo=github&color=gold" alt="Stars"></a>
-  <a href="https://github.com/Coff0xc/catchclaw/network/members"><img src="https://img.shields.io/github/forks/Coff0xc/catchclaw?style=flat-square&logo=github&color=silver" alt="Forks"></a>
-  <a href="https://github.com/Coff0xc/catchclaw/issues"><img src="https://img.shields.io/github/issues/Coff0xc/catchclaw?style=flat-square&logo=github&color=red" alt="Issues"></a>
-  <a href="https://github.com/Coff0xc/catchclaw/commits/master"><img src="https://img.shields.io/github/last-commit/Coff0xc/catchclaw?style=flat-square&logo=github" alt="Last Commit"></a>
+  <a href="https://github.com/Coff0xc/catchclaw/issues"><img src="https://img.shields.io/github/issues/Coff0xc/catchclaw?style=flat-square" alt="Issues"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Non--Commercial%20v2.0-green?style=flat-square" alt="License"></a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-6.0.0-blue?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/Language-Go-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/Modules-412-orange?style=flat-square" alt="Modules">
-  <img src="https://img.shields.io/badge/Profiles-25-purple?style=flat-square" alt="Platforms">
-  <img src="https://img.shields.io/badge/License-Non--Commercial--v2.0-green?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/version-6.0.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/go-1.22+-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
+  <img src="https://img.shields.io/badge/modules-412-FF6B6B?style=flat-square" alt="Modules">
+  <img src="https://img.shields.io/badge/profiles-25-9B59B6?style=flat-square" alt="Profiles">
+  <img src="https://img.shields.io/badge/chains-42-orange?style=flat-square" alt="Chains">
 </p>
 
 ---
 
-> **v6.0.0** is a Go rewrite. Source of truth: [`go/`](go/). Command reference: [`go/README.md`](go/README.md). The Rust tree in `rust/` is the archived v5.x reference and is not the release target.
+> **Legal risk.** CatchClaw is dual-use. Run it only on systems you own or have **prior written authorization** to test. Unauthorized scanning or access is a crime (PRC Criminal Law Arts. 285 / 286, and computer-misuse laws elsewhere). You bear all legal risk. Commercial use is prohibited without written authorization from Coff0xc.
 >
-> Localized READMEs (`README_JA.md`, `README_RU.md`, `README_DE.md`, `README_FR.md`, `README_EN.md`) may lag this file. This English README is authoritative.
+> **[LEGAL.md](LEGAL.md)** · **[LICENSE](LICENSE)** · **[SECURITY.md](SECURITY.md)**
+
+Supported tree is [`go/`](go/) (v6.0.0). `rust/` is the archived v5.x reference. Localized READMEs may lag; this file is authoritative.
 
 ---
 
-> **LEGAL RISK — READ BEFORE DOWNLOAD OR USE**
->
-> CatchClaw is a **dual-use** assessment tool. **Unauthorized scanning or access is a crime** in the PRC (Criminal Law Arts. 285 / 286 and related interpretations) and under computer-misuse laws in other jurisdictions. You need **prior written authorization** for every target. You bear **all** legal, criminal, civil, and regulatory risk. The authors provide **no warranty** and **no indemnity**.
->
-> **Commercial use is prohibited** without written authorization from Coff0xc (paid pentest, consulting, SaaS, resale, training commercial models, using reports as a paid deliverable).
->
-> Full terms: **[LEGAL.md](LEGAL.md)** · **[LICENSE](LICENSE)** · **[SECURITY.md](SECURITY.md)**
+## What CatchClaw does
 
----
+CatchClaw is a **single-binary assessment toolkit** for self-hosted AI infrastructure: chat UIs, agent platforms, inference servers, vector databases, and MLOps consoles.
 
-## Table of contents
+On an authorized target it can:
 
-- [What it is](#what-it-is)
-- [Module composition](#module-composition)
-- [Supported platforms](#supported-platforms)
-- [Installation](#installation)
-- [Quick start](#quick-start)
-- [CLI](#cli)
-- [DAG execution](#dag-execution)
-- [Nuclei templates](#nuclei-templates)
-- [Project layout](#project-layout)
-- [Legal risk](#legal-risk)
-- [Disclaimer](#disclaimer)
+1. **Find** the service (port scan + keyword fingerprint across 25 profiles).
+2. **Probe** known-bad paths, default credentials, unauthenticated APIs, and CVE-shaped HTTP checks.
+3. **Chain** multi-stage attacks that pass stolen tokens and IDs between steps.
+4. **Report** JSON / HTML / Markdown plus an optional Mermaid attack graph.
+5. **Hand off** the same engine to Nuclei templates, Shodan/FOFA/Hunter, or an MCP-connected assistant.
 
----
+Hits are **unverified signals** (status codes and body keywords). Reproduce before you treat them as confirmed vulnerabilities.
 
-## What it is
-
-CatchClaw assesses **self-hosted AI / LLM infrastructure** (chat UIs, agent platforms, inference servers, vector DBs, MLOps consoles) under authorization. It maps registered modules onto MITRE ATT&CK-style phases, runs them concurrently, and writes JSON / HTML / Markdown reports plus an optional Mermaid graph.
-
-It is an **assessment aid**. HTTP checks match status codes and body keywords. Treat hits as unverified signals until you reproduce them.
-
-### Why teams use it (authorized engagements only)
-
-| Job | CatchClaw |
-|------|-----------|
-| Breadth on AI stacks | 25 platform profiles, fingerprint + probe modules |
-| Repeatable runs | DAG orchestration, `--dry-run`, profiles (`quick` / `stealth` / `full`) |
-| Reporting | JSON, HTML, Markdown, Mermaid |
-| CI-style templates | Nuclei YAML under `nuclei-templates/` |
-| Assistant-driven scans | MCP server with private-range default allowlist |
-
----
-
-## Module composition
-
-`catchclaw list` reports **412** registered modules. Breakdown (v6.0.0, measured from source):
-
-| Kind | Count | Where |
-|------|------:|-------|
-| Handwritten exploit implementations | 101 | `go/internal/exploit/modules/*.go` + `register.go` |
-| Data-driven HTTP checks | 269 | `checks.go` (`path` + status + keyword) |
-| Multi-stage state-passing chains | 42 | `chains.go` |
-| **Registered total** | **412** | global `exploit` registry |
-
-| Related inventory | Count |
-|------|------:|
-| Platform profiles (`New*Profile`) | 25 |
-| Platform identifiers (`core.Platform*`, excluding unknown) | 27 |
-| DAG nodes with explicit `DependsOn` | 82 |
-| Nuclei template IDs | 45 |
-
-Handwritten module catalog: [`go/README.md`](go/README.md). Full IDs: `catchclaw list`.
-
----
-
-## Supported platforms
-
-Profiles implement fingerprint markers and endpoint maps. CrewAI and LangChain appear as identifiers / CVE modules without a dedicated profile.
-
-| Platform | Fingerprint | Probe / notes |
-|------|------|------|
-| OpenClaw / Open-WebUI | Auto | Built-in handwritten modules |
-| Dify | Auto | `dify_probe`, `dify_tap_probe` |
-| FastGPT | Auto | `fastgpt_probe` |
-| NextChat | Auto | `nextchat_probe` |
-| AnythingLLM | Auto | `anythingllm_probe` |
-| Flowise | Auto | `flowise_probe` |
-| RagFlow | Auto | `ragflow_probe` |
-| LibreChat | Auto | `librechat_probe` |
-| LobeChat | Auto | `lobechat_probe` |
-| Langflow | Auto | `langflow_probe` |
-| LiteLLM | Auto | `litellm_probe` |
-| Ollama | Auto | `ollama_probe`, `ollama_probllama` |
-| vLLM | Auto | `vllm_probe` |
-| Ray Dashboard | Auto | `ray_probe` |
-| MLflow | Auto | `mlflow_probe` |
-| Gradio | Auto | `gradio_probe` |
-| ComfyUI | Auto | `comfyui_probe` |
-| DB-GPT | Auto | `dbgpt_probe` |
-| ChromaDB | Auto | `chromadb_probe` |
-| Qdrant | Auto | `qdrant_probe` |
-| Weaviate | Auto | `weaviate_probe` |
-| Milvus | Auto | `milvus_probe` |
-| LocalAI | Auto | `localai_probe` |
-| Xinference | Auto | `xinference_probe` |
-| Jupyter | Auto | `jupyter_probe` |
-
----
-
-## Installation
-
-### Build from source (supported)
-
-```bash
-git clone https://github.com/Coff0xc/catchclaw.git
-cd catchclaw/go
-
-go build -o catchclaw .
-
-# Windows
-go build -o catchclaw.exe .
+```
+  discover / OSINT                 scan / exploit / chain
+  ┌──────────────┐                 ┌──────────────────────────┐
+  │ ports +      │  authorized     │  DAG (Kahn + semaphore)  │
+  │ fingerprint  │  target  ───►   │  101 exploits            │
+  └──────────────┘                 │  269 HTTP checks         │
+                                   │  42 state-passing chains │
+  nuclei  /  mcp                   └────────────┬─────────────┘
+  ┌──────────────┐                              ▼
+  │ templates /  │                     JSON · HTML · Markdown
+  │ AI assistant │                     Mermaid graph
+  └──────────────┘
 ```
 
-Requirements: **Go 1.22+**. Single static binary, no runtime deps.
+---
 
-```bash
-# Linux
-GOOS=linux GOARCH=amd64 go build -o catchclaw-linux .
+## Features
 
-# macOS
-GOOS=darwin GOARCH=amd64 go build -o catchclaw-macos .
-```
+<table>
+<tr>
+<td width="50%" valign="top">
 
-Root `make build` delegates to `go/`. Archived Rust v5: `make rust-build` (requires a Rust toolchain).
+### Assessment engine
+
+- **412 registered modules** — 101 handwritten exploits, 269 HTTP checks, 42 chains (`catchclaw list`)
+- **ATT&CK-style phases** — Recon → Initial Access → Credential Access → Execution → Persistence → PrivEsc → Lateral → Exfil
+- **DAG orchestration** — Kahn topological levels, goroutine workers, concurrency semaphore
+- **82 wired dependencies** — remaining modules run as independent nodes
+- **Dry-run** — print the plan without firing the full probe set
+- **Profiles** — `quick` / `stealth` / `full` from YAML/TOML/JSON config
+
+</td>
+<td width="50%" valign="top">
+
+### Coverage
+
+- **25 platform profiles** — endpoints, capabilities, fingerprint markers
+- **Chat / agents** — Open-WebUI, Dify, FastGPT, LobeChat, LibreChat, NextChat, AnythingLLM, Flowise, RagFlow, Langflow
+- **Inference** — Ollama, vLLM, LocalAI, Xinference, LiteLLM
+- **MLOps / UI** — Ray, MLflow, Gradio, ComfyUI, DB-GPT, Jupyter
+- **Vector DBs** — ChromaDB, Qdrant, Weaviate, Milvus
+- **CVE-shaped checks** — 2023–2026 IDs in probes, HTTP checks, and chains
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### Protocol and payloads
+
+- HTTP client with **redirects disabled** (cuts OAuth 302 false positives)
+- WebSocket JSON-RPC helpers
+- Challenge-page / SPA / LLM-refusal filters
+- External YAML libraries: SSRF, injection, prompt, auth bypass, XSS, CVE-specific
+- Optional payload mutation
+- `--tls` for HTTPS/WSS (current client skips certificate verify — assessment-oriented)
+
+</td>
+<td width="50%" valign="top">
+
+### Operator surface
+
+- **`scan`** — full DAG against one host, CIDR, range, or file
+- **`exploit` / `chain`** — single node or all 42 state-passing chains
+- **`discover`** — TCP connect scan + platform fingerprint
+- **`nuclei`** — bundled templates (45 IDs) without a Nuclei binary
+- **`osint`** — Shodan / FOFA / Hunter dorks (keys from env only)
+- **`mcp`** — stdio MCP server, private-range default allowlist, audit log
+- Reports: JSON, dark HTML, Markdown, Mermaid
+
+</td>
+</tr>
+</table>
 
 ---
 
-## Quick start
+## Commands
 
-**Only against systems you own or are written-authorized to test.**
+| Command | What it does |
+|---------|----------------|
+| `scan` | Build the DAG, run modules level-by-level, score findings |
+| `exploit` | Run the DAG or a single `--chain-id` node |
+| `chain` | Only the 42 multi-stage chains; a chain is “complete” when every stage hits |
+| `discover` | Port scan (default AI-common ports) then fingerprint |
+| `nuclei` | Execute YAML templates from `nuclei-templates/` |
+| `osint` | Query cyberspace engines; never pass API keys on the CLI |
+| `mcp` | Expose scan/chain/discover/nuclei/osint to an AI assistant |
+| `list` | Print the 412-module catalog |
+| `config` | Show merged configuration |
+| `version` | Print `6.0.0` |
+
+**Only against systems you own or are written-authorized to test.** CIDR expansion, target files, OSINT hosts, and MCP `--allow` must stay inside that writing.
 
 ```bash
 # Catalog
 catchclaw list
 
-# Preview DAG (no HTTP to the target besides what you already allowed)
-catchclaw scan -t TARGET_IP:PORT --dry-run
+# Preview which nodes would run
+catchclaw scan -t 192.168.1.10:8080 --dry-run
 
-# Scan (auto fingerprint)
-catchclaw scan -t TARGET_IP:PORT
+# Auto-fingerprint and scan
+catchclaw scan -t 192.168.1.10:8080
 
-# Platform override
-catchclaw scan -t TARGET_IP:PORT --platform dify
+# Force a profile
+catchclaw scan -t 192.168.1.10:8080 --platform dify --profile stealth
 
 # Reports
-catchclaw scan -t TARGET_IP:PORT -o report.json
-catchclaw scan -t TARGET_IP:PORT -o report.html --format html
+catchclaw scan -t 192.168.1.10:8080 -o report.json
+catchclaw scan -t 192.168.1.10:8080 -o report.html --format html
+catchclaw scan -t 192.168.1.10:8080 -o report.md --format markdown --severity-filter critical,high
 
-# Batch (still requires authorization for every address in the expansion)
-catchclaw scan --targets "192.168.1.0/24:8080"
+# Batch (authorization required for every expanded address)
+catchclaw scan --targets "192.168.1.0/24:8080" -o results.json
 catchclaw scan -f targets.txt -o results.json
 
-catchclaw scan -t TARGET_IP:PORT --profile stealth
-catchclaw scan -t TARGET_IP:PORT --severity-filter critical,high
-
 # Chains
-catchclaw chain -t TARGET_IP:PORT
-catchclaw exploit -t TARGET_IP:PORT --chain-id 30
+catchclaw chain -t 192.168.1.10:8080
+catchclaw exploit -t 192.168.1.10:8080 --chain-id 30
 
-# Discovery / templates / OSINT / MCP
-catchclaw discover -t TARGET_IP
+# Discovery / Nuclei / OSINT / MCP
+catchclaw discover -t 192.168.1.10 --ports 3000,8080,11434
 catchclaw nuclei --list
+catchclaw nuclei -t http://192.168.1.10:8080
 catchclaw osint --list-dorks
+catchclaw osint --engine shodan --platform ollama
 catchclaw mcp --allow 10.0.0.0/8
 ```
 
----
+### `scan` flags
 
-## CLI
+| Flag | Purpose |
+|------|---------|
+| `-t, --target` | `host:port` |
+| `--targets` | Comma list, CIDR, or IP range |
+| `-f, --targets-file` | One `host:port` per line |
+| `--token` / `CATCHCLAW_TOKEN` | Gateway bearer token |
+| `--timeout` | Seconds (default 10) |
+| `-o, --output` | Report path |
+| `--format` | `json` (default) · `html` · `markdown` |
+| `--concurrency` | Max parallel modules (default 10) |
+| `--tls` | HTTPS / WSS |
+| `--callback` | Out-of-band SSRF callback URL |
+| `--profile` | `quick` · `stealth` · `full` |
+| `--severity-filter` | `critical,high,medium,low,info` |
+| `--dry-run` | Plan only |
+| `--config` | YAML / TOML / JSON |
+| `--platform` | `auto` or a profile name |
 
-```
-CatchClaw v6.0.0 — authorized AI/LLM platform security assessment (Go)
-
-Usage: catchclaw <COMMAND>
-
-Commands:
-  scan       Full scan (build DAG → execute → summarize)
-  exploit    Run exploit modules (full DAG or --chain-id)
-  chain      Multi-stage state-passing chains only
-  discover   Port scan + platform fingerprint
-  nuclei     Run bundled Nuclei-compatible templates
-  osint      Shodan / FOFA / Hunter (keys from environment)
-  mcp        MCP stdio server (default allowlist: private ranges)
-  list       List registered modules
-  config     Show configuration
-  version    Show version
-```
-
-Flags for `scan` include `-t/--target`, `--targets`, `-f/--targets-file`, `--token`, `--timeout`, `-o/--output`, `--format json|html|markdown`, `--concurrency`, `--tls`, `--callback`, `--profile`, `--severity-filter`, `--dry-run`, `--config`, `--platform`.
-
-Token: `--token` or `CATCHCLAW_TOKEN`. OSINT keys: `SHODAN_API_KEY`, `FOFA_EMAIL` + `FOFA_KEY`, `HUNTER_API_KEY` — never on the command line.
-
-Current Go HTTP client: TLS certificate verification skipped; redirects disabled (avoids OAuth 302 false positives). See [SECURITY.md](SECURITY.md).
+OSINT keys (environment only): `SHODAN_API_KEY`, `FOFA_EMAIL` + `FOFA_KEY`, `HUNTER_API_KEY`.
 
 ---
 
-## DAG execution
+## Platforms
 
-`scan` builds a DAG from the registry:
+Each profile carries default ports, fingerprint markers, and an endpoint map. CrewAI and LangChain exist as identifiers / CVE modules without a dedicated profile.
 
-- **82** handwritten modules have explicit ATT&CK-stage `DependsOn` edges (`go/internal/scan/scan.go`).
-- Remaining registered modules (HTTP checks and chains) are attached as **independent** nodes and run when their topological level is reached (typically in parallel with other unconstrained nodes).
-- Kahn level-parallel execution; semaphore caps concurrency.
-- `Node` supports `FallbackFor` and `Condition`; the current builder does not populate those fields.
-- Attack graph records executed / skipped and exports Mermaid.
+| Group | Platforms | Typical probes |
+|-------|-----------|----------------|
+| Chat / agents | Open-WebUI / OpenClaw, Dify, FastGPT, LobeChat, LibreChat, NextChat, AnythingLLM, Flowise, RagFlow, Langflow | Auth, SSRF, tenant isolation, default creds, workflow RCE |
+| Gateways | LiteLLM | Default master key, spend logs, callback SSRF |
+| Inference | Ollama, vLLM, LocalAI, Xinference | Unauth generate/tags, path disclosure, gallery RCE |
+| MLOps / notebooks | Ray Dashboard, MLflow, Gradio, ComfyUI, DB-GPT, Jupyter | Job RCE, artifact traversal, kernel exec |
+| Vector DB | ChromaDB, Qdrant, Weaviate, Milvus | Unauth collections, snapshot theft, default creds |
 
-This is **orchestration**, not 412 independently researched kill chains.
+Fingerprint is keyword-based. Treat `discover` output as a hint and pass `--platform` when you already know the stack.
 
 ---
 
-## Nuclei templates
+## Modules and DAG
 
-`nuclei-templates/` holds **45** template IDs (OpenClaw set + `v3/` + `v4/`). `catchclaw nuclei` runs a subset of the Nuclei YAML (HTTP word/status matchers). You can also use the Nuclei CLI:
+`catchclaw list` loads **412** entries (counted from source in v6.0.0):
+
+| Kind | Count | Role |
+|------|------:|------|
+| Handwritten exploits | 101 | Custom logic (SSRF, RCE, WS, OAuth, skill poison, CVE probes, …) |
+| HTTP checks | 269 | Data-driven `path` + status + keyword (`checks.go`) |
+| State-passing chains | 42 | Stage N output (`{token}`, `{role}`, …) feeds stage N+1 |
+| **Registered total** | **412** | |
+
+| Related | Count |
+|---------|------:|
+| Platform profiles | 25 |
+| Platform identifiers | 27 |
+| DAG nodes with `DependsOn` | 82 |
+| Nuclei template IDs | 45 |
+
+Handwritten catalog and chain table: **[go/README.md](go/README.md)**.
+
+How `scan` builds the graph:
+
+- 82 handwritten modules get explicit ATT&CK-stage edges in `go/internal/scan/scan.go`.
+- HTTP checks and chains are appended as **independent** nodes (parallel with other unconstrained work).
+- Execution is level-parallel under a semaphore.
+- `FallbackFor` / `Condition` exist on `Node` and are not filled by the current builder.
+- The attack graph records executed / skipped and can export Mermaid.
+
+A **chain** is different: it is one module with several HTTP stages and in-memory state. It reports full compromise only when every stage succeeds.
+
+---
+
+## Reports, MCP, OSINT
+
+**Reports** — JSON for pipelines; HTML (dark, chain cards) for humans; Markdown with optional Mermaid; severity filter applied before write.
+
+**MCP** — `catchclaw mcp` speaks JSON-RPC on stdio. Tools: `catchclaw_scan`, `catchclaw_chain`, `catchclaw_discover`, `catchclaw_nuclei`, `catchclaw_list_modules`, `catchclaw_list_chains`, `catchclaw_osint`. Default allowlist is private address space; public targets need `--allow` / `--allow-file`. Every resolved IP must stay in the allowlist. Scan mutex + 2s cooldown. Keys never accepted as tool arguments.
+
+**OSINT** — 20 built-in platform dorks. Output is host/port intelligence, not a scan. You still need authorization before you point `scan` at anything it returns.
+
+**Nuclei** — 45 template IDs under `nuclei-templates/` (OpenClaw + `v3/` + `v4/`). The built-in runner understands HTTP word/status matchers. The Nuclei CLI can use the same directory.
+
+---
+
+## Install
+
+Go **1.22+**. One static binary.
 
 ```bash
-nuclei -t nuclei-templates/ -u http://TARGET_IP:PORT
+git clone https://github.com/Coff0xc/catchclaw.git
+cd catchclaw/go
+go build -o catchclaw .
 ```
+
+```bash
+# Linux
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o catchclaw-linux .
+
+# Windows
+GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o catchclaw.exe .
+```
+
+Root `make build` / `make ci` delegate to `go/`. Release tags `vX.Y.Z` publish archives that include LICENSE, LEGAL.md, an SPDX SBOM, SHA-256 sums, and build provenance.
 
 ---
 
-## Project layout
+## Layout
 
 ```
 catchclaw/
-├── go/                         # v6.0.0 (supported)
+├── go/                      # v6.0.0 (supported)
 │   ├── main.go
-│   ├── go.mod
+│   ├── catchclaw.example.yaml
 │   └── internal/
-│       ├── cli/                # commands and flags
-│       ├── config/
-│       ├── core/               # Target, Finding, DAG
-│       ├── exploit/            # registry, chains, modules
-│       ├── platform/           # 25 profiles
-│       ├── payload/
-│       ├── nuclei/
-│       ├── osint/
-│       ├── mcpserver/          # allowlist + audit log
-│       ├── scan/
-│       ├── report/
-│       └── utils/              # HTTP (no redirect), WebSocket
-├── rust/                       # archived v5.x
-├── payloads/                   # YAML payload libraries
+│       ├── cli/             # scan exploit chain discover nuclei osint mcp list
+│       ├── core/            # Target, Finding, DAG
+│       ├── exploit/         # registry + modules + chains
+│       ├── platform/        # 25 profiles
+│       ├── scan/            # DAG build, CIDR, discovery
+│       ├── payload/         # YAML + mutation
+│       ├── nuclei/          # template runner
+│       ├── osint/           # Shodan / FOFA / Hunter
+│       ├── mcpserver/       # allowlist + audit
+│       ├── report/          # JSON / HTML / Markdown / Mermaid
+│       └── utils/           # HTTP (no redirect), WebSocket
+├── rust/                    # archived v5.x
+├── payloads/                # SSRF, injection, prompt, auth, XSS, CVE
 ├── nuclei-templates/
-├── LEGAL.md                    # legal risk (binding with LICENSE)
-├── LICENSE                     # Strict Non-Commercial v2.0
-├── SECURITY.md
-└── README.md
+├── .github/workflows/       # CI, CodeQL, release
+├── LEGAL.md
+├── LICENSE
+└── SECURITY.md
 ```
 
 ---
 
-## Legal risk
+## Development and CI
 
-CatchClaw can send exploit payloads, guess credentials, and expand CIDR / OSINT / MCP allowlists into many hosts. **That is the point of the tool and the source of legal exposure.**
+See [CONTRIBUTING.md](CONTRIBUTING.md). PRs must keep **CI** green.
 
-You must, before every run:
+| Workflow | When | Checks |
+|----------|------|--------|
+| [CI](.github/workflows/ci.yml) | push / PR | `gofmt`, `go mod verify`/`tidy`, `vet`, golangci-lint, `-race` tests, coverage, host build + `list` smoke (412), cross-compile, govulncheck, Gitleaks, YAML parse, actionlint |
+| [CodeQL](.github/workflows/codeql.yml) | Go changes + weekly | CodeQL on `go/` |
+| [Rust archive](.github/workflows/rust-archive.yml) | `rust/**` only | fmt, check, clippy, test |
+| [Release](.github/workflows/release.yml) | tag `vX.Y.Z` | Cross-build, LICENSE+LEGAL.md, SPDX SBOM, SHA-256, provenance attestation |
 
-1. Hold **written** authorization covering hosts, time, and methods.
-2. Confirm CIDR expansion, target files, OSINT results, and MCP `--allow` stay inside that writing.
-3. Treat reports as confidential engagement data.
-4. Independently verify findings before disclosure.
-5. Stay non-commercial unless Coff0xc has licensed you in writing.
-
-Unauthorized use can be prosecuted. The copyright holder will not defend you. Details and PRC / cross-border notes: **[LEGAL.md](LEGAL.md)**.
+```bash
+cd go && make ci
+```
 
 ---
 
-## Disclaimer
+## Legal
 
-This tool is for **authorized security testing** only. Test only systems you own or have explicit written authorization to test. Unauthorized access to computer systems is illegal.
+CatchClaw sends exploit payloads, guesses credentials, and can expand one flag into many hosts. That is the legal exposure.
+
+Before every run:
+
+1. Hold written authorization covering hosts, time, and methods.
+2. Keep CIDR / files / OSINT / MCP `--allow` inside that writing.
+3. Treat reports as confidential engagement data.
+4. Independently verify findings.
+5. Stay non-commercial unless Coff0xc licensed you in writing.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND. Authors and copyright holders are not liable for claims, damages, fines, or criminal consequences arising from use.
+
+Full text: **[LEGAL.md](LEGAL.md)**. License: **[CatchClaw Strict Non-Commercial License v2.0](LICENSE)**.
 
 ## Author
 
 **Coff0xc** — [https://github.com/Coff0xc](https://github.com/Coff0xc)
-
-## License
-
-[CatchClaw Strict Non-Commercial License v2.0](LICENSE) — commercial use prohibited without written authorization.

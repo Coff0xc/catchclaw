@@ -7,7 +7,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Changed
-- GitHub Actions: Go CI gate (`gofmt`, `vet`, `test`, `build`, `mod verify`/`tidy`, cross-compile, `govulncheck`); Rust checks path-filtered to `rust/`; release archives include LICENSE, LEGAL.md, and SHA-256 sums
+- GitHub Actions CI split into quality (gofmt, mod verify/tidy, vet, golangci-lint), test (`-race`, coverage), build/smoke/cross-compile, govulncheck, Gitleaks, YAML + actionlint
+- Added CodeQL workflow on `go/` (push/PR + weekly)
+- Release: SPDX SBOM, SHA-256 sums, and build-provenance attestation; archives still include LICENSE and LEGAL.md
+- Root README rewritten as the product page (features, commands, platforms, DAG, MCP/OSINT, CI)
 - Dependabot: `gomod` for `/go` (weekly), GitHub Actions (weekly), Cargo for archived `/rust` (monthly)
 
 ## [6.0.0] - 2026-11-26

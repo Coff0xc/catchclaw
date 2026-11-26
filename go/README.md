@@ -1,8 +1,8 @@
 <h1 align="center">🦞 CatchClaw v6.0.0 (Go)</h1>
 
 <p align="center">
-  <b>Authorized AI / LLM platform security assessment — 412 registered modules (101 exploits + 269 HTTP checks + 42 chains) | 25 platform profiles</b><br>
-  <sub>Go rewrite of CatchClaw Rust v5.3.0 | ATT&amp;CK-mapped DAG | Concurrent execution | 2025–2026 CVE coverage</sub>
+  <b>Implementation notes for the supported Go tree</b><br>
+  <sub>412 modules (101 exploits + 269 HTTP checks + 42 chains) · 25 platform profiles · product overview in the <a href="../README.md">root README</a></sub>
 </p>
 
 <p align="center">
