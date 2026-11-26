@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" role="img" aria-labelledby="t3 d3">
+  <title id="t3">Figure 3. DAG execution and ATT&amp;CK phase mapping</title>
+  <desc id="d3">Directed acyclic graph: recon roots, dependent exploit stages, independent checks and chains.</desc>
+  <defs>
+    <style>
+      .title { font: 700 18px Helvetica, Arial, sans-serif; fill: #0f172a; }
+      .sub { font: 12px Helvetica, Arial, sans-serif; fill: #475569; }
+      .ph { font: 700 11px Helvetica, Arial, sans-serif; fill: #1e3a5f; }
+      .h { font: 700 12px Helvetica, Arial, sans-serif; fill: #0f172a; }
+      .s { font: 10.5px Helvetica, Arial, sans-serif; fill: #334155; }
+      .leg { font: 11px Helvetica, Arial, sans-serif; fill: #334155; }
+    </style>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e3a5f"/>
+    </marker>
+  </defs>
+  <rect width="960" height="520" fill="#ffffff"/>
+  <text x="480" y="28" text-anchor="middle" class="title">Fig. 3. DAG execution model (ATT&amp;CK-mapped)</text>
+  <text x="480" y="48" text-anchor="middle" class="sub">82 nodes with explicit DependsOn · remaining modules attached as independent nodes</text>
+
+  <!-- Phase Recon -->
+  <text x="80" y="78" class="ph">Recon  (level 0)</text>
+  <rect x="40" y="88" width="140" height="44" rx="4" fill="#dbeafe" stroke="#1e3a5f"/>
+  <text x="110" y="107" text-anchor="middle" class="h">cors_bypass</text>
+  <text x="110" y="123" text-anchor="middle" class="s">N0  origin reflection</text>
+  <rect x="200" y="88" width="140" height="44" rx="4" fill="#dbeafe" stroke="#1e3a5f"/>
+  <text x="270" y="107" text-anchor="middle" class="h">ws_hijack</text>
+  <text x="270" y="123" text-anchor="middle" class="s">N1  WS upgrade</text>
+  <rect x="360" y="88" width="140" height="44" rx="4" fill="#dbeafe" stroke="#1e3a5f"/>
+  <text x="430" y="107" text-anchor="middle" class="h">auth_mode</text>
+  <text x="430" y="123" text-anchor="middle" class="s">N2  auth surface</text>
+  <rect x="520" y="88" width="180" height="44" rx="4" fill="#dbeafe" stroke="#1e3a5f"/>
+  <text x="610" y="107" text-anchor="middle" class="h">platform probes</text>
+  <text x="610" y="123" text-anchor="middle" class="s">dify / ollama / …  (no deps)</text>
+  <rect x="720" y="88" width="200" height="44" rx="4" fill="#e2e8f0" stroke="#64748b" stroke-dasharray="4 2"/>
+  <text x="820" y="107" text-anchor="middle" class="h">independent nodes</text>
+  <text x="820" y="123" text-anchor="middle" class="s">HTTP checks + chains</text>
+
+  <!-- arrows down -->
+  <line x1="110" y1="132" x2="110" y2="168" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+  <line x1="110" y1="132" x2="270" y2="168" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+  <line x1="110" y1="132" x2="430" y2="168" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+  <line x1="270" y1="132" x2="590" y2="168" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+  <line x1="430" y1="132" x2="270" y2="168" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+
+  <text x="80" y="196" class="ph">Initial access / Credential access</text>
+  <rect x="40" y="206" width="140" height="44" rx="4" fill="#dcfce7" stroke="#1e3a5f"/>
+  <text x="110" y="225" text-anchor="middle" class="h">ssrf</text>
+  <text x="110" y="241" text-anchor="middle" class="s">IMDS / file / internal</text>
+  <rect x="200" y="206" width="140" height="44" rx="4" fill="#dcfce7" stroke="#1e3a5f"/>
+  <text x="270" y="225" text-anchor="middle" class="h">pairing / oauth</text>
+  <text x="270" y="241" text-anchor="middle" class="s">depends N0, N2</text>
+  <rect x="360" y="206" width="140" height="44" rx="4" fill="#dcfce7" stroke="#1e3a5f"/>
+  <text x="430" y="225" text-anchor="middle" class="h">prompt_inject</text>
+  <text x="430" y="241" text-anchor="middle" class="s">depends N0</text>
+  <rect x="520" y="206" width="180" height="44" rx="4" fill="#dcfce7" stroke="#1e3a5f"/>
+  <text x="610" y="225" text-anchor="middle" class="h">ws_fuzz / ws_auth</text>
+  <text x="610" y="241" text-anchor="middle" class="s">depends N1</text>
+
+  <line x1="110" y1="250" x2="110" y2="286" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+  <line x1="430" y1="250" x2="270" y2="286" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+  <line x1="110" y1="250" x2="430" y2="286" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+
+  <text x="80" y="314" class="ph">Execution / Persistence</text>
+  <rect x="40" y="324" width="140" height="44" rx="4" fill="#ffedd5" stroke="#1e3a5f"/>
+  <text x="110" y="343" text-anchor="middle" class="h">rce / eval</text>
+  <text x="110" y="359" text-anchor="middle" class="s">depends inject</text>
+  <rect x="200" y="324" width="140" height="44" rx="4" fill="#ffedd5" stroke="#1e3a5f"/>
+  <text x="270" y="343" text-anchor="middle" class="h">agent_inject</text>
+  <text x="270" y="359" text-anchor="middle" class="s">depends prompt</text>
+  <rect x="360" y="324" width="140" height="44" rx="4" fill="#ffedd5" stroke="#1e3a5f"/>
+  <text x="430" y="343" text-anchor="middle" class="h">skill_poison</text>
+  <text x="430" y="359" text-anchor="middle" class="s">persistence</text>
+  <rect x="520" y="324" width="180" height="44" rx="4" fill="#ffedd5" stroke="#1e3a5f"/>
+  <text x="610" y="343" text-anchor="middle" class="h">cron / session write</text>
+  <text x="610" y="359" text-anchor="middle" class="s">depends N0 / RCE</text>
+
+  <line x1="110" y1="368" x2="200" y2="404" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+  <line x1="270" y1="368" x2="430" y2="404" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+  <line x1="430" y1="368" x2="610" y2="404" stroke="#1e3a5f" stroke-width="1.4" marker-end="url(#a2)"/>
+
+  <text x="80" y="432" class="ph">Exfiltration / Impact</text>
+  <rect x="130" y="442" width="160" height="36" rx="4" fill="#fae8ff" stroke="#1e3a5f"/>
+  <text x="210" y="465" text-anchor="middle" class="h">c2_exfil / transcript</text>
+  <rect x="330" y="442" width="160" height="36" rx="4" fill="#fae8ff" stroke="#1e3a5f"/>
+  <text x="410" y="465" text-anchor="middle" class="h">secret_extract</text>
+  <rect x="530" y="442" width="180" height="36" rx="4" fill="#fae8ff" stroke="#1e3a5f"/>
+  <text x="620" y="465" text-anchor="middle" class="h">memory / talk_secrets</text>
+
+  <rect x="40" y="490" width="14" height="14" fill="#dbeafe" stroke="#1e3a5f"/>
+  <text x="60" y="502" class="leg">Recon</text>
+  <rect x="130" y="490" width="14" height="14" fill="#dcfce7" stroke="#1e3a5f"/>
+  <text x="150" y="502" class="leg">Access</text>
+  <rect x="230" y="490" width="14" height="14" fill="#ffedd5" stroke="#1e3a5f"/>
+  <text x="250" y="502" class="leg">Execution</text>
+  <rect x="350" y="490" width="14" height="14" fill="#fae8ff" stroke="#1e3a5f"/>
+  <text x="370" y="502" class="leg">Exfil</text>
+  <rect x="440" y="490" width="14" height="14" fill="#e2e8f0" stroke="#64748b" stroke-dasharray="3 2"/>
+  <text x="460" y="502" class="leg">No DependsOn (parallel with unconstrained nodes)</text>
+</svg>

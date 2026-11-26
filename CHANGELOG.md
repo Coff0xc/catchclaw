@@ -12,6 +12,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 - Relicensed from CatchClaw Strict Non-Commercial v2.0 to **MIT**. Commercial use, sale, and derivative works are allowed. Unauthorized access to systems remains illegal (LEGAL.md).
+- Architecture figures (SVG): layered system, assessment methodology, DAG/ATT&amp;CK execution (`docs/figures/`)
 - LEGAL.md, LICENSE, README, and SECURITY.md: legal-risk language is worldwide (operator, target, nationality, transit, export).
 - GitHub Actions CI split into quality (gofmt, mod verify/tidy, vet, golangci-lint), test (`-race`, coverage), build/smoke/cross-compile, govulncheck, Gitleaks, YAML + actionlint
 - Added CodeQL workflow on `go/` (push/PR + weekly)

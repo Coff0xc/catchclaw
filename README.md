@@ -53,19 +53,28 @@ On an authorized target it can:
 
 Hits are **unverified signals** (status codes and body keywords). Reproduce before you treat them as confirmed vulnerabilities.
 
-```
-  discover / OSINT                 scan / exploit / chain
-  ┌──────────────┐                 ┌──────────────────────────┐
-  │ ports +      │  authorized     │  DAG (Kahn + semaphore)  │
-  │ fingerprint  │  target  ───►   │  101 exploits            │
-  └──────────────┘                 │  269 HTTP checks         │
-                                   │  42 state-passing chains │
-  nuclei  /  mcp                   └────────────┬─────────────┘
-  ┌──────────────┐                              ▼
-  │ templates /  │                     JSON · HTML · Markdown
-  │ AI assistant │                     Mermaid graph
-  └──────────────┘
-```
+---
+
+## Architecture
+
+CatchClaw is a **knowledge-driven scanner**: a registry of modules is compiled into a directed acyclic graph, executed level-by-level under a concurrency semaphore, and reduced to scored findings. The design separates operator surface, orchestration, knowledge, transport, and evidence so new checks can be added without changing the runtime.
+
+<p align="center">
+  <img src="docs/figures/fig1-architecture.svg" alt="Figure 1. Layered system architecture of CatchClaw" width="920">
+</p>
+<p align="center"><sub><b>Fig. 1.</b> Layered architecture. L5 operator surface; L4 DAG + platform registry; L3 module knowledge base (412 entries); L2 HTTP/WebSocket/OSINT; L1 evidence export.</sub></p>
+
+<p align="center">
+  <img src="docs/figures/fig2-methodology.svg" alt="Figure 2. Six-stage authorized assessment methodology" width="920">
+</p>
+<p align="center"><sub><b>Fig. 2.</b> Assessment methodology. Written authorization is a hard gate. Stages: acquire → fingerprint → construct DAG → execute → record → report. Hits require independent verification.</sub></p>
+
+<p align="center">
+  <img src="docs/figures/fig3-dag.svg" alt="Figure 3. DAG execution model mapped to ATT&CK phases" width="920">
+</p>
+<p align="center"><sub><b>Fig. 3.</b> DAG execution. Solid arrows are explicit <code>DependsOn</code> edges (82 handwritten nodes). Dashed nodes (HTTP checks and state-passing chains) run unconstrained in parallel.</sub></p>
+
+Vector sources: [`docs/figures/`](docs/figures/).
 
 ---
 
