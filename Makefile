@@ -1,30 +1,38 @@
-.PHONY: build release check test clippy fmt clean
+.PHONY: build release test vet fmt clean install rust-build rust-test rust-clippy rust-fmt rust-clean
 
 build:
-	cd rust && cargo build
+	cd go && go build -o catchclaw .
 
 release:
-	cd rust && cargo build --release
-
-check:
-	cd rust && cargo check --all-targets
+	cd go && go build -ldflags="-s -w" -o catchclaw .
 
 test:
-	cd rust && cargo test
+	cd go && go test ./...
 
-clippy:
-	cd rust && cargo clippy -- -D warnings
+vet:
+	cd go && go vet ./...
 
 fmt:
-	cd rust && cargo fmt
+	cd go && go fmt ./...
 
-fmt-check:
-	cd rust && cargo fmt -- --check
+install:
+	cd go && go install .
 
 clean:
+	cd go && rm -f catchclaw catchclaw.exe catchclaw-*
+
+# Archived v5.x (Rust). Not the release target.
+rust-build:
+	cd rust && cargo build
+
+rust-test:
+	cd rust && cargo test
+
+rust-clippy:
+	cd rust && cargo clippy -- -D warnings
+
+rust-fmt:
+	cd rust && cargo fmt -- --check
+
+rust-clean:
 	cd rust && cargo clean
-
-list:
-	cd rust && cargo run -- list
-
-all: fmt-check clippy test build

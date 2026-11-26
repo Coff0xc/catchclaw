@@ -1,0 +1,2 @@
+# Primary implementation is Go (v6.0). The rust/ tree is the archived v5.x reference.
+rust/** linguist-vendored

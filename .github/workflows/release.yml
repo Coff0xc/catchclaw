@@ -3,78 +3,70 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
+          - goos: linux
+            goarch: amd64
             artifact: catchclaw
             archive: catchclaw-linux-amd64.tar.gz
-          - os: macos-latest
-            target: aarch64-apple-darwin
+          - goos: linux
+            goarch: arm64
+            artifact: catchclaw
+            archive: catchclaw-linux-arm64.tar.gz
+          - goos: darwin
+            goarch: amd64
+            artifact: catchclaw
+            archive: catchclaw-darwin-amd64.tar.gz
+          - goos: darwin
+            goarch: arm64
             artifact: catchclaw
             archive: catchclaw-darwin-arm64.tar.gz
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
+          - goos: windows
+            goarch: amd64
             artifact: catchclaw.exe
             archive: catchclaw-windows-amd64.zip
-    defaults:
-      run:
-        working-directory: rust
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Remove local cargo config
-        shell: bash
-        run: rm -f .cargo/config.toml
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Go
+        uses: actions/setup-go@v5
         with:
-          targets: ${{ matrix.target }}
+          go-version: "1.22"
+          cache-dependency-path: go/go.sum
 
-      - name: Cache cargo
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            rust/target/
-          key: ${{ runner.os }}-release-${{ hashFiles('rust/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-release-
+      - name: Build
+        working-directory: go
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: go build -ldflags="-s -w" -o ${{ matrix.artifact }} .
 
-      - name: Build release
-        run: cargo build --release --target ${{ matrix.target }}
+      - name: Package (tar)
+        if: matrix.goos != 'windows'
+        working-directory: go
+        run: tar czf ${{ matrix.archive }} ${{ matrix.artifact }}
 
-      - name: Package (Unix)
-        if: runner.os != 'Windows'
-        run: |
-          cd target/${{ matrix.target }}/release
-          tar czf ../../../${{ matrix.archive }} ${{ matrix.artifact }}
-
-      - name: Package (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          cd target/${{ matrix.target }}/release
-          7z a ../../../${{ matrix.archive }} ${{ matrix.artifact }}
+      - name: Package (zip)
+        if: matrix.goos == 'windows'
+        working-directory: go
+        run: zip ${{ matrix.archive }} ${{ matrix.artifact }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.archive }}
-          path: rust/${{ matrix.archive }}
+          path: go/${{ matrix.archive }}
 
   release:
     needs: build
